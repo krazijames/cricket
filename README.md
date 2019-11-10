@@ -1,3 +1,5 @@
+# Cricket [![Netlify Status](https://api.netlify.com/api/v1/badges/b5363724-e7fa-45ea-8914-a60e4ee3ddc8/deploy-status)](https://app.netlify.com/sites/cricket-d7248/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
