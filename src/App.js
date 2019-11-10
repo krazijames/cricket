@@ -2,9 +2,13 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
 import { Router } from '@reach/router';
+import firebase from 'firebase/app';
 
+import * as config from 'config';
+import { Home } from 'pages';
 import theme from 'theme';
-import { Home, SignIn } from 'pages';
+
+firebase.initializeApp(config.firebase);
 
 export default function App() {
   return (
@@ -12,7 +16,6 @@ export default function App() {
       <CssBaseline />
       <Router>
         <Home path="/" />
-        <SignIn path="signin" />
       </Router>
     </ThemeProvider>
   );
