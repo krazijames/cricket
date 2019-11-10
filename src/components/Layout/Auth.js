@@ -37,15 +37,15 @@ const UserButton = withStyles((theme) => ({
 }))(({ classes, ...props }) => {
   const { user, signOut } = useAuth();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [detailsAnchorEl, setDetailsAnchorEl] = React.useState(null);
+  const isDetailsOpen = Boolean(detailsAnchorEl);
 
   function onUserButtonClick(event) {
-    setAnchorEl(event.currentTarget);
+    setDetailsAnchorEl(event.currentTarget);
   }
 
   function closeDetails() {
-    setAnchorEl(null);
+    setDetailsAnchorEl(null);
   }
 
   function onSignOutButtonClick() {
@@ -65,8 +65,8 @@ const UserButton = withStyles((theme) => ({
       </IconButton>
 
       <Popover
-        open={open}
-        anchorEl={anchorEl}
+        open={isDetailsOpen}
+        anchorEl={detailsAnchorEl}
         keepMounted
         anchorOrigin={{
           vertical: 'bottom',
@@ -116,21 +116,21 @@ const Auth = withStyles((theme) => ({
   const theme = useTheme();
 
   const { isAuthenticated } = useAuth();
-  const pendingAuth = useAuthUi('#firebaseui-auth-container');
+  const isPendingAuth = useAuthUi('#firebaseui-auth-container');
 
-  const [signInUiOpened, setSignInUiOpened] = React.useState(false);
+  const [isSignInDialogOpen, setIsSignInDialogOpen] = React.useState(false);
 
   function onSignInButtonClick() {
-    setSignInUiOpened(true);
+    setIsSignInDialogOpen(true);
   }
 
-  function closeSignInUi() {
-    setSignInUiOpened(false);
+  function closeSignInDialog() {
+    setIsSignInDialogOpen(false);
   }
 
   return (
     <div {...props}>
-      {pendingAuth ? (
+      {isPendingAuth ? (
         <CircularProgress color="inherit" size={theme.spacing(5)} />
       ) : isAuthenticated ? (
         <UserButton />
@@ -141,10 +141,10 @@ const Auth = withStyles((theme) => ({
       )}
 
       <Dialog
-        open={signInUiOpened}
+        open={isSignInDialogOpen}
         keepMounted
         PaperComponent="div"
-        onClose={closeSignInUi}
+        onClose={closeSignInDialog}
       >
         <div id="firebaseui-auth-container" className={classes.authContainer} />
       </Dialog>
