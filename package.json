@@ -32,6 +32,9 @@
       "last 1 safari version"
     ]
   },
+  "engines": {
+    "node": ">=12 <13"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
