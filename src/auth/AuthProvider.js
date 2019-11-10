@@ -16,7 +16,7 @@ export default function ContextProvider({ children, ...props }) {
           displayName: firebaseUser.displayName,
           email: firebaseUser.email,
           emailVerified: firebaseUser.emailVerified,
-          photoURL: firebaseUser.photoURL,
+          photoUrl: firebaseUser.photoURL,
           isAnonymous: firebaseUser.isAnonymous,
         },
       );

@@ -8,7 +8,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
-import AuthButton from './AuthButton';
+import Auth from './Auth';
 
 const AppBar = withStyles((theme) => ({
   menuButton: {
@@ -33,7 +33,7 @@ const AppBar = withStyles((theme) => ({
           Cricket
         </Typography>
 
-        <AuthButton />
+        <Auth />
       </Toolbar>
     </MuiAppBar>
   );
