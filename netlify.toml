@@ -1,0 +1,5 @@
+# https://www.netlify.com/docs/netlify-toml-reference/
+
+[build]
+  publish = "build/"
+  command = "yarn build"
