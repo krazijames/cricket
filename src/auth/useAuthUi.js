@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 
-export default (firebaseUiContainerSelector) => {
+export default (authUiContainerSelector) => {
   const [pending, setPending] = React.useState(true);
 
   React.useEffect(() => {
@@ -15,7 +15,7 @@ export default (firebaseUiContainerSelector) => {
       setPending(ui.isPendingRedirect());
 
       if (!firebaseUser) {
-        ui.start(firebaseUiContainerSelector, {
+        ui.start(authUiContainerSelector, {
           signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
           callbacks: {
             signInSuccessWithAuthResult: () => false,
@@ -24,7 +24,7 @@ export default (firebaseUiContainerSelector) => {
         });
       }
     });
-  }, [firebaseUiContainerSelector]);
+  }, [authUiContainerSelector]);
 
   return pending;
 };
