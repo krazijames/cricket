@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   AppBar as MuiAppBar,
+  Button,
   IconButton,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from '@reach/router';
 
 const AppBar = withStyles((theme) => ({
   menuButton: {
@@ -30,6 +32,9 @@ const AppBar = withStyles((theme) => ({
         <Typography className={classes.title} variant="h6">
           Cricket
         </Typography>
+        <Button component={Link} to="signin">
+          Sign In
+        </Button>
       </Toolbar>
     </MuiAppBar>
   );

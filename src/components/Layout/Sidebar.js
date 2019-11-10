@@ -8,9 +8,10 @@ import {
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from '@reach/router';
 
 function MenuItem({ ...props }) {
-  return <ListItem button {...props} />;
+  return <ListItem component={Link} button {...props} />;
 }
 
 const Sidebar = withStyles((theme) => ({
@@ -29,7 +30,7 @@ const Sidebar = withStyles((theme) => ({
     >
       <nav>
         <List>
-          <MenuItem onClick={onClose}>
+          <MenuItem to="/" onClick={onClose}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
