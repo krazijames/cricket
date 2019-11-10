@@ -1,4 +1,5 @@
 {
+  "name": "cricket",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
