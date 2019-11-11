@@ -5,7 +5,16 @@ import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 
 const Layout = withStyles((theme) => ({
+  root: {
+    minHeight: '100vh',
+    display: 'flex',
+    flexFlow: 'column nowrap',
+  },
   appBarSpacer: theme.mixins.toolbar,
+  main: {
+    position: 'relative',
+    flex: 1,
+  },
 }))(({ classes, children, ...props }) => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
@@ -18,11 +27,11 @@ const Layout = withStyles((theme) => ({
   }
 
   return (
-    <div {...props}>
+    <div className={classes.root} {...props}>
       <AppBar onMenuButtonClick={toggleSideBar} />
       <Sidebar open={isSidebarOpen} onClose={closeSideBar} />
       <div className={classes.appBarSpacer} />
-      {children}
+      <main className={classes.main}>{children}</main>
     </div>
   );
 });
