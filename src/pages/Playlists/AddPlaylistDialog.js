@@ -19,6 +19,7 @@ export default withStyles((theme) => ({}))(function AddPlaylistDialog({
     await db.collection(paths.PLAYLISTS).add({
       name,
       ownerUserUids: [user.uid],
+      createdAt: new Date(),
     });
 
     onClose();

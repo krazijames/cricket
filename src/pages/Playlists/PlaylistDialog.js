@@ -20,7 +20,7 @@ export default withStyles((theme) => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
-}))(function PlaylistDialog({ classes, title, onOk, onClose, ...props }) {
+}))(function PlaylistDialog({ classes, open, title, onOk, onClose, ...props }) {
   const [isPending, setIsPending] = React.useState(false);
   const [name, setName] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState();
@@ -49,8 +49,17 @@ export default withStyles((theme) => ({
     })();
   }
 
+  React.useEffect(() => {
+    if (!open) {
+      setIsPending(false);
+      setName('');
+      setErrorMessage();
+    }
+  }, [open]);
+
   return (
     <Dialog
+      open={open}
       fullWidth
       disableBackdropClick={isPending}
       disableEscapeKeyDown={isPending}
