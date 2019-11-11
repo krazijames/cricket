@@ -1,8 +1,43 @@
 import React from 'react';
+import { Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 
-const Playlists = withStyles((theme) => ({}))(({ classes }) => {
-  return <div>Playlists</div>;
+import PlaylistDialog from './PlaylistDialog';
+
+const Playlists = withStyles((theme) => ({
+  addButton: {
+    position: 'fixed',
+    right: theme.spacing(2),
+    bottom: theme.spacing(2),
+  },
+}))(({ classes }) => {
+  const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
+
+  function openAddDialog() {
+    setIsAddDialogOpen(true);
+  }
+
+  function closeAddDialog() {
+    setIsAddDialogOpen(false);
+  }
+  return (
+    <div>
+      Playlists
+      <Fab
+        className={classes.addButton}
+        color="primary"
+        onClick={openAddDialog}
+      >
+        <AddIcon />
+      </Fab>
+      <PlaylistDialog
+        title="New Playlist"
+        open={isAddDialogOpen}
+        onClose={closeAddDialog}
+      />
+    </div>
+  );
 });
 
 export default Playlists;
