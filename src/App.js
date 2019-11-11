@@ -20,7 +20,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Layout loading={isPending}>
-            <Router>
+            <Router component={React.Fragment} primary={false}>
               <Home path="/" />
               <Playlists path="/playlist" />
               <NotFound default />

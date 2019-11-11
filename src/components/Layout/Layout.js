@@ -9,13 +9,19 @@ import Sidebar from './Sidebar';
 export default withStyles((theme) => ({
   root: {
     minHeight: '100vh',
+  },
+  contentContainer: {
     display: 'flex',
     flexFlow: 'column nowrap',
   },
   appBarSpacer: theme.mixins.toolbar,
   main: {
-    position: 'relative',
     flex: 1,
+    display: 'flex',
+    flexFlow: 'column nowrap',
+  },
+  progressContainer: {
+    position: 'fixed',
   },
 }))(function Layout({ classes, children, ...props }) {
   const theme = useTheme();
@@ -31,7 +37,11 @@ export default withStyles((theme) => ({
 
   return (
     <AsyncContainer
-      className={classes.root}
+      classes={{
+        root: classes.root,
+        contentContainer: classes.contentContainer,
+        progressContainer: classes.progressContainer,
+      }}
       progressProps={{ size: theme.spacing(10) }}
       loadingContentOpacity={0}
       {...props}

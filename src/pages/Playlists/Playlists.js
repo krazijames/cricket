@@ -1,12 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
-import { Container, Fab, Grid } from '@material-ui/core';
+import { Fab, Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 
 import { paths } from 'data';
 import { useAuth } from 'auth';
+import { AsyncContainer } from 'components';
 
 import AddPlaylistDialog from './AddPlaylistDialog';
 import Playlist from './Playlist';
@@ -16,13 +17,17 @@ export default withStyles((theme) => ({
     padding: theme.spacing(1),
     paddingBottom: theme.spacing(11),
   },
+  progressContainer: {
+    position: 'fixed',
+  },
   addButton: {
     position: 'fixed',
     right: theme.spacing(2),
     bottom: theme.spacing(2),
   },
 }))(function Playlists({ classes }) {
-  const { isAuthenticated, user } = useAuth();
+  const theme = useTheme();
+  const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
 
@@ -35,7 +40,12 @@ export default withStyles((theme) => ({
   }
 
   React.useEffect(() => {
+    if (isPendingAuth) {
+      return;
+    }
+
     if (!user) {
+      setPlaylists([]);
       return;
     }
 
@@ -51,16 +61,17 @@ export default withStyles((theme) => ({
         });
         setPlaylists(newPlaylists);
       });
-  }, [user]);
-
-  React.useEffect(() => {
-    if (!isAuthenticated) {
-      setPlaylists();
-    }
-  }, [isAuthenticated]);
+  }, [isPendingAuth, user]);
 
   return (
-    <Container classes={{ root: classes.root }} maxWidth={false}>
+    <AsyncContainer
+      classes={{
+        root: classes.root,
+        progressContainer: classes.progressContainer,
+      }}
+      progressProps={{ size: theme.spacing(10) }}
+      loading={!playlists}
+    >
       <Grid container spacing={1}>
         {_.map(playlists, (playlist) => (
           <Grid key={playlist.id} item xs={12}>
@@ -78,6 +89,6 @@ export default withStyles((theme) => ({
       </Fab>
 
       <AddPlaylistDialog open={isAddDialogOpen} onClose={closeAddDialog} />
-    </Container>
+    </AsyncContainer>
   );
 });

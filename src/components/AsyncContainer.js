@@ -8,11 +8,11 @@ const transitionDuration = '0.25s';
 export default withStyles((theme) => ({
   root: {
     position: 'relative',
-    display: 'block',
+    display: 'flex',
+    flexFlow: 'column nowrap',
   },
   contentContainer: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     opacity: ({ loading, loadingContentOpacity }) =>
       loading
         ? !_.isNil(loadingContentOpacity)
@@ -27,9 +27,11 @@ export default withStyles((theme) => ({
     right: 0,
     bottom: 0,
     left: 0,
+
     display: 'flex',
     justifyContent: 'center',
     alignItems: ' center',
+
     pointerEvents: ({ loading }) => (loading ? 'auto' : 'none'),
     opacity: ({ loading }) => (loading ? 1 : 0),
     transition: `opacity ${transitionDuration}`,
