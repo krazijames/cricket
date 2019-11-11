@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Fab, Grid } from '@material-ui/core';
+import { Fab, Grid, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
@@ -14,8 +14,23 @@ import Playlist from './Playlist';
 
 export default withStyles((theme) => ({
   root: {
+    flex: 1,
     padding: theme.spacing(1),
     paddingBottom: theme.spacing(11),
+  },
+  emptyMessageContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+
+    display: 'flex',
+    flexFlow: 'column nowrap',
+    justifyContent: 'center',
+
+    padding: theme.spacing(4),
+    textAlign: 'center',
   },
   progressContainer: {
     position: 'fixed',
@@ -72,13 +87,21 @@ export default withStyles((theme) => ({
       progressProps={{ size: theme.spacing(10) }}
       loading={!playlists}
     >
-      <Grid container spacing={1}>
-        {_.map(playlists, (playlist) => (
-          <Grid key={playlist.id} item xs={12}>
-            <Playlist playlist={playlist} />
-          </Grid>
-        ))}
-      </Grid>
+      {!playlists ? null : _.isEmpty(playlists) ? (
+        <div className={classes.emptyMessageContainer}>
+          <Typography variant="h5" color="textSecondary">
+            Create New Playlist!
+          </Typography>
+        </div>
+      ) : (
+        <Grid container spacing={1}>
+          {_.map(playlists, (playlist) => (
+            <Grid key={playlist.id} item xs={12}>
+              <Playlist playlist={playlist} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
       <Fab
         classes={{ root: classes.addButton }}
