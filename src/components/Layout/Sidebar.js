@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import HomeIcon from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from '@reach/router';
@@ -35,6 +36,12 @@ const Sidebar = withStyles((theme) => ({
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
+          </MenuItem>
+          <MenuItem to="/playlist" onClick={onClose}>
+            <ListItemIcon>
+              <VideoLibraryIcon />
+            </ListItemIcon>
+            <ListItemText primary="Playlists" />
           </MenuItem>
         </List>
       </nav>

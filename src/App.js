@@ -6,7 +6,8 @@ import firebase from 'firebase/app';
 
 import { AuthProvider } from 'auth';
 import * as config from 'config';
-import { Home } from 'pages';
+import { Layout } from 'components';
+import { Home, Playlists } from 'pages';
 import theme from 'theme';
 
 firebase.initializeApp(config.firebase);
@@ -16,9 +17,12 @@ export default function App() {
     <AuthProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Router>
-          <Home path="/" />
-        </Router>
+        <Layout>
+          <Router>
+            <Home path="/" />
+            <Playlists path="/playlist" />
+          </Router>
+        </Layout>
       </ThemeProvider>
     </AuthProvider>
   );
