@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   IconButton,
   TextField,
@@ -22,6 +23,7 @@ export default withStyles((theme) => ({
 }))(function PlaylistDialog({ classes, title, onOk, onClose, ...props }) {
   const [isPending, setIsPending] = React.useState(false);
   const [name, setName] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState();
 
   function onNameChange(event) {
     setName(event.target.value);
@@ -37,7 +39,10 @@ export default withStyles((theme) => ({
     (async () => {
       try {
         setIsPending(true);
+        setErrorMessage();
         await onOk({ name });
+      } catch (error) {
+        setErrorMessage(error.message);
       } finally {
         setIsPending(false);
       }
@@ -46,6 +51,7 @@ export default withStyles((theme) => ({
 
   return (
     <Dialog
+      fullWidth
       disableBackdropClick={isPending}
       disableEscapeKeyDown={isPending}
       onClose={onClose}
@@ -55,6 +61,11 @@ export default withStyles((theme) => ({
         <DialogTitle>{title}</DialogTitle>
 
         <DialogContent>
+          {errorMessage && (
+            <DialogContentText variant="body2" color="error">
+              {errorMessage}
+            </DialogContentText>
+          )}
           <TextField
             autoFocus
             margin="dense"

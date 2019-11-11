@@ -24,5 +24,12 @@ export default withStyles((theme) => ({}))(function AddPlaylistDialog({
     onClose();
   }
 
-  return <PlaylistDialog title="New Playlist" onOk={onOk} {...props} />;
+  return (
+    <PlaylistDialog
+      title="Add Playlist"
+      onOk={onOk}
+      onClose={onClose}
+      {...props}
+    />
+  );
 });
