@@ -8,6 +8,8 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
+import Auth from './Auth';
+
 const AppBar = withStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(0.5),
@@ -30,6 +32,8 @@ const AppBar = withStyles((theme) => ({
         <Typography className={classes.title} variant="h6">
           Cricket
         </Typography>
+
+        <Auth />
       </Toolbar>
     </MuiAppBar>
   );

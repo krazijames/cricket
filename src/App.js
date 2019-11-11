@@ -1,15 +1,25 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
+import { Router } from '@reach/router';
+import firebase from 'firebase/app';
 
+import { AuthProvider } from 'auth';
+import * as config from 'config';
+import { Home } from 'pages';
 import theme from 'theme';
-import { Layout } from 'components';
+
+firebase.initializeApp(config.firebase);
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Layout>Cricket</Layout>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Home path="/" />
+        </Router>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
