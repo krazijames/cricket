@@ -2,19 +2,19 @@ import React from 'react';
 import {
   Avatar,
   Button,
-  CircularProgress,
-  Dialog,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Popover,
+  SvgIcon,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
 
-import { useAuth, useAuthUi } from 'auth';
+import { useAuth } from 'auth';
 
 const UserAvatar = withStyles((theme) => ({
   root: {
@@ -22,7 +22,7 @@ const UserAvatar = withStyles((theme) => ({
     backgroundColor: 'transparent',
   },
   defaultIcon: { width: '100%', height: '100%' },
-}))(({ classes, ...props }) => {
+}))(function UserAvatar({ classes, ...props }) {
   return (
     <Avatar className={classes.root} {...props}>
       <AccountCircleIcon className={classes.defaultIcon} />
@@ -34,7 +34,7 @@ const UserButton = withStyles((theme) => ({
   root: {
     padding: 0,
   },
-}))(({ classes, ...props }) => {
+}))(function UserButton({ classes, ...props }) {
   const { user, signOut } = useAuth();
 
   const [detailsAnchorEl, setDetailsAnchorEl] = React.useState(null);
@@ -105,51 +105,32 @@ const UserButton = withStyles((theme) => ({
   );
 });
 
-const Auth = withStyles((theme) => ({
-  authContainer: {
-    '& .mdl-spinner.firebaseui-busy-indicator': {
-      width: theme.spacing(3),
-      height: theme.spacing(3),
-    },
-  },
-}))(({ classes, children, onMenuButtonClick, ...props }) => {
-  const theme = useTheme();
-
-  const { isAuthenticated } = useAuth();
-  const isPendingAuth = useAuthUi('#firebaseui-auth-container');
-
-  const [isSignInDialogOpen, setIsSignInDialogOpen] = React.useState(false);
-
-  function onSignInButtonClick() {
-    setIsSignInDialogOpen(true);
-  }
-
-  function closeSignInDialog() {
-    setIsSignInDialogOpen(false);
-  }
+export default withStyles((theme) => ({}))(function Auth({
+  classes,
+  children,
+  onMenuButtonClick,
+  ...props
+}) {
+  const { isAuthenticated, signInWithGoogle } = useAuth();
 
   return (
     <div {...props}>
-      {isPendingAuth ? (
-        <CircularProgress color="inherit" size={theme.spacing(5)} />
-      ) : isAuthenticated ? (
+      {isAuthenticated ? (
         <UserButton />
       ) : (
-        <Button variant="outlined" onClick={onSignInButtonClick}>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={
+            <SvgIcon>
+              <GoogleIcon />
+            </SvgIcon>
+          }
+          onClick={signInWithGoogle}
+        >
           Sign In
         </Button>
       )}
-
-      <Dialog
-        open={isSignInDialogOpen}
-        keepMounted
-        PaperComponent="div"
-        onClose={closeSignInDialog}
-      >
-        <div id="firebaseui-auth-container" className={classes.authContainer} />
-      </Dialog>
     </div>
   );
 });
-
-export default Auth;

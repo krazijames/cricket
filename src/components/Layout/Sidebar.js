@@ -6,19 +6,20 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import HomeIcon from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 
 function MenuItem({ ...props }) {
   return <ListItem component={Link} button {...props} />;
 }
 
-const Sidebar = withStyles((theme) => ({
+export default withStyles((theme) => ({
   paper: {
     width: theme.app.sidebarWidth,
   },
-}))(({ classes, onClose, ...props }) => {
+}))(function Sidebar({ classes, onClose, ...props }) {
   return (
     <Drawer
       classes={{ paper: classes.paper }}
@@ -36,10 +37,14 @@ const Sidebar = withStyles((theme) => ({
             </ListItemIcon>
             <ListItemText primary="Home" />
           </MenuItem>
+          <MenuItem to="/playlist" onClick={onClose}>
+            <ListItemIcon>
+              <VideoLibraryIcon />
+            </ListItemIcon>
+            <ListItemText primary="Playlists" />
+          </MenuItem>
         </List>
       </nav>
     </Drawer>
   );
 });
-
-export default Sidebar;

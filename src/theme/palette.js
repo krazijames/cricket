@@ -7,7 +7,7 @@ export default _.merge(
     type,
 
     primary: { main: '#e10010' },
-    secondary: { main: '#065fd4' },
+    secondary: { main: '#3ea6ff' },
     error: { main: '#e10010' },
   },
   type === 'light' && {},

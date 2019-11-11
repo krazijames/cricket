@@ -1,12 +1,30 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
+
+import { AsyncContainer } from 'components';
 
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 
-const Layout = withStyles((theme) => ({
+export default withStyles((theme) => ({
+  root: {
+    minHeight: '100vh',
+  },
+  contentContainer: {
+    display: 'flex',
+    flexFlow: 'column nowrap',
+  },
   appBarSpacer: theme.mixins.toolbar,
-}))(({ classes, children, ...props }) => {
+  main: {
+    flex: 1,
+    display: 'flex',
+    flexFlow: 'column nowrap',
+  },
+  progressContainer: {
+    position: 'fixed',
+  },
+}))(function Layout({ classes, children, ...props }) {
+  const theme = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   function closeSideBar() {
@@ -18,13 +36,20 @@ const Layout = withStyles((theme) => ({
   }
 
   return (
-    <div {...props}>
+    <AsyncContainer
+      classes={{
+        root: classes.root,
+        contentContainer: classes.contentContainer,
+        progressContainer: classes.progressContainer,
+      }}
+      progressProps={{ size: theme.spacing(10) }}
+      loadingContentOpacity={0}
+      {...props}
+    >
       <AppBar onMenuButtonClick={toggleSideBar} />
       <Sidebar open={isSidebarOpen} onClose={closeSideBar} />
       <div className={classes.appBarSpacer} />
-      {children}
-    </div>
+      <main className={classes.main}>{children}</main>
+    </AsyncContainer>
   );
 });
-
-export default Layout;
