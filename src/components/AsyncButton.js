@@ -7,15 +7,16 @@ import { AsyncContainer } from 'components';
 export default withStyles((theme) => ({}))(function AsyncButton({
   loading,
   disabled,
+  color,
   children,
   progressProps,
   ...props
 }) {
   return (
-    <Button disabled={loading || disabled} {...props}>
+    <Button disabled={loading || disabled} color={color} {...props}>
       <AsyncContainer
         loading={loading}
-        progressProps={{ size: 22, ...progressProps }}
+        progressProps={{ size: 22, color, ...progressProps }}
       >
         {children}
       </AsyncContainer>

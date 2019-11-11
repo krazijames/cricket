@@ -3,7 +3,7 @@ import { Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 
-import PlaylistDialog from './PlaylistDialog';
+import AddPlaylistDialog from './AddPlaylistDialog';
 
 export default withStyles((theme) => ({
   addButton: {
@@ -31,11 +31,7 @@ export default withStyles((theme) => ({
       >
         <AddIcon />
       </Fab>
-      <PlaylistDialog
-        title="New Playlist"
-        open={isAddDialogOpen}
-        onClose={closeAddDialog}
-      />
+      <AddPlaylistDialog open={isAddDialogOpen} onClose={closeAddDialog} />
     </div>
   );
 });

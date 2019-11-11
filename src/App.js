@@ -3,6 +3,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
 import { Router } from '@reach/router';
 import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import { AuthProvider } from 'auth';
 import * as config from 'config';

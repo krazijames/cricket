@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -11,6 +10,8 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 
+import { AsyncButton } from 'components';
+
 export default withStyles((theme) => ({
   closeButton: {
     position: 'absolute',
@@ -18,7 +19,8 @@ export default withStyles((theme) => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
-}))(function PlaylistDialog({ classes, title, onClose, ...props }) {
+}))(function PlaylistDialog({ classes, title, onOk, onClose, ...props }) {
+  const [isPending, setIsPending] = React.useState(false);
   const [name, setName] = React.useState('');
 
   function onNameChange(event) {
@@ -32,11 +34,23 @@ export default withStyles((theme) => ({
       return;
     }
 
-    onClose();
+    (async () => {
+      try {
+        setIsPending(true);
+        await onOk({ name });
+      } finally {
+        setIsPending(false);
+      }
+    })();
   }
 
   return (
-    <Dialog onClose={onClose} {...props}>
+    <Dialog
+      disableBackdropClick={isPending}
+      disableEscapeKeyDown={isPending}
+      onClose={onClose}
+      {...props}
+    >
       <form onSubmit={onSubmit}>
         <DialogTitle>{title}</DialogTitle>
 
@@ -48,18 +62,23 @@ export default withStyles((theme) => ({
             fullWidth
             color="secondary"
             required
+            disabled={isPending}
             value={name}
             onChange={onNameChange}
           />
         </DialogContent>
 
         <DialogActions>
-          <Button type="submit" color="secondary">
+          <AsyncButton type="submit" color="secondary" loading={isPending}>
             OK
-          </Button>
+          </AsyncButton>
         </DialogActions>
 
-        <IconButton className={classes.closeButton} onClick={onClose}>
+        <IconButton
+          className={classes.closeButton}
+          disabled={isPending}
+          onClick={onClose}
+        >
           <CloseIcon />
         </IconButton>
       </form>
