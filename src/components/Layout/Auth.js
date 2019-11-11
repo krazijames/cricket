@@ -22,7 +22,7 @@ const UserAvatar = withStyles((theme) => ({
     backgroundColor: 'transparent',
   },
   defaultIcon: { width: '100%', height: '100%' },
-}))(({ classes, ...props }) => {
+}))(function UserAvatar({ classes, ...props }) {
   return (
     <Avatar className={classes.root} {...props}>
       <AccountCircleIcon className={classes.defaultIcon} />
@@ -34,7 +34,7 @@ const UserButton = withStyles((theme) => ({
   root: {
     padding: 0,
   },
-}))(({ classes, ...props }) => {
+}))(function UserButton({ classes, ...props }) {
   const { user, signOut } = useAuth();
 
   const [detailsAnchorEl, setDetailsAnchorEl] = React.useState(null);
@@ -105,14 +105,14 @@ const UserButton = withStyles((theme) => ({
   );
 });
 
-const Auth = withStyles((theme) => ({
+export default withStyles((theme) => ({
   authContainer: {
     '& .mdl-spinner.firebaseui-busy-indicator': {
       width: theme.spacing(3),
       height: theme.spacing(3),
     },
   },
-}))(({ classes, children, onMenuButtonClick, ...props }) => {
+}))(function Auth({ classes, children, onMenuButtonClick, ...props }) {
   const theme = useTheme();
 
   const { isAuthenticated } = useAuth();
@@ -151,5 +151,3 @@ const Auth = withStyles((theme) => ({
     </div>
   );
 });
-
-export default Auth;

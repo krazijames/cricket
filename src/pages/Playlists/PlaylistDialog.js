@@ -11,14 +11,14 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 
-const PlaylistDialog = withStyles((theme) => ({
+export default withStyles((theme) => ({
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
-}))(({ classes, title, onClose, ...props }) => {
+}))(function PlaylistDialog({ classes, title, onClose, ...props }) {
   const [name, setName] = React.useState('');
 
   function onNameChange(event) {
@@ -66,5 +66,3 @@ const PlaylistDialog = withStyles((theme) => ({
     </Dialog>
   );
 });
-
-export default PlaylistDialog;

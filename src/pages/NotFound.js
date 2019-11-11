@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-const NotFound = withStyles((theme) => ({
+export default withStyles((theme) => ({
   root: {
     position: 'absolute',
     width: '100%',
@@ -15,7 +15,7 @@ const NotFound = withStyles((theme) => ({
     padding: theme.spacing(4),
     textAlign: 'center',
   },
-}))(({ classes }) => {
+}))(function NotFound({ classes }) {
   return (
     <div className={classes.root}>
       <Typography variant="h3" gutterBottom>
@@ -27,5 +27,3 @@ const NotFound = withStyles((theme) => ({
     </div>
   );
 });
-
-export default NotFound;

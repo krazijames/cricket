@@ -10,14 +10,14 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Auth from './Auth';
 
-const AppBar = withStyles((theme) => ({
+export default withStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(0.5),
   },
   title: {
     flexGrow: 1,
   },
-}))(({ classes, children, onMenuButtonClick, ...props }) => {
+}))(function AppBar({ classes, children, onMenuButtonClick, ...props }) {
   return (
     <MuiAppBar position="fixed" {...props}>
       <Toolbar>
@@ -38,5 +38,3 @@ const AppBar = withStyles((theme) => ({
     </MuiAppBar>
   );
 });
-
-export default AppBar;

@@ -5,13 +5,13 @@ import { withStyles } from '@material-ui/core/styles';
 
 import PlaylistDialog from './PlaylistDialog';
 
-const Playlists = withStyles((theme) => ({
+export default withStyles((theme) => ({
   addButton: {
     position: 'fixed',
     right: theme.spacing(2),
     bottom: theme.spacing(2),
   },
-}))(({ classes }) => {
+}))(function Playlists({ classes }) {
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
 
   function openAddDialog() {
@@ -39,5 +39,3 @@ const Playlists = withStyles((theme) => ({
     </div>
   );
 });
-
-export default Playlists;

@@ -15,11 +15,11 @@ function MenuItem({ ...props }) {
   return <ListItem component={Link} button {...props} />;
 }
 
-const Sidebar = withStyles((theme) => ({
+export default withStyles((theme) => ({
   paper: {
     width: theme.app.sidebarWidth,
   },
-}))(({ classes, onClose, ...props }) => {
+}))(function Sidebar({ classes, onClose, ...props }) {
   return (
     <Drawer
       classes={{ paper: classes.paper }}
@@ -48,5 +48,3 @@ const Sidebar = withStyles((theme) => ({
     </Drawer>
   );
 });
-
-export default Sidebar;

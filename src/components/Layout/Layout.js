@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 
-const Layout = withStyles((theme) => ({
+export default withStyles((theme) => ({
   root: {
     minHeight: '100vh',
     display: 'flex',
@@ -15,7 +15,7 @@ const Layout = withStyles((theme) => ({
     position: 'relative',
     flex: 1,
   },
-}))(({ classes, children, ...props }) => {
+}))(function Layout({ classes, children, ...props }) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   function closeSideBar() {
@@ -35,5 +35,3 @@ const Layout = withStyles((theme) => ({
     </div>
   );
 });
-
-export default Layout;
