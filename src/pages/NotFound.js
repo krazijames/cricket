@@ -20,7 +20,7 @@ export default withStyles((theme) => ({
         Sorry!
       </Typography>
       <Typography gutterBottom>
-        The page you're looking for was not found
+        The page you're looking for was not found.
       </Typography>
     </div>
   );

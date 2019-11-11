@@ -9,7 +9,7 @@ import {
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import HomeIcon from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from '@reach/router';
+import { Link } from 'react-router-dom';
 
 function MenuItem({ ...props }) {
   return <ListItem component={Link} button {...props} />;
