@@ -4,15 +4,11 @@ import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 
 export default (authUiContainerSelector) => {
-  const [isPending, setIsPending] = React.useState(true);
-
   React.useEffect(() => {
     return firebase.auth().onAuthStateChanged((firebaseUser) => {
       const ui =
         firebaseui.auth.AuthUI.getInstance() ||
         new firebaseui.auth.AuthUI(firebase.auth());
-
-      setIsPending(ui.isPendingRedirect());
 
       if (!firebaseUser) {
         ui.start(authUiContainerSelector, {
@@ -25,6 +21,4 @@ export default (authUiContainerSelector) => {
       }
     });
   }, [authUiContainerSelector]);
-
-  return isPending;
 };

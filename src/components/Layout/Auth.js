@@ -2,19 +2,19 @@ import React from 'react';
 import {
   Avatar,
   Button,
-  CircularProgress,
-  Dialog,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   Popover,
+  SvgIcon,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
 
-import { useAuth, useAuthUi } from 'auth';
+import { useAuth } from 'auth';
 
 const UserAvatar = withStyles((theme) => ({
   root: {
@@ -105,49 +105,32 @@ const UserButton = withStyles((theme) => ({
   );
 });
 
-export default withStyles((theme) => ({
-  authContainer: {
-    '& .mdl-spinner.firebaseui-busy-indicator': {
-      width: theme.spacing(3),
-      height: theme.spacing(3),
-    },
-  },
-}))(function Auth({ classes, children, onMenuButtonClick, ...props }) {
-  const theme = useTheme();
-
-  const { isAuthenticated } = useAuth();
-  const isPendingAuth = useAuthUi('#firebaseui-auth-container');
-
-  const [isSignInDialogOpen, setIsSignInDialogOpen] = React.useState(false);
-
-  function onSignInButtonClick() {
-    setIsSignInDialogOpen(true);
-  }
-
-  function closeSignInDialog() {
-    setIsSignInDialogOpen(false);
-  }
+export default withStyles((theme) => ({}))(function Auth({
+  classes,
+  children,
+  onMenuButtonClick,
+  ...props
+}) {
+  const { isAuthenticated, signInWithGoogle } = useAuth();
 
   return (
     <div {...props}>
-      {isPendingAuth ? (
-        <CircularProgress color="inherit" size={theme.spacing(5)} />
-      ) : isAuthenticated ? (
+      {isAuthenticated ? (
         <UserButton />
       ) : (
-        <Button variant="outlined" onClick={onSignInButtonClick}>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={
+            <SvgIcon>
+              <GoogleIcon />
+            </SvgIcon>
+          }
+          onClick={signInWithGoogle}
+        >
           Sign In
         </Button>
       )}
-
-      <Dialog
-        open={isSignInDialogOpen}
-        keepMounted
-        PaperComponent="div"
-        onClose={closeSignInDialog}
-      >
-        <div id="firebaseui-auth-container" className={classes.authContainer} />
-      </Dialog>
     </div>
   );
 });

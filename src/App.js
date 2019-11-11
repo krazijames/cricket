@@ -16,16 +16,18 @@ firebase.initializeApp(config.firebase);
 export default function App() {
   return (
     <AuthProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Layout>
-          <Router>
-            <Home path="/" />
-            <Playlists path="/playlist" />
-            <NotFound default />
-          </Router>
-        </Layout>
-      </ThemeProvider>
+      {({ isPending }) => (
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Layout loading={isPending}>
+            <Router>
+              <Home path="/" />
+              <Playlists path="/playlist" />
+              <NotFound default />
+            </Router>
+          </Layout>
+        </ThemeProvider>
+      )}
     </AuthProvider>
   );
 }

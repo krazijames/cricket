@@ -5,27 +5,20 @@ import { withStyles } from '@material-ui/core/styles';
 
 const transitionDuration = '0.25s';
 
-const defaultProgressProps = {
-  size: 40,
-};
-
 export default withStyles((theme) => ({
   root: {
     position: 'relative',
     display: 'block',
-    minWidth: ({
-      loading,
-      progressProps: { size = defaultProgressProps.size } = {},
-    }) => (loading ? size : 'inherit'),
-    minHeight: ({
-      loading,
-      progressProps: { size = defaultProgressProps.size } = {},
-    }) => (loading ? size : 'inherit'),
   },
   contentContainer: {
     width: '100%',
     height: '100%',
-    opacity: ({ loading }) => (loading ? 0.1 : 1),
+    opacity: ({ loading, loadingContentOpacity }) =>
+      loading
+        ? !_.isNil(loadingContentOpacity)
+          ? loadingContentOpacity
+          : 0.1
+        : 1,
     transition: `opacity ${transitionDuration}`,
   },
   progressContainer: {
@@ -44,17 +37,16 @@ export default withStyles((theme) => ({
 }))(function AsyncContainer({
   classes,
   loading,
+  loadingContentOpacity,
   children,
   progressProps,
   ...props
 }) {
-  const mergedProgressProps = _.merge({}, defaultProgressProps, progressProps);
-
   return (
     <Box classes={{ root: classes.root }} {...props}>
       <Box classes={{ root: classes.contentContainer }}>{children}</Box>
       <Box classes={{ root: classes.progressContainer }}>
-        <CircularProgress {...mergedProgressProps} />
+        <CircularProgress {...progressProps} />
       </Box>
     </Box>
   );
