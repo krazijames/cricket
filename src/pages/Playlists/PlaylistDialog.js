@@ -20,19 +20,27 @@ export default withStyles((theme) => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
-}))(function PlaylistDialog({ classes, open, title, onOk, onClose, ...props }) {
+}))(function PlaylistDialog({
+  classes,
+  playlist: { id, name } = {},
+  open,
+  title,
+  onOk,
+  onClose,
+  ...props
+}) {
   const [isPending, setIsPending] = React.useState(false);
-  const [name, setName] = React.useState('');
+  const [newName, setNewName] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState();
 
   function onNameChange(event) {
-    setName(event.target.value);
+    setNewName(event.target.value);
   }
 
   function onSubmit(event) {
     event.preventDefault();
 
-    if (!name) {
+    if (!newName) {
       return;
     }
 
@@ -40,7 +48,7 @@ export default withStyles((theme) => ({
       try {
         setIsPending(true);
         setErrorMessage();
-        await onOk({ name });
+        await onOk({ id, name: newName });
       } catch (error) {
         setErrorMessage(error.message);
       } finally {
@@ -50,12 +58,12 @@ export default withStyles((theme) => ({
   }
 
   React.useEffect(() => {
-    if (!open) {
+    if (open) {
       setIsPending(false);
-      setName('');
+      setNewName(name || '');
       setErrorMessage();
     }
-  }, [open]);
+  }, [open, name]);
 
   return (
     <Dialog
@@ -83,7 +91,7 @@ export default withStyles((theme) => ({
             color="secondary"
             required
             disabled={isPending}
-            value={name}
+            value={newName}
             onChange={onNameChange}
           />
         </DialogContent>

@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Card, CardHeader, Container, Fab, Grid } from '@material-ui/core';
+import { Container, Fab, Grid } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
@@ -9,6 +9,7 @@ import { paths } from 'data';
 import { useAuth } from 'auth';
 
 import AddPlaylistDialog from './AddPlaylistDialog';
+import Playlist from './Playlist';
 
 export default withStyles((theme) => ({
   root: {
@@ -63,9 +64,7 @@ export default withStyles((theme) => ({
       <Grid container spacing={1}>
         {_.map(playlists, (playlist) => (
           <Grid key={playlist.id} item xs={12}>
-            <Card>
-              <CardHeader title={playlist.name} />
-            </Card>
+            <Playlist playlist={playlist} />
           </Grid>
         ))}
       </Grid>

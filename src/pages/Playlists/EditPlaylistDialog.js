@@ -2,32 +2,30 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 
-import { useAuth } from 'auth';
 import { paths } from 'data';
 
 import PlaylistDialog from './PlaylistDialog';
 
-export default withStyles((theme) => ({}))(function AddPlaylistDialog({
+export default withStyles((theme) => ({}))(function EditPlaylistDialog({
   onClose,
   ...props
 }) {
-  const { user } = useAuth();
-
-  async function onOk({ name }) {
+  async function onOk({ id, name }) {
     const db = firebase.firestore();
 
-    await db.collection(paths.PLAYLISTS).add({
-      name,
-      ownerUserUids: [user.uid],
-      createdAt: new Date(),
-    });
+    await db
+      .collection(paths.PLAYLISTS)
+      .doc(id)
+      .update({
+        name,
+      });
 
     onClose();
   }
 
   return (
     <PlaylistDialog
-      title="New Playlist"
+      title="Rename Playlist"
       onOk={onOk}
       onClose={onClose}
       {...props}
