@@ -1,22 +1,27 @@
 import React from 'react';
 import _ from 'lodash';
-import { Fab, Grid, Typography } from '@material-ui/core';
+import {
+  Fab,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
+import { formatDistanceWithOptions } from 'date-fns/fp';
 
 import { paths } from 'data';
 import { useAuth } from 'auth';
 import { AsyncContainer } from 'components';
 
 import AddPlaylistDialog from './AddPlaylistDialog';
-import Playlist from './Playlist';
 
 export default withStyles((theme) => ({
   root: {
     flex: 1,
-    padding: theme.spacing(1),
-    paddingBottom: theme.spacing(11),
+    paddingBottom: theme.spacing(10),
   },
   emptyMessageContainer: {
     position: 'absolute',
@@ -94,13 +99,19 @@ export default withStyles((theme) => ({
           </Typography>
         </div>
       ) : (
-        <Grid container spacing={1}>
+        <List>
           {_.map(playlists, (playlist) => (
-            <Grid key={playlist.id} item xs={12}>
-              <Playlist playlist={playlist} />
-            </Grid>
+            <ListItem key={playlist.id} button>
+              <ListItemText
+                primary={playlist.name}
+                secondary={formatDistanceWithOptions(
+                  { addSuffix: true },
+                  new Date(),
+                )(playlist.createdAt.toDate())}
+              />
+            </ListItem>
           ))}
-        </Grid>
+        </List>
       )}
 
       <Fab
