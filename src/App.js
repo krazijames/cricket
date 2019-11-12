@@ -11,9 +11,9 @@ import { Layout } from 'components';
 import { Home, Playlists, NeedSignIn, NotFound } from 'pages';
 import theme from 'theme';
 
-firebase.initializeApp(config.firebase);
-
 export default function App() {
+  firebase.initializeApp(config.firebase);
+
   return (
     <Router>
       <AuthProvider>
