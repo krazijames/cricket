@@ -16,10 +16,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Print Paths for Checking
-        run: |
-          yarn global bin
-          cat "$PATH"
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
@@ -56,13 +52,11 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Install Dependencies
-        run: yarn
       - name: Download Artifact
         uses: actions/download-artifact@v1
         with:
           name: build
       - name: Deploy to Firebase
-        run: firebase deploy --token "$FIREBASE_TOKEN"
+        run: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
