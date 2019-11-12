@@ -57,14 +57,8 @@ export default withStyles((theme) => ({
       return;
     }
 
-    if (!user) {
-      setPlaylists([]);
-      return;
-    }
-
-    const db = firebase.firestore();
-
-    return db
+    return firebase
+      .firestore()
       .collection(paths.PLAYLISTS)
       .where('ownerUserUids', 'array-contains', user.uid)
       .onSnapshot((querySnapshot) => {
@@ -78,32 +72,33 @@ export default withStyles((theme) => ({
 
   return (
     <Page title="Playlists" loading={!playlists}>
-      {!playlists ? null : _.isEmpty(playlists) ? (
-        <div className={classes.emptyMessageContainer}>
-          <Typography variant="h5" color="textSecondary">
-            Create New Playlist!
-          </Typography>
-        </div>
-      ) : (
-        <List>
-          {_.map(playlists, (playlist) => (
-            <ListItem
-              key={playlist.id}
-              component={Link}
-              button
-              to={`/playlist/${playlist.id}`}
-            >
-              <ListItemText
-                primary={playlist.name}
-                secondary={formatDistanceWithOptions(
-                  { addSuffix: true },
-                  new Date(),
-                )(playlist.createdAt.toDate())}
-              />
-            </ListItem>
-          ))}
-        </List>
-      )}
+      {playlists &&
+        (_.isEmpty(playlists) ? (
+          <div className={classes.emptyMessageContainer}>
+            <Typography variant="h5" color="textSecondary">
+              Create New Playlist!
+            </Typography>
+          </div>
+        ) : (
+          <List>
+            {_.map(playlists, (playlist) => (
+              <ListItem
+                key={playlist.id}
+                component={Link}
+                button
+                to={`/playlist/${playlist.id}`}
+              >
+                <ListItemText
+                  primary={playlist.name}
+                  secondary={formatDistanceWithOptions(
+                    { addSuffix: true },
+                    new Date(),
+                  )(playlist.createdAt.toDate())}
+                />
+              </ListItem>
+            ))}
+          </List>
+        ))}
 
       <Fab
         classes={{ root: classes.addButton }}
