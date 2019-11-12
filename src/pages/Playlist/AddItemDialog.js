@@ -18,10 +18,11 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
-import ytDurationFormat from 'youtube-duration-format';
 
 import { youtube as youtubeApi } from 'api';
 import { AsyncContainer } from 'components';
+
+import itemMapper from './itemMapper';
 
 async function searchYouTubeVideos(query) {
   const {
@@ -84,13 +85,12 @@ export default withStyles((theme) => ({
       const youTubeVideos = await searchYouTubeVideos(query);
 
       setItems(
-        fp.map((video) => ({
-          id: video.id,
-          title: video.snippet.title,
-          author: video.snippet.channelTitle,
-          thumbnailUrl: video.snippet.thumbnails.high.url,
-          duration: ytDurationFormat(video.contentDetails.duration),
-        }))(youTubeVideos),
+        fp.map((video) =>
+          itemMapper({
+            type: 'youtube',
+            data: video,
+          }),
+        )(youTubeVideos),
       );
     } catch (error) {
       setErrorMessage(
@@ -103,6 +103,12 @@ export default withStyles((theme) => ({
     } finally {
       setIsPending(false);
     }
+  }
+
+  function onItemClick(item) {
+    return () => {
+      onOk({ type: item.type, data: item.data });
+    };
   }
 
   React.useEffect(() => {
@@ -118,6 +124,7 @@ export default withStyles((theme) => ({
     <Dialog
       open={open}
       fullWidth
+      fullScreen
       disableBackdropClick={isPending}
       disableEscapeKeyDown={isPending}
       onClose={onClose}
@@ -155,22 +162,33 @@ export default withStyles((theme) => ({
 
       {items && (
         <DialogContent>
-          {_.isEmpty(items) ? (
-            <Typography variant="body2" color="textSecondary">
-              No search result.
-            </Typography>
-          ) : (
-            <List dense>
-              {_.map(items, (item) => (
-                <ListItem key={item.id} alignItems="flex-start" button>
-                  <ListItemAvatar>
-                    <Avatar src={item.thumbnailUrl} variant="rounded" />
-                  </ListItemAvatar>
-                  <ListItemText primary={item.title} secondary={item.author} />
-                </ListItem>
-              ))}
-            </List>
-          )}
+          <AsyncContainer loading={isPending}>
+            {_.isEmpty(items) ? (
+              <Typography variant="body2" color="textSecondary">
+                No search result.
+              </Typography>
+            ) : (
+              <List dense>
+                {_.map(items, (item) => (
+                  <ListItem
+                    key={item.mediaId}
+                    alignItems="flex-start"
+                    button
+                    disabled={isPending}
+                    onClick={onItemClick(item)}
+                  >
+                    <ListItemAvatar>
+                      <Avatar src={item.thumbnailUrl} variant="rounded" />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={item.title}
+                      secondary={item.author}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </AsyncContainer>
         </DialogContent>
       )}
 
