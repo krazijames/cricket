@@ -11,6 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 import { formatDistanceWithOptions } from 'date-fns/fp';
+import { Link } from 'react-router-dom';
 
 import { paths } from 'data';
 import { useAuth } from 'auth';
@@ -101,7 +102,12 @@ export default withStyles((theme) => ({
       ) : (
         <List>
           {_.map(playlists, (playlist) => (
-            <ListItem key={playlist.id} button>
+            <ListItem
+              key={playlist.id}
+              component={Link}
+              button
+              to={`/playlist/${playlist.id}`}
+            >
               <ListItemText
                 primary={playlist.name}
                 secondary={formatDistanceWithOptions(

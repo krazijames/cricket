@@ -8,7 +8,7 @@ import 'firebase/firestore';
 import { AuthProvider } from 'auth';
 import * as config from 'config';
 import { Layout } from 'components';
-import { Home, Playlists, NeedSignIn, NotFound } from 'pages';
+import { Home, Playlist, Playlists, NeedSignIn, NotFound } from 'pages';
 import theme from 'theme';
 
 export default function App() {
@@ -27,6 +27,9 @@ export default function App() {
                 </Route>
                 <Route path="/playlist" exact>
                   {isAuthenticated ? <Playlists /> : <NeedSignIn />}
+                </Route>
+                <Route path="/playlist/:playlistId">
+                  <Playlist />
                 </Route>
                 <Route path="*">
                   <NotFound />
