@@ -72,7 +72,7 @@ export default withStyles((theme) => ({
         querySnapshot.forEach((doc) => {
           newPlaylists.push({ id: doc.id, ...doc.data() });
         });
-        setPlaylists(newPlaylists);
+        setPlaylists(_.orderBy(newPlaylists, 'createdAt', 'desc'));
       });
   }, [isPendingAuth, user]);
 
