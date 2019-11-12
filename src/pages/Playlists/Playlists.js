@@ -8,22 +8,18 @@ import {
   Typography,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 import { formatDistanceWithOptions } from 'date-fns/fp';
 import { Link } from 'react-router-dom';
 
 import { paths } from 'data';
 import { useAuth } from 'auth';
-import { AsyncContainer, Page } from 'components';
+import { Page } from 'components';
 
 import AddPlaylistDialog from './AddPlaylistDialog';
 
 export default withStyles((theme) => ({
-  root: {
-    flex: 1,
-    paddingBottom: theme.spacing(10),
-  },
   emptyMessageContainer: {
     position: 'absolute',
     top: 0,
@@ -38,16 +34,12 @@ export default withStyles((theme) => ({
     padding: theme.spacing(4),
     textAlign: 'center',
   },
-  progressContainer: {
-    position: 'fixed',
-  },
   addButton: {
     position: 'fixed',
     right: theme.spacing(2),
     bottom: theme.spacing(2),
   },
 }))(function Playlists({ classes }) {
-  const theme = useTheme();
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
@@ -85,16 +77,7 @@ export default withStyles((theme) => ({
   }, [isPendingAuth, user]);
 
   return (
-    <Page
-      title="Playlists"
-      component={AsyncContainer}
-      classes={{
-        root: classes.root,
-        progressContainer: classes.progressContainer,
-      }}
-      progressProps={{ size: theme.spacing(10) }}
-      loading={!playlists}
-    >
+    <Page title="Playlists" loading={!playlists}>
       {!playlists ? null : _.isEmpty(playlists) ? (
         <div className={classes.emptyMessageContainer}>
           <Typography variant="h5" color="textSecondary">

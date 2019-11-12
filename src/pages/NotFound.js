@@ -5,9 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Page } from 'components';
 
 export default withStyles((theme) => ({
-  root: {
-    flex: 1,
-
+  contentContainer: {
     display: 'flex',
     flexFlow: 'column nowrap',
     justifyContent: 'center',
@@ -17,7 +15,7 @@ export default withStyles((theme) => ({
   },
 }))(function NotFound({ classes }) {
   return (
-    <Page className={classes.root}>
+    <Page classes={{ contentContainer: classes.contentContainer }}>
       <Typography variant="h3" gutterBottom>
         Sorry!
       </Typography>

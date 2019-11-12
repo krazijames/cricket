@@ -11,24 +11,17 @@ import {
   Typography,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase/app';
 
-import { AsyncContainer, Page } from 'components';
+import { Page } from 'components';
 import { paths } from 'data';
 
 import AddItemDialog from './AddItemDialog';
 import itemMapper from './itemMapper';
 
 export default withStyles((theme) => ({
-  root: {
-    flex: 1,
-    paddingBottom: theme.spacing(10),
-  },
-  progressContainer: {
-    position: 'fixed',
-  },
   emptyMessageContainer: {
     position: 'absolute',
     top: 0,
@@ -49,7 +42,6 @@ export default withStyles((theme) => ({
     bottom: theme.spacing(2),
   },
 }))(function Playlist({ classes }) {
-  const theme = useTheme();
   const { playlistId } = useParams();
   const [isPending, setIsPending] = React.useState();
   const [playlist, setPlaylist] = React.useState();
@@ -114,12 +106,6 @@ export default withStyles((theme) => ({
   return (
     <Page
       title={playlist && playlist.name}
-      component={AsyncContainer}
-      classes={{
-        root: classes.root,
-        progressContainer: classes.progressContainer,
-      }}
-      progressProps={{ size: theme.spacing(10) }}
       loading={!playlist || !items || isPending}
     >
       {items &&

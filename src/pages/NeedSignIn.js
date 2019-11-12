@@ -7,9 +7,7 @@ import { useAuth } from 'auth';
 import { Page } from 'components';
 
 export default withStyles((theme) => ({
-  root: {
-    flex: 1,
-
+  contentContainer: {
     display: 'flex',
     flexFlow: 'column nowrap',
     justifyContent: 'center',
@@ -21,7 +19,7 @@ export default withStyles((theme) => ({
   const { signInWithGoogle } = useAuth();
 
   return (
-    <Page className={classes.root}>
+    <Page classes={{ contentContainer: classes.contentContainer }}>
       <div>
         <Typography variant="h4" gutterBottom>
           Sign In Required
