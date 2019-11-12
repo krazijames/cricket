@@ -2,8 +2,12 @@ name: CI
 
 on: [push, pull_request]
 
+env:
+  NODE_VERSION: 12
+
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -11,7 +15,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-node-modules-
       - name: Install Dependencies
         run: yarn
       - name: Build
@@ -20,3 +30,35 @@ jobs:
         run: yarn test
         env:
           CI: true
+      - name: Upload Artifact
+        if: github.ref == 'master'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
+
+  deploy:
+    name: Deploy
+    if: github.ref == 'master'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: build
+      - name: Deploy to Firebase
+        run: ./node_modules/.bin/firebase deploy --token "$FIREBASE_TOKEN"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
