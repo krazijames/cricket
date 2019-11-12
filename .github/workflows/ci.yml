@@ -19,7 +19,7 @@ jobs:
       - name: Print Paths for Checking
         run: |
           yarn global bin
-          cat $PATH
+          cat "$PATH"
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
