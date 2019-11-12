@@ -38,11 +38,9 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: build
-      - name: Install Firebase CLI
-        run: |
-          yarn global add firebase-tools
-          export PATH="$(yarn global bin):$PATH"
       - name: Deploy to Firebase
-        run: firebase deploy --token "$FIREBASE_TOKEN"
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
