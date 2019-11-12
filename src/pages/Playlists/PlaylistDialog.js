@@ -37,24 +37,18 @@ export default withStyles((theme) => ({
     setNewName(event.target.value);
   }
 
-  function onSubmit(event) {
+  async function onSubmit(event) {
     event.preventDefault();
 
-    if (!newName) {
-      return;
+    try {
+      setIsPending(true);
+      setErrorMessage();
+      await onOk({ id, name: newName });
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsPending(false);
     }
-
-    (async () => {
-      try {
-        setIsPending(true);
-        setErrorMessage();
-        await onOk({ id, name: newName });
-      } catch (error) {
-        setErrorMessage(error.message);
-      } finally {
-        setIsPending(false);
-      }
-    })();
   }
 
   React.useEffect(() => {
