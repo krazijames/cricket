@@ -1,6 +1,6 @@
 export default {
   apiKey: 'AIzaSyBxt5DGCfDJPWvEEuxKdtq45xhcatTvrko',
-  authDomain: 'cricket.krazijames.com',
+  authDomain: 'cricket-ba839.firebaseapp.com',
   databaseURL: 'https://cricket-ba839.firebaseio.com',
   projectId: 'cricket-ba839',
   storageBucket: 'cricket-ba839.appspot.com',

@@ -1,3 +1,2 @@
 https://cricket-ba839.netlify.com/* https://cricket.krazijames.com/:splat 301!
-/__/auth/* https://cricket-ba839.firebaseapp.com/__/auth/:splat 200
 /*  /index.html  200
