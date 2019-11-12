@@ -1,69 +1,53 @@
 import React from 'react';
 import {
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   IconButton,
   TextField,
 } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 
-import { AsyncButton } from 'components';
-
 export default withStyles((theme) => ({
+  searchField: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  searchInput: {
+    flex: 1,
+  },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
-}))(function PlaylistDialog({
-  classes,
-  playlist: { id, name } = {},
-  open,
-  title,
-  onOk,
-  onClose,
-  ...props
-}) {
+}))(function AddItemDialog({ classes, open, title, onOk, onClose, ...props }) {
   const [isPending, setIsPending] = React.useState(false);
-  const [newName, setNewName] = React.useState('');
+  const [query, setQuery] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState();
 
-  function onNameChange(event) {
-    setNewName(event.target.value);
+  function onQueryChange(event) {
+    setQuery(event.target.value);
   }
 
   function onSubmit(event) {
     event.preventDefault();
 
-    if (!newName) {
+    if (!query) {
       return;
     }
-
-    (async () => {
-      try {
-        setIsPending(true);
-        setErrorMessage();
-        await onOk({ id, name: newName });
-      } catch (error) {
-        setErrorMessage(error.message);
-      } finally {
-        setIsPending(false);
-      }
-    })();
   }
 
   React.useEffect(() => {
     if (open) {
       setIsPending(false);
-      setNewName(name || '');
+      setQuery('');
       setErrorMessage();
     }
-  }, [open, name]);
+  }, [open]);
 
   return (
     <Dialog
@@ -75,32 +59,31 @@ export default withStyles((theme) => ({
       {...props}
     >
       <form onSubmit={onSubmit}>
-        <DialogTitle>{title}</DialogTitle>
-
         <DialogContent>
           {errorMessage && (
             <DialogContentText variant="body2" color="error">
               {errorMessage}
             </DialogContentText>
           )}
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Playlist Name"
-            fullWidth
-            color="secondary"
-            required
-            disabled={isPending}
-            value={newName}
-            onChange={onNameChange}
-          />
-        </DialogContent>
 
-        <DialogActions>
-          <AsyncButton type="submit" color="secondary" loading={isPending}>
-            OK
-          </AsyncButton>
-        </DialogActions>
+          <div className={classes.searchField}>
+            <TextField
+              className={classes.searchInput}
+              autoFocus
+              margin="dense"
+              placeholder="Search from YouTube"
+              fullWidth
+              required
+              disabled={isPending}
+              value={query}
+              onChange={onQueryChange}
+            />
+
+            <IconButton type="submit">
+              <SearchIcon />
+            </IconButton>
+          </div>
+        </DialogContent>
 
         <IconButton
           className={classes.closeButton}
