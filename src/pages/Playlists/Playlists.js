@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 import { paths } from 'data';
 import { useAuth } from 'auth';
-import { AsyncContainer } from 'components';
+import { AsyncContainer, Page } from 'components';
 
 import AddPlaylistDialog from './AddPlaylistDialog';
 
@@ -85,7 +85,9 @@ export default withStyles((theme) => ({
   }, [isPendingAuth, user]);
 
   return (
-    <AsyncContainer
+    <Page
+      title="Playlists"
+      component={AsyncContainer}
       classes={{
         root: classes.root,
         progressContainer: classes.progressContainer,
@@ -129,6 +131,6 @@ export default withStyles((theme) => ({
       </Fab>
 
       <AddPlaylistDialog open={isAddDialogOpen} onClose={closeAddDialog} />
-    </AsyncContainer>
+    </Page>
   );
 });

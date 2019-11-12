@@ -8,6 +8,8 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
+import { useAppContext } from 'context';
+
 import Auth from './Auth';
 
 export default withStyles((theme) => ({
@@ -18,6 +20,8 @@ export default withStyles((theme) => ({
     flexGrow: 1,
   },
 }))(function AppBar({ classes, children, onMenuButtonClick, ...props }) {
+  const [{ title }] = useAppContext();
+
   return (
     <MuiAppBar position="fixed" {...props}>
       <Toolbar>
@@ -30,7 +34,7 @@ export default withStyles((theme) => ({
           <MenuIcon />
         </IconButton>
         <Typography className={classes.title} variant="h6">
-          Cricket
+          {title}
         </Typography>
 
         <Auth />

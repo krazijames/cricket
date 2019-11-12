@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
 
 import { useAuth } from 'auth';
+import { Page } from 'components';
 
 export default withStyles((theme) => ({
   root: {
@@ -20,7 +21,7 @@ export default withStyles((theme) => ({
   const { signInWithGoogle } = useAuth();
 
   return (
-    <div className={classes.root}>
+    <Page className={classes.root}>
       <div>
         <Typography variant="h4" gutterBottom>
           Sign In Required
@@ -39,6 +40,6 @@ export default withStyles((theme) => ({
           Sign In with Google
         </Button>
       </div>
-    </div>
+    </Page>
   );
 });
