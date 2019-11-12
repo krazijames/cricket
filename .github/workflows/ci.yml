@@ -39,7 +39,9 @@ jobs:
         with:
           name: build
       - name: Install Firebase CLI
-        run: yarn global add firebase-tools
+        run: |
+          yarn global add firebase-tools
+          export PATH="$(yarn global bin):$PATH"
       - name: Deploy to Firebase
         run: firebase deploy --token "$FIREBASE_TOKEN"
         env:
