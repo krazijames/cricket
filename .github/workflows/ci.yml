@@ -2,6 +2,9 @@ name: CI
 
 on: [push, pull_request]
 
+env:
+  NODE_VERSION: 12
+
 jobs:
   build:
     name: Build
@@ -12,16 +15,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ env.NODE_VERSION }}
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-node-modules-
       - name: Install Dependencies
         run: yarn
       - name: Build
@@ -46,16 +46,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ env.NODE_VERSION }}
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: yarn
       - name: Download Artifact
