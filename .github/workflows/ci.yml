@@ -31,7 +31,7 @@ jobs:
         env:
           CI: true
       - name: Upload Artifact
-        if: github.ref == 'master'
+        if: github.ref == 'refs/heads/fix-deploy-condition'
         uses: actions/upload-artifact@v1
         with:
           name: build
@@ -39,7 +39,7 @@ jobs:
 
   deploy:
     name: Deploy
-    if: github.ref == 'master'
+    if: github.ref == 'refs/heads/fix-deploy-condition'
     needs: build
     runs-on: ubuntu-latest
     steps:
