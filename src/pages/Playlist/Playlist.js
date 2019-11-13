@@ -56,7 +56,7 @@ export default withStyles((theme) => ({
     setIsAddItemDialogOpen(false);
   }
 
-  async function addItem(item) {
+  async function addItem({ type, data }) {
     try {
       setIsPending(true);
       closeAddItemDialog();
@@ -64,7 +64,8 @@ export default withStyles((theme) => ({
         .firestore()
         .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`)
         .add({
-          ...item,
+          type,
+          data,
           displayOrder: fp.isEmpty(items) ? 0 : fp.last(items).displayOrder + 1,
           createdAt: new Date(),
         });
@@ -118,7 +119,7 @@ export default withStyles((theme) => ({
         ) : (
           <List dense>
             {_.map(items, (item) => (
-              <ListItem key={item.mediaId} alignItems="flex-start" button>
+              <ListItem key={item.id} alignItems="flex-start" button>
                 <ListItemAvatar>
                   <Avatar src={item.thumbnailUrl} variant="rounded" />
                 </ListItemAvatar>

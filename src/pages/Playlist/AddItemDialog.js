@@ -105,9 +105,9 @@ export default withStyles((theme) => ({
     }
   }
 
-  function onItemClick(item) {
+  function onItemClick({ type, data }) {
     return () => {
-      onOk({ type: item.type, data: item.data });
+      onOk({ type, data });
     };
   }
 
