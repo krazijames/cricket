@@ -20,6 +20,7 @@ import { paths } from 'data';
 
 import AddItemDialog from './AddItemDialog';
 import itemMapper from './itemMapper';
+import PlaylistItem from './PlaylistItem';
 
 export default withStyles((theme) => ({
   emptyMessageContainer: {
@@ -74,6 +75,20 @@ export default withStyles((theme) => ({
     }
   }
 
+  function removeItem({ id }) {
+    return async () => {
+      try {
+        setIsPending(true);
+        await firebase
+          .firestore()
+          .doc(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}/${id}`)
+          .delete();
+      } finally {
+        setIsPending(false);
+      }
+    };
+  }
+
   React.useEffect(() => {
     return firebase
       .firestore()
@@ -119,12 +134,11 @@ export default withStyles((theme) => ({
         ) : (
           <List dense>
             {_.map(items, (item) => (
-              <ListItem key={item.id} alignItems="flex-start" button>
-                <ListItemAvatar>
-                  <Avatar src={item.thumbnailUrl} variant="rounded" />
-                </ListItemAvatar>
-                <ListItemText primary={item.title} secondary={item.author} />
-              </ListItem>
+              <PlaylistItem
+                key={item.id}
+                item={item}
+                onRemoveButtonClick={removeItem(item)}
+              />
             ))}
           </List>
         ))}
