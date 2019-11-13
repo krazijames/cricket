@@ -42,7 +42,7 @@ export default withStyles((theme) => ({
         contentContainer: classes.contentContainer,
         progressContainer: classes.progressContainer,
       }}
-      progressProps={{ size: theme.spacing(10) }}
+      progressProps={{ size: '25vmin' }}
       loadingContentOpacity={0}
       {...props}
     >

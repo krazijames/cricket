@@ -24,7 +24,7 @@ export default withStyles((theme) => ({
   return (
     <AsyncContainer
       classes={classes}
-      progressProps={{ size: theme.spacing(10) }}
+      progressProps={{ size: '25vmin' }}
       {...props}
     />
   );
