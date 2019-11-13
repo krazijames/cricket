@@ -1,15 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import fp from 'lodash/fp';
-import {
-  Avatar,
-  Fab,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography,
-} from '@material-ui/core';
+import { Fab, List, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
