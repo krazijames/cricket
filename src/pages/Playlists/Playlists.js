@@ -1,23 +1,25 @@
 import React from 'react';
 import _ from 'lodash';
-import { Fab, Grid, Typography } from '@material-ui/core';
+import {
+  Fab,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
+import { formatDistanceWithOptions } from 'date-fns/fp';
+import { Link } from 'react-router-dom';
 
 import { paths } from 'data';
 import { useAuth } from 'auth';
-import { AsyncContainer } from 'components';
+import { Page } from 'components';
 
 import AddPlaylistDialog from './AddPlaylistDialog';
-import Playlist from './Playlist';
 
 export default withStyles((theme) => ({
-  root: {
-    flex: 1,
-    padding: theme.spacing(1),
-    paddingBottom: theme.spacing(11),
-  },
   emptyMessageContainer: {
     position: 'absolute',
     top: 0,
@@ -32,16 +34,12 @@ export default withStyles((theme) => ({
     padding: theme.spacing(4),
     textAlign: 'center',
   },
-  progressContainer: {
-    position: 'fixed',
-  },
   addButton: {
     position: 'fixed',
     right: theme.spacing(2),
     bottom: theme.spacing(2),
   },
 }))(function Playlists({ classes }) {
-  const theme = useTheme();
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
@@ -59,14 +57,8 @@ export default withStyles((theme) => ({
       return;
     }
 
-    if (!user) {
-      setPlaylists([]);
-      return;
-    }
-
-    const db = firebase.firestore();
-
-    return db
+    return firebase
+      .firestore()
       .collection(paths.PLAYLISTS)
       .where('ownerUserUids', 'array-contains', user.uid)
       .onSnapshot((querySnapshot) => {
@@ -74,34 +66,39 @@ export default withStyles((theme) => ({
         querySnapshot.forEach((doc) => {
           newPlaylists.push({ id: doc.id, ...doc.data() });
         });
-        setPlaylists(newPlaylists);
+        setPlaylists(_.orderBy(newPlaylists, 'createdAt', 'desc'));
       });
   }, [isPendingAuth, user]);
 
   return (
-    <AsyncContainer
-      classes={{
-        root: classes.root,
-        progressContainer: classes.progressContainer,
-      }}
-      progressProps={{ size: theme.spacing(10) }}
-      loading={!playlists}
-    >
-      {!playlists ? null : _.isEmpty(playlists) ? (
-        <div className={classes.emptyMessageContainer}>
-          <Typography variant="h5" color="textSecondary">
-            Create New Playlist!
-          </Typography>
-        </div>
-      ) : (
-        <Grid container spacing={1}>
-          {_.map(playlists, (playlist) => (
-            <Grid key={playlist.id} item xs={12}>
-              <Playlist playlist={playlist} />
-            </Grid>
-          ))}
-        </Grid>
-      )}
+    <Page title="Playlists" loading={!playlists}>
+      {playlists &&
+        (_.isEmpty(playlists) ? (
+          <div className={classes.emptyMessageContainer}>
+            <Typography variant="h5" color="textSecondary">
+              Create New Playlist!
+            </Typography>
+          </div>
+        ) : (
+          <List>
+            {_.map(playlists, (playlist) => (
+              <ListItem
+                key={playlist.id}
+                component={Link}
+                button
+                to={`/playlist/${playlist.id}`}
+              >
+                <ListItemText
+                  primary={playlist.name}
+                  secondary={formatDistanceWithOptions(
+                    { addSuffix: true },
+                    new Date(),
+                  )(playlist.createdAt.toDate())}
+                />
+              </ListItem>
+            ))}
+          </List>
+        ))}
 
       <Fab
         classes={{ root: classes.addButton }}
@@ -112,6 +109,6 @@ export default withStyles((theme) => ({
       </Fab>
 
       <AddPlaylistDialog open={isAddDialogOpen} onClose={closeAddDialog} />
-    </AsyncContainer>
+    </Page>
   );
 });

@@ -41,13 +41,23 @@ export default withStyles((theme) => ({
   loading,
   loadingContentOpacity,
   children,
+  contentContainerProps,
+  progressContainerProps,
   progressProps,
   ...props
 }) {
   return (
     <Box classes={{ root: classes.root }} {...props}>
-      <Box classes={{ root: classes.contentContainer }}>{children}</Box>
-      <Box classes={{ root: classes.progressContainer }}>
+      <Box
+        classes={{ root: classes.contentContainer }}
+        {...contentContainerProps}
+      >
+        {children}
+      </Box>
+      <Box
+        classes={{ root: classes.progressContainer }}
+        {...progressContainerProps}
+      >
         <CircularProgress {...progressProps} />
       </Box>
     </Box>
