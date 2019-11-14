@@ -80,6 +80,9 @@ export default withStyles((theme) => ({
   prevButtonProps,
   playPauseButtonProps,
   nextButtonProps,
+  scrollToCurrentItemButtonProps,
+  scrollToBottomButtonProps,
+  fullscreenButtonProps,
   onStateChange = () => {},
   ...props
 }) {
@@ -160,15 +163,15 @@ export default withStyles((theme) => ({
         </div>
 
         <div>
-          <IconButton>
+          <IconButton {...scrollToCurrentItemButtonProps}>
             <MyLocationIcon />
           </IconButton>
 
-          <IconButton>
+          <IconButton {...scrollToBottomButtonProps}>
             <VerticalAlignBottomIcon />
           </IconButton>
 
-          <IconButton>
+          <IconButton {...fullscreenButtonProps}>
             <FullscreenIcon />
           </IconButton>
         </div>

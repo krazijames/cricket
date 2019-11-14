@@ -53,6 +53,10 @@ export default withStyles((theme) => ({
   const [currentItem, setCurrentItem] = React.useState();
   const [isAddItemDialogOpen, setIsAddItemDialogOpen] = React.useState(false);
 
+  const scrollToBottom = React.useCallback(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, []);
+
   const openAddItemDalog = React.useCallback(() => {
     setIsAddItemDialogOpen(true);
   }, []);
@@ -66,7 +70,7 @@ export default withStyles((theme) => ({
       try {
         setIsPending(true);
         closeAddItemDialog();
-        firebase
+        await firebase
           .firestore()
           .collection(
             `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`,
@@ -79,11 +83,12 @@ export default withStyles((theme) => ({
               : fp.last(items).displayOrder + 1,
             createdAt: new Date(),
           });
+        scrollToBottom();
       } finally {
         setIsPending(false);
       }
     },
-    [playlistId, items, closeAddItemDialog],
+    [playlistId, items, closeAddItemDialog, scrollToBottom],
   );
 
   const removeItem = React.useCallback(
@@ -246,6 +251,16 @@ export default withStyles((theme) => ({
         nextButtonProps={{
           disabled: _.size(items) < 2 || !currentItem,
           onClick: playNextItem,
+        }}
+        scrollToCurrentItemButtonProps={{
+          disabled: !currentItem,
+        }}
+        scrollToBottomButtonProps={{
+          disabled: document.body.scrollHeight <= window.innerHeight,
+          onClick: scrollToBottom,
+        }}
+        fullscreenButtonProps={{
+          disabled: !currentItem,
         }}
         onStateChange={handlePlayerStateChange}
       />
