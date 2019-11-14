@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase/app';
+import { animateScroll as scroll } from 'react-scroll';
 
 import { Page } from 'components';
 import { paths } from 'data';
@@ -14,6 +15,8 @@ import AddItemDialog from './AddItemDialog';
 import itemMapper from './itemMapper';
 import PlaylistItem from './PlaylistItem';
 import MediaPlayer, { PlayerState } from './MediaPlayer';
+
+const scrollDuration = 500;
 
 export default withStyles((theme) => ({
   root: {
@@ -54,7 +57,9 @@ export default withStyles((theme) => ({
   const [isAddItemDialogOpen, setIsAddItemDialogOpen] = React.useState(false);
 
   const scrollToBottom = React.useCallback(() => {
-    window.scrollTo(0, document.body.scrollHeight);
+    scroll.scrollToBottom({
+      duration: scrollDuration,
+    });
   }, []);
 
   const openAddItemDalog = React.useCallback(() => {
@@ -256,7 +261,7 @@ export default withStyles((theme) => ({
           disabled: !currentItem,
         }}
         scrollToBottomButtonProps={{
-          disabled: document.body.scrollHeight <= window.innerHeight,
+          // disabled: document.body.scrollHeight <= window.innerHeight,
           onClick: scrollToBottom,
         }}
         fullscreenButtonProps={{
