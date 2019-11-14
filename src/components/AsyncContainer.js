@@ -8,7 +8,7 @@ const transitionDuration = '0.25s';
 export default withStyles((theme) => ({
   root: {
     position: 'relative',
-    display: 'flex',
+    display: ({ display }) => (display ? display : 'flex'),
     flexFlow: 'column nowrap',
   },
   contentContainer: {
@@ -40,6 +40,7 @@ export default withStyles((theme) => ({
   classes,
   loading,
   loadingContentOpacity,
+  display,
   children,
   contentContainerProps,
   progressContainerProps,
@@ -47,7 +48,7 @@ export default withStyles((theme) => ({
   ...props
 }) {
   return (
-    <Box classes={{ root: classes.root }} {...props}>
+    <Box classes={{ root: classes.root }} display={display} {...props}>
       <Box
         classes={{ root: classes.contentContainer }}
         {...contentContainerProps}
