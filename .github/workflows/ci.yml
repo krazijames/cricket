@@ -54,6 +54,8 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install Dependencies
+        run: yarn
       - name: Download Artifact
         uses: actions/download-artifact@v1
         with:
