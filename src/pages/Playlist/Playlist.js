@@ -90,6 +90,9 @@ export default withStyles((theme) => ({
   const [items, setItems] = React.useState();
   const [currentItem, setCurrentItem] = React.useState();
   const [isAddItemDialogOpen, setIsAddItemDialogOpen] = React.useState(false);
+  const [keepScrollToCurrentItem, setKeepScrollToCurrentItem] = React.useState(
+    false,
+  );
 
   const scrollToCurrentItem = React.useCallback(() => {
     if (!currentItem) {
@@ -230,36 +233,6 @@ export default withStyles((theme) => ({
     [playNextItem],
   );
 
-  React.useEffect(() => {
-    return firebase
-      .firestore()
-      .doc(`${paths.PLAYLISTS}/${playlistId}`)
-      .onSnapshot((doc) => {
-        setPlaylist({ id: doc.id, ...doc.data() });
-      });
-  }, [playlistId]);
-
-  React.useEffect(() => {
-    return firebase
-      .firestore()
-      .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`)
-      .orderBy('displayOrder')
-      .onSnapshot((querySnapshot) => {
-        const newItems = [];
-
-        querySnapshot.forEach((doc) => {
-          newItems.push(
-            itemMapper({
-              id: doc.id,
-              ...doc.data(),
-            }),
-          );
-        });
-
-        setItems(newItems);
-      });
-  }, [playlistId]);
-
   const handleSortEnd = React.useCallback(
     async ({ oldIndex, newIndex }) => {
       const sortedItems = _.map(
@@ -290,6 +263,48 @@ export default withStyles((theme) => ({
     },
     [playlistId, items],
   );
+
+  const toggleKeepScrollToCurrentItem = React.useCallback(() => {
+    setKeepScrollToCurrentItem((prevState) => !prevState);
+  }, []);
+
+  React.useEffect(() => {
+    if (!keepScrollToCurrentItem) {
+      return;
+    }
+
+    scrollToCurrentItem();
+  }, [keepScrollToCurrentItem, scrollToCurrentItem]);
+
+  React.useEffect(() => {
+    return firebase
+      .firestore()
+      .doc(`${paths.PLAYLISTS}/${playlistId}`)
+      .onSnapshot((doc) => {
+        setPlaylist({ id: doc.id, ...doc.data() });
+      });
+  }, [playlistId]);
+
+  React.useEffect(() => {
+    return firebase
+      .firestore()
+      .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`)
+      .orderBy('displayOrder')
+      .onSnapshot((querySnapshot) => {
+        const newItems = [];
+
+        querySnapshot.forEach((doc) => {
+          newItems.push(
+            itemMapper({
+              id: doc.id,
+              ...doc.data(),
+            }),
+          );
+        });
+
+        setItems(newItems);
+      });
+  }, [playlistId]);
 
   return (
     <Page
@@ -340,8 +355,8 @@ export default withStyles((theme) => ({
         }}
         toggleVideoButtonProps={{}}
         scrollToCurrentItemButtonProps={{
-          disabled: !currentItem,
-          onClick: scrollToCurrentItem,
+          color: keepScrollToCurrentItem ? 'primary' : 'default',
+          onClick: toggleKeepScrollToCurrentItem,
         }}
         scrollToBottomButtonProps={{
           onClick: scrollToBottom,
