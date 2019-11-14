@@ -4,6 +4,9 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { withStyles } from '@material-ui/core/styles';
 import YouTube from 'react-youtube';
 
@@ -52,6 +55,10 @@ const youtubeOptions = {
 };
 
 export default withStyles((theme) => ({
+  toolbar: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
   youTubeContainer: {
     position: 'fixed',
     top: 0,
@@ -62,10 +69,8 @@ export default withStyles((theme) => ({
     opacity: 0,
   },
   youTube: {},
-  exitFullscreenButton: {
-    position: 'fixed',
-    top: theme.spacing(2),
-    right: theme.spacing(2),
+  controls: {
+    flex: 1,
   },
 }))(function MediaPlayer({
   classes,
@@ -116,7 +121,7 @@ export default withStyles((theme) => ({
 
   return (
     <Card {...props}>
-      <Toolbar>
+      <Toolbar className={classes.toolbar} variant="dense">
         <div className={classes.youTubeContainer}>
           <YouTube
             containerClassName={classes.youTube}
@@ -151,6 +156,20 @@ export default withStyles((theme) => ({
 
           <IconButton size="small" {...nextButtonProps}>
             <SkipNextIcon />
+          </IconButton>
+        </div>
+
+        <div>
+          <IconButton size="small">
+            <MyLocationIcon />
+          </IconButton>
+
+          <IconButton size="small">
+            <VerticalAlignBottomIcon />
+          </IconButton>
+
+          <IconButton size="small">
+            <FullscreenIcon />
           </IconButton>
         </div>
       </Toolbar>

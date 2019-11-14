@@ -35,13 +35,13 @@ export default withStyles((theme) => ({
   },
   addItemButton: {
     position: 'fixed',
-    right: theme.spacing(2),
-    bottom: theme.spacing(5),
+    right: theme.spacing(1),
+    bottom: theme.spacing(1.5),
     zIndex: theme.zIndex.appBar,
   },
   mediaPlayer: {
     position: 'fixed',
-    right: theme.spacing(1),
+    right: theme.spacing(7),
     bottom: theme.spacing(1),
     left: theme.spacing(1),
   },
