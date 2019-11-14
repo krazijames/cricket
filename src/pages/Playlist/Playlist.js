@@ -11,6 +11,11 @@ import {
   animateScroll as scroll,
   scroller,
 } from 'react-scroll';
+import {
+  SortableContainer,
+  SortableElement,
+  arrayMove,
+} from 'react-sortable-hoc';
 
 import { Page } from 'components';
 import { paths } from 'data';
@@ -21,6 +26,29 @@ import PlaylistItem from './PlaylistItem';
 import MediaPlayer, { PlayerState } from './MediaPlayer';
 
 const scrollDuration = 300;
+
+const SortablePlaylistItem = SortableElement(({ item, ...props }) => (
+  <ScrollElement name={item.id}>
+    <PlaylistItem ContainerComponent="div" item={item} {...props} />
+  </ScrollElement>
+));
+
+const SortablePlaylist = SortableContainer(
+  ({ index, items, currentItem, selectItem, removeItem, ...props }) => (
+    <List dense {...props}>
+      {_.map(items, (item, index) => (
+        <SortablePlaylistItem
+          key={item.id}
+          index={index}
+          item={item}
+          selected={currentItem && item.id === currentItem.id}
+          onClick={selectItem(item)}
+          onRemoveButtonClick={removeItem(item)}
+        />
+      ))}
+    </List>
+  ),
+);
 
 export default withStyles((theme) => ({
   root: {
@@ -229,6 +257,37 @@ export default withStyles((theme) => ({
       });
   }, [playlistId]);
 
+  const handleSortEnd = React.useCallback(
+    async ({ oldIndex, newIndex }) => {
+      const sortedItems = _.map(
+        arrayMove(items, oldIndex, newIndex),
+        (item, index) => ({
+          ...item,
+          displayOrder: index,
+        }),
+      );
+
+      setItems(sortedItems);
+
+      const db = firebase.firestore();
+      const batch = db.batch();
+      _.forEach(sortedItems, (item) => {
+        batch.update(
+          db
+            .collection(
+              `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`,
+            )
+            .doc(item.id),
+          {
+            displayOrder: item.displayOrder,
+          },
+        );
+      });
+      await batch.commit();
+    },
+    [playlistId, items],
+  );
+
   return (
     <Page
       className={classes.root}
@@ -243,18 +302,17 @@ export default withStyles((theme) => ({
             </Typography>
           </div>
         ) : (
-          <List dense>
-            {_.map(items, (item) => (
-              <ScrollElement key={item.id} name={item.id}>
-                <PlaylistItem
-                  item={item}
-                  selected={currentItem && item.id === currentItem.id}
-                  onClick={selectItem(item)}
-                  onRemoveButtonClick={removeItem(item)}
-                />
-              </ScrollElement>
-            ))}
-          </List>
+          <SortablePlaylist
+            items={items}
+            currentItem={currentItem}
+            selectItem={selectItem}
+            removeItem={removeItem}
+            lockAxis="y"
+            pressDelay={200}
+            helperClass="sorting"
+            useWindowAsScrollContainer
+            onSortEnd={handleSortEnd}
+          />
         ))}
 
       <MediaPlayer
