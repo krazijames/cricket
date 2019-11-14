@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import { AsyncContainer } from 'components';
 
@@ -24,7 +24,6 @@ export default withStyles((theme) => ({
     position: 'fixed',
   },
 }))(function Layout({ classes, children, ...props }) {
-  const theme = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   function closeSideBar() {
@@ -42,7 +41,7 @@ export default withStyles((theme) => ({
         contentContainer: classes.contentContainer,
         progressContainer: classes.progressContainer,
       }}
-      progressProps={{ size: theme.spacing(10) }}
+      progressProps={{ size: '25vmin' }}
       loadingContentOpacity={0}
       {...props}
     >

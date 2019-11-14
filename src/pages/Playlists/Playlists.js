@@ -20,6 +20,9 @@ import { Page } from 'components';
 import AddPlaylistDialog from './AddPlaylistDialog';
 
 export default withStyles((theme) => ({
+  root: {
+    paddingBottom: theme.spacing(10),
+  },
   emptyMessageContainer: {
     position: 'absolute',
     top: 0,
@@ -71,7 +74,7 @@ export default withStyles((theme) => ({
   }, [isPendingAuth, user]);
 
   return (
-    <Page title="Playlists" loading={!playlists}>
+    <Page className={classes.root} title="Playlists" loading={!playlists}>
       {playlists &&
         (_.isEmpty(playlists) ? (
           <div className={classes.emptyMessageContainer}>

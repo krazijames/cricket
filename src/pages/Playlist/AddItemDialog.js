@@ -70,6 +70,7 @@ export default withStyles((theme) => ({
   const [isPending, setIsPending] = React.useState(false);
   const [query, setQuery] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState();
+  const inputRef = React.useRef();
 
   function onQueryChange(event) {
     setQuery(event.target.value);
@@ -77,6 +78,7 @@ export default withStyles((theme) => ({
 
   async function onSubmit(event) {
     event.preventDefault();
+    inputRef.current && inputRef.current.blur();
 
     try {
       setIsPending(true);
@@ -105,9 +107,9 @@ export default withStyles((theme) => ({
     }
   }
 
-  function onItemClick(item) {
+  function onItemClick({ type, data }) {
     return () => {
-      onOk({ type: item.type, data: item.data });
+      onOk({ type, data });
     };
   }
 
@@ -136,6 +138,7 @@ export default withStyles((theme) => ({
         <form className={classes.searchField} onSubmit={onSubmit}>
           <TextField
             className={classes.searchInput}
+            inputRef={inputRef}
             autoFocus
             margin="dense"
             placeholder="Search from YouTube"
