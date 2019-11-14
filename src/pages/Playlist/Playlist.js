@@ -6,7 +6,11 @@ import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase/app';
-import { animateScroll as scroll } from 'react-scroll';
+import {
+  Element as ScrollElement,
+  animateScroll as scroll,
+  scroller,
+} from 'react-scroll';
 
 import { Page } from 'components';
 import { paths } from 'data';
@@ -16,7 +20,7 @@ import itemMapper from './itemMapper';
 import PlaylistItem from './PlaylistItem';
 import MediaPlayer, { PlayerState } from './MediaPlayer';
 
-const scrollDuration = 500;
+const scrollDuration = 300;
 
 export default withStyles((theme) => ({
   root: {
@@ -55,6 +59,18 @@ export default withStyles((theme) => ({
   const [items, setItems] = React.useState();
   const [currentItem, setCurrentItem] = React.useState();
   const [isAddItemDialogOpen, setIsAddItemDialogOpen] = React.useState(false);
+
+  const scrollToCurrentItem = React.useCallback(() => {
+    if (!currentItem) {
+      return;
+    }
+
+    scroller.scrollTo(currentItem.id, {
+      duration: scrollDuration,
+      smooth: true,
+      offset: -100,
+    });
+  }, [currentItem]);
 
   const scrollToBottom = React.useCallback(() => {
     scroll.scrollToBottom({
@@ -229,13 +245,14 @@ export default withStyles((theme) => ({
         ) : (
           <List dense>
             {_.map(items, (item) => (
-              <PlaylistItem
-                key={item.id}
-                item={item}
-                selected={currentItem && item.id === currentItem.id}
-                onClick={selectItem(item)}
-                onRemoveButtonClick={removeItem(item)}
-              />
+              <ScrollElement key={item.id} name={item.id}>
+                <PlaylistItem
+                  item={item}
+                  selected={currentItem && item.id === currentItem.id}
+                  onClick={selectItem(item)}
+                  onRemoveButtonClick={removeItem(item)}
+                />
+              </ScrollElement>
             ))}
           </List>
         ))}
@@ -259,9 +276,9 @@ export default withStyles((theme) => ({
         }}
         scrollToCurrentItemButtonProps={{
           disabled: !currentItem,
+          onClick: scrollToCurrentItem,
         }}
         scrollToBottomButtonProps={{
-          // disabled: document.body.scrollHeight <= window.innerHeight,
           onClick: scrollToBottom,
         }}
         fullscreenButtonProps={{
