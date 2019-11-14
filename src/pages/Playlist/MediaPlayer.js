@@ -103,21 +103,21 @@ export default withStyles((theme) => ({
   const handlePlayPauseButtonClick = React.useCallback(() => {
     const player = playerRef.current;
 
-    if (!player) {
-      return;
+    if (player) {
+      switch (playerState) {
+        case PlayerState.PAUSED:
+          player.playVideo();
+          break;
+        case PlayerState.PLAYING:
+          player.pauseVideo();
+          break;
+        default:
+          break;
+      }
     }
 
-    switch (playerState) {
-      case PlayerState.PAUSED:
-        player.playVideo();
-        return;
-      case PlayerState.PLAYING:
-        player.pauseVideo();
-        return;
-      default:
-        return;
-    }
-  }, [playerState]);
+    playPauseButtonProps.onClick();
+  }, [playerState, playPauseButtonProps]);
 
   return (
     <Card {...props}>

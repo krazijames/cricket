@@ -131,6 +131,16 @@ export default withStyles((theme) => ({
     setCurrentItem(items[prevItemIndex]);
   }, [items, currentItem]);
 
+  const PlayItem = React.useCallback(() => {
+    if (_.isEmpty(items)) {
+      return;
+    }
+
+    if (!currentItem) {
+      setCurrentItem(items[0]);
+    }
+  }, [items, currentItem]);
+
   const playNextItem = React.useCallback(() => {
     if (_.isEmpty(items)) {
       return;
@@ -226,14 +236,15 @@ export default withStyles((theme) => ({
         type={currentItem && currentItem.type}
         mediaId={currentItem && currentItem.mediaId}
         prevButtonProps={{
-          disabled: _.size(items) < 2,
+          disabled: _.size(items) < 2 || !currentItem,
           onClick: playPrevItem,
         }}
         playPauseButtonProps={{
           disabled: _.isEmpty(items),
+          onClick: PlayItem,
         }}
         nextButtonProps={{
-          disabled: _.size(items) < 2,
+          disabled: _.size(items) < 2 || !currentItem,
           onClick: playNextItem,
         }}
         onStateChange={handlePlayerStateChange}
