@@ -120,8 +120,8 @@ export default withStyles((theme) => ({
   }, [playerState, playPauseButtonProps]);
 
   return (
-    <Card {...props}>
-      <Toolbar className={classes.toolbar} variant="dense">
+    <Card square {...props}>
+      <Toolbar className={classes.toolbar}>
         <div className={classes.youTubeContainer}>
           <YouTube
             containerClassName={classes.youTube}
@@ -133,7 +133,7 @@ export default withStyles((theme) => ({
         </div>
 
         <div className={classes.controls}>
-          <IconButton size="small" {...prevButtonProps}>
+          <IconButton {...prevButtonProps}>
             <SkipPreviousIcon />
           </IconButton>
 
@@ -154,21 +154,21 @@ export default withStyles((theme) => ({
             </IconButton>
           </AsyncContainer>
 
-          <IconButton size="small" {...nextButtonProps}>
+          <IconButton {...nextButtonProps}>
             <SkipNextIcon />
           </IconButton>
         </div>
 
         <div>
-          <IconButton size="small">
+          <IconButton>
             <MyLocationIcon />
           </IconButton>
 
-          <IconButton size="small">
+          <IconButton>
             <VerticalAlignBottomIcon />
           </IconButton>
 
-          <IconButton size="small">
+          <IconButton>
             <FullscreenIcon />
           </IconButton>
         </div>

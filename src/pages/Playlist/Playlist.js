@@ -17,7 +17,7 @@ import MediaPlayer, { PlayerState } from './MediaPlayer';
 
 export default withStyles((theme) => ({
   root: {
-    paddingBottom: theme.spacing(10),
+    paddingBottom: theme.spacing(15),
   },
   emptyMessageContainer: {
     position: 'absolute',
@@ -33,17 +33,17 @@ export default withStyles((theme) => ({
     padding: theme.spacing(4),
     textAlign: 'center',
   },
-  addItemButton: {
-    position: 'fixed',
-    right: theme.spacing(1),
-    bottom: theme.spacing(1.5),
-    zIndex: theme.zIndex.appBar,
-  },
   mediaPlayer: {
     position: 'fixed',
-    right: theme.spacing(7),
-    bottom: theme.spacing(1),
-    left: theme.spacing(1),
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  addItemButton: {
+    position: 'fixed',
+    right: theme.spacing(2),
+    bottom: theme.spacing(8),
+    zIndex: theme.zIndex.appBar,
   },
 }))(function Playlist({ classes }) {
   const { playlistId } = useParams();
@@ -252,7 +252,6 @@ export default withStyles((theme) => ({
 
       <Fab
         classes={{ root: classes.addItemButton }}
-        size="small"
         color="primary"
         onClick={openAddItemDalog}
       >
