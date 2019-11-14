@@ -52,7 +52,7 @@ const SortablePlaylist = SortableContainer(
 
 export default withStyles((theme) => ({
   root: {
-    paddingBottom: theme.spacing(15),
+    paddingBottom: 'calc(56vw + 60px)',
   },
   emptyMessageContainer: {
     position: 'absolute',
@@ -74,10 +74,13 @@ export default withStyles((theme) => ({
     bottom: 0,
     left: 0,
   },
+  mediaPlayerToolbar: {
+    paddingRight: theme.spacing(8),
+  },
   addItemButton: {
     position: 'fixed',
-    right: theme.spacing(2),
-    bottom: theme.spacing(8),
+    right: theme.spacing(1),
+    bottom: theme.spacing(1),
     zIndex: theme.zIndex.appBar,
   },
 }))(function Playlist({ classes }) {
@@ -316,7 +319,10 @@ export default withStyles((theme) => ({
         ))}
 
       <MediaPlayer
-        className={classes.mediaPlayer}
+        classes={{
+          root: classes.mediaPlayer,
+          toolbar: classes.mediaPlayerToolbar,
+        }}
         // style={{ display: currentItem ? 'block' : 'none' }}
         type={currentItem && currentItem.type}
         mediaId={currentItem && currentItem.mediaId}
@@ -332,6 +338,7 @@ export default withStyles((theme) => ({
           disabled: _.size(items) < 2 || !currentItem,
           onClick: playNextItem,
         }}
+        toggleVideoButtonProps={{}}
         scrollToCurrentItemButtonProps={{
           disabled: !currentItem,
           onClick: scrollToCurrentItem,
@@ -339,14 +346,12 @@ export default withStyles((theme) => ({
         scrollToBottomButtonProps={{
           onClick: scrollToBottom,
         }}
-        fullscreenButtonProps={{
-          disabled: !currentItem,
-        }}
         onStateChange={handlePlayerStateChange}
       />
 
       <Fab
         classes={{ root: classes.addItemButton }}
+        size="small"
         color="primary"
         onClick={openAddItemDalog}
       >

@@ -4,9 +4,9 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import { withStyles } from '@material-ui/core/styles';
 import YouTube from 'react-youtube';
 
@@ -48,45 +48,58 @@ const youtubeOptions = {
   playerVars: {
     autoplay: 1,
     playsinline: 1,
-    controls: 0,
-    showinfo: 0,
+    controls: 1,
     modestbranding: 1,
   },
 };
 
 export default withStyles((theme) => ({
+  root: {
+    overflow: 'visible',
+  },
   toolbar: {
+    position: 'relative',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
   },
   youTubeContainer: {
-    position: 'fixed',
-    top: 0,
+    position: 'absolute',
+    top: '-56vw',
     right: 0,
-    bottom: 0,
     left: 0,
-    pointerEvents: 'none',
+
     opacity: 0,
+    pointerEvents: 'none',
+    transition: 'opacity .3s',
   },
-  youTube: {},
+  youTubeContainerShow: {
+    opacity: 1,
+    pointerEvents: 'auto',
+  },
+  youTube: {
+    height: '56vw',
+  },
   controls: {
     flex: 1,
   },
+  secondaryControls: {},
 }))(function MediaPlayer({
   classes,
   type,
   mediaId,
   fullscreen,
+  toolbarProps,
   prevButtonProps,
   playPauseButtonProps,
   nextButtonProps,
+  toggleVideoButtonProps,
   scrollToCurrentItemButtonProps,
   scrollToBottomButtonProps,
-  fullscreenButtonProps,
   onStateChange = () => {},
   ...props
 }) {
   const [playerState, setPlayerState] = React.useState();
+  const [showVideo, setShowVideo] = React.useState(false);
 
   const playerRef = React.useRef();
 
@@ -103,7 +116,7 @@ export default withStyles((theme) => ({
     [onStateChange],
   );
 
-  const handlePlayPauseButtonClick = React.useCallback(() => {
+  const togglePlay = React.useCallback(() => {
     const player = playerRef.current;
 
     if (player) {
@@ -122,10 +135,17 @@ export default withStyles((theme) => ({
     playPauseButtonProps.onClick();
   }, [playerState, playPauseButtonProps]);
 
+  const toggleVideo = React.useCallback(() => {
+    setShowVideo(!showVideo);
+  }, [showVideo]);
+
   return (
-    <Card square {...props}>
-      <Toolbar className={classes.toolbar}>
-        <div className={classes.youTubeContainer}>
+    <Card classes={{ root: classes.root }} square {...props}>
+      <Toolbar classes={{ root: classes.toolbar }} {...toolbarProps}>
+        <div
+          className={`${classes.youTubeContainer} ${showVideo &&
+            classes.youTubeContainerShow}`}
+        >
           <YouTube
             containerClassName={classes.youTube}
             videoId={mediaId}
@@ -145,10 +165,7 @@ export default withStyles((theme) => ({
             loading={playerState === PlayerState.BUFFERING}
             loadingContentOpacity={0}
           >
-            <IconButton
-              {...playPauseButtonProps}
-              onClick={handlePlayPauseButtonClick}
-            >
+            <IconButton {...playPauseButtonProps} onClick={togglePlay}>
               {playerState === PlayerState.PLAYING ? (
                 <PauseIcon />
               ) : (
@@ -160,19 +177,24 @@ export default withStyles((theme) => ({
           <IconButton {...nextButtonProps}>
             <SkipNextIcon />
           </IconButton>
+
+          <IconButton
+            size="small"
+            color={showVideo ? 'primary' : 'default'}
+            {...toggleVideoButtonProps}
+            onClick={toggleVideo}
+          >
+            <VideoLabelIcon />
+          </IconButton>
         </div>
 
-        <div>
-          <IconButton {...scrollToCurrentItemButtonProps}>
+        <div className={classes.secondaryControls}>
+          <IconButton size="small" {...scrollToCurrentItemButtonProps}>
             <MyLocationIcon />
           </IconButton>
 
-          <IconButton {...scrollToBottomButtonProps}>
+          <IconButton size="small" {...scrollToBottomButtonProps}>
             <VerticalAlignBottomIcon />
-          </IconButton>
-
-          <IconButton {...fullscreenButtonProps}>
-            <FullscreenIcon />
           </IconButton>
         </div>
       </Toolbar>
