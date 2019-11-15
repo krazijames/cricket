@@ -1,23 +1,16 @@
 import React from 'react';
 import _ from 'lodash';
-import {
-  Fab,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@material-ui/core';
+import { Fab, List, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
-import { formatDistanceWithOptions } from 'date-fns/fp';
-import { Link } from 'react-router-dom';
 
 import { paths } from 'data';
 import { useAuth } from 'auth';
 import { Page } from 'components';
 
 import AddPlaylistDialog from './AddPlaylistDialog';
+import Playlist from './Playlist';
 
 export default withStyles((theme) => ({
   root: {
@@ -85,20 +78,7 @@ export default withStyles((theme) => ({
         ) : (
           <List>
             {_.map(playlists, (playlist) => (
-              <ListItem
-                key={playlist.id}
-                component={Link}
-                button
-                to={`/playlist/${playlist.id}`}
-              >
-                <ListItemText
-                  primary={playlist.name}
-                  secondary={formatDistanceWithOptions(
-                    { addSuffix: true },
-                    new Date(),
-                  )(playlist.createdAt.toDate())}
-                />
-              </ListItem>
+              <Playlist key={playlist.id} playlist={playlist} />
             ))}
           </List>
         ))}
