@@ -5139,12 +5139,13 @@ firebase@^7.4.0:
     "@firebase/storage" "0.3.19"
     "@firebase/util" "0.2.33"
 
-firebaseui@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-4.2.0.tgz#584c7210fe3536e5603f9e14ba122f541ae63fba"
-  integrity sha512-+n8GVms0TlxU+AIdmuWhgQthqKmUpkjhfZBbsZIdWU19Ddkr5cn7hrSlNwC9faKkpCwGEpai6Nv+hYNqNM5JkQ==
+firebaseui@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-4.3.0.tgz#3f2c162ff10147abc49e34269df818071869a7dc"
+  integrity sha512-QXANDyqtuEehvaMkD+C/r0oKaQRIpm8+AnMYa3lGH/LrBnnS0WSLNYSbRhHSUdgTxMnlOgeIs3kQgXc7viBvpQ==
   dependencies:
     dialog-polyfill "^0.4.7"
+    material-design-lite "^1.2.0"
 
 flat-arguments@^1.0.0:
   version "1.0.2"
@@ -7845,6 +7846,11 @@ marked@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.7.0.tgz#b64201f051d271b1edc10a04d1ae9b74bb8e5c0e"
   integrity sha512-c+yYdCZJQrsRjTPhUx7VKkApw9bwDkNbHUKo1ovgcfDjb2kc8rLuRbIFyXL5WOEUwzSSKo3IXpph2K6DqB/KZg==
+
+material-design-lite@^1.2.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/material-design-lite/-/material-design-lite-1.3.0.tgz#d004ce3fee99a1eeb74a78b8a325134a5f1171d3"
+  integrity sha1-0ATOP+6Zoe63Sni4oyUTSl8RcdM=
 
 md5.js@^1.3.4:
   version "1.3.5"
