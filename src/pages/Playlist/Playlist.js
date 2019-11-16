@@ -1,8 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import fp from 'lodash/fp';
-import { Fab, List, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { List, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase/app';
@@ -23,7 +22,8 @@ import { paths } from 'data';
 import { useAddItemDialog } from './AddItemDialog';
 import itemMapper from './itemMapper';
 import PlaylistItem from './PlaylistItem';
-import PlaylistToolbar, { PlayerState } from './PlaylistToolbar';
+import PlaylistToolbar from './PlaylistToolbar';
+import MediaPlayer, { PlayerState } from './MediaPlayer';
 
 const scrollDuration = 300;
 
@@ -80,13 +80,30 @@ export default withStyles((theme) => ({
   list: {
     marginBottom: '56vw',
   },
+  playlistToolbarSpacer: theme.mixins.toolbar,
   toolbar: {
     position: 'fixed',
     right: 0,
     bottom: 0,
     left: 0,
   },
-  playlistToolbarSpacer: theme.mixins.toolbar,
+  mediaPlayerContainer: {
+    position: 'fixed',
+    right: 0,
+    bottom: 0,
+    left: 0,
+    pointerEvents: 'none',
+  },
+  mediaPlayer: {
+    height: '56vw',
+
+    opacity: 0,
+    transition: 'opacity .3s',
+  },
+  mediaPlayerVisible: {
+    opacity: 1,
+    pointerEvents: 'auto',
+  },
 }))(function Playlist({ classes }) {
   const { playlistId } = useParams();
   const [isPending, setIsPending] = React.useState();
@@ -96,6 +113,9 @@ export default withStyles((theme) => ({
   const [keepScrollToCurrentItem, setKeepScrollToCurrentItem] = React.useState(
     false,
   );
+  const [play, setPlay] = React.useState(false);
+  const [mediaPlayerState, setMediaPlayerState] = React.useState();
+  const [isMediaPlayerVisible, setIsMediaPlayerVisible] = React.useState(false);
 
   const [
     AddItemDialog,
@@ -173,7 +193,7 @@ export default withStyles((theme) => ({
     setCurrentItem(items[prevItemIndex]);
   }, [items, currentItem]);
 
-  const PlayItem = React.useCallback(() => {
+  const playItem = React.useCallback(() => {
     if (_.isEmpty(items)) {
       return;
     }
@@ -181,7 +201,21 @@ export default withStyles((theme) => ({
     if (!currentItem) {
       setCurrentItem(items[0]);
     }
+
+    setPlay(true);
   }, [items, currentItem]);
+
+  const pauseItem = React.useCallback(() => {
+    setPlay(false);
+  }, []);
+
+  const togglePlay = React.useCallback(() => {
+    if (mediaPlayerState !== PlayerState.PLAYING) {
+      playItem();
+    } else {
+      pauseItem();
+    }
+  }, [mediaPlayerState, playItem, pauseItem]);
 
   const playNextItem = React.useCallback(() => {
     if (_.isEmpty(items)) {
@@ -202,9 +236,12 @@ export default withStyles((theme) => ({
     setCurrentItem(items[nextItemIndex]);
   }, [items, currentItem]);
 
-  const handlePlayerStateChange = React.useCallback(
-    (playerState) => {
-      switch (playerState) {
+  const handleMediaPlayerStateChange = React.useCallback(
+    (newPlayerState) => {
+      setMediaPlayerState(newPlayerState);
+      setPlay(newPlayerState !== PlayerState.PAUSED);
+
+      switch (newPlayerState) {
         case PlayerState.ENDED:
           playNextItem();
           return;
@@ -248,6 +285,10 @@ export default withStyles((theme) => ({
 
   const toggleKeepScrollToCurrentItem = React.useCallback(() => {
     setKeepScrollToCurrentItem((prevState) => !prevState);
+  }, []);
+
+  const toggleMediaPlayerVisible = React.useCallback(() => {
+    setIsMediaPlayerVisible((prevState) => !prevState);
   }, []);
 
   React.useEffect(() => {
@@ -324,21 +365,23 @@ export default withStyles((theme) => ({
 
       <PlaylistToolbar
         className={classes.toolbar}
-        type={currentItem && currentItem.type}
-        mediaId={currentItem && currentItem.mediaId}
+        mediaPlayerState={mediaPlayerState}
         prevButtonProps={{
           disabled: _.size(items) < 2 || !currentItem,
           onClick: playPrevItem,
         }}
         playPauseButtonProps={{
           disabled: _.isEmpty(items),
-          onClick: PlayItem,
+          onClick: togglePlay,
         }}
         nextButtonProps={{
           disabled: _.size(items) < 2 || !currentItem,
           onClick: playNextItem,
         }}
-        toggleVideoButtonProps={{}}
+        toggleVideoButtonProps={{
+          color: isMediaPlayerVisible ? 'primary' : 'default',
+          onClick: toggleMediaPlayerVisible,
+        }}
         scrollToCurrentItemButtonProps={{
           color: keepScrollToCurrentItem ? 'primary' : 'default',
           onClick: toggleKeepScrollToCurrentItem,
@@ -349,8 +392,19 @@ export default withStyles((theme) => ({
         addItemButtonProps={{
           onClick: openAddItemDalog,
         }}
-        onStateChange={handlePlayerStateChange}
       />
+
+      <div className={classes.mediaPlayerContainer}>
+        <MediaPlayer
+          containerClassName={`${classes.mediaPlayer} ${isMediaPlayerVisible &&
+            classes.mediaPlayerVisible}`}
+          type={currentItem && currentItem.type}
+          mediaId={currentItem && currentItem.mediaId}
+          play={play}
+          onStateChange={handleMediaPlayerStateChange}
+        />
+        <div className={classes.playlistToolbarSpacer} />
+      </div>
 
       <AddItemDialog onOk={addItem} />
     </Page>

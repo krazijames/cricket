@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Fab, IconButton, Paper, Toolbar } from '@material-ui/core';
+import { Fab, IconButton, Paper, Toolbar } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -9,50 +9,10 @@ import VideoLabelIcon from '@material-ui/icons/VideoLabel';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import { withStyles } from '@material-ui/core/styles';
-import YouTube from 'react-youtube';
 
 import { AsyncContainer } from 'components';
 
-export const PlayerState = {
-  UNSTARTED: 'unstarted',
-  ENDED: 'ended',
-  PLAYING: 'playing',
-  PAUSED: 'paused',
-  BUFFERING: 'buffering',
-  CUED: 'cued',
-};
-
-function mapYouTubePlayerState(youTubePlayerState) {
-  switch (youTubePlayerState) {
-    case YouTube.PlayerState.UNSTARTED:
-      return PlayerState.UNSTARTED;
-    case YouTube.PlayerState.ENDED:
-      return PlayerState.ENDED;
-    case YouTube.PlayerState.PLAYING:
-      return PlayerState.PLAYING;
-    case YouTube.PlayerState.PAUSED:
-      return PlayerState.PAUSED;
-    case YouTube.PlayerState.BUFFERING:
-      return PlayerState.BUFFERING;
-    case YouTube.PlayerState.CUED:
-      return PlayerState.CUED;
-    default:
-      return;
-  }
-}
-
-const youtubeOptions = {
-  width: '100%',
-  height: '100%',
-  allow: 'autoplay; fullscreen',
-  allowFullScreen: true,
-  playerVars: {
-    autoplay: 1,
-    playsinline: 1,
-    controls: 1,
-    modestbranding: 1,
-  },
-};
+import { PlayerState } from './MediaPlayer';
 
 export default withStyles((theme) => ({
   root: {
@@ -60,23 +20,6 @@ export default withStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     overflow: 'visible',
-  },
-  youTubeContainer: {
-    position: 'absolute',
-    top: '-56vw',
-    right: 0,
-    left: 0,
-
-    opacity: 0,
-    pointerEvents: 'none',
-    transition: 'opacity .3s',
-  },
-  youTubeContainerShow: {
-    opacity: 1,
-    pointerEvents: 'auto',
-  },
-  youTube: {
-    height: '56vw',
   },
   controls: {
     flex: 1,
@@ -86,8 +29,7 @@ export default withStyles((theme) => ({
   },
 }))(function PlaylistToolbar({
   classes,
-  type,
-  mediaId,
+  mediaPlayerState,
   toolbarProps,
   prevButtonProps,
   playPauseButtonProps,
@@ -96,50 +38,8 @@ export default withStyles((theme) => ({
   scrollToCurrentItemButtonProps,
   scrollToBottomButtonProps,
   addItemButtonProps,
-  onStateChange = () => {},
   ...props
 }) {
-  const [playerState, setPlayerState] = React.useState();
-  const [showVideo, setShowVideo] = React.useState(false);
-
-  const playerRef = React.useRef();
-
-  const handleReady = React.useCallback((event) => {
-    playerRef.current = event.target;
-  }, []);
-
-  const handleStateChange = React.useCallback(
-    (event) => {
-      const newState = mapYouTubePlayerState(event.target.getPlayerState());
-      setPlayerState(newState);
-      onStateChange(newState);
-    },
-    [onStateChange],
-  );
-
-  const togglePlay = React.useCallback(() => {
-    const player = playerRef.current;
-
-    if (player) {
-      switch (playerState) {
-        case PlayerState.PAUSED:
-          player.playVideo();
-          break;
-        case PlayerState.PLAYING:
-          player.pauseVideo();
-          break;
-        default:
-          break;
-      }
-    }
-
-    playPauseButtonProps.onClick();
-  }, [playerState, playPauseButtonProps]);
-
-  const toggleVideo = React.useCallback(() => {
-    setShowVideo(!showVideo);
-  }, [showVideo]);
-
   return (
     <Toolbar
       component={Paper}
@@ -147,19 +47,6 @@ export default withStyles((theme) => ({
       square
       {...props}
     >
-      <div
-        className={`${classes.youTubeContainer} ${showVideo &&
-          classes.youTubeContainerShow}`}
-      >
-        <YouTube
-          containerClassName={classes.youTube}
-          videoId={mediaId}
-          opts={youtubeOptions}
-          onReady={handleReady}
-          onStateChange={handleStateChange}
-        />
-      </div>
-
       <div className={classes.controls}>
         <IconButton {...prevButtonProps}>
           <SkipPreviousIcon />
@@ -167,11 +54,11 @@ export default withStyles((theme) => ({
 
         <AsyncContainer
           display="inline-flex"
-          loading={playerState === PlayerState.BUFFERING}
+          loading={mediaPlayerState === PlayerState.BUFFERING}
           loadingContentOpacity={0}
         >
-          <IconButton {...playPauseButtonProps} onClick={togglePlay}>
-            {playerState === PlayerState.PLAYING ? (
+          <IconButton {...playPauseButtonProps}>
+            {mediaPlayerState === PlayerState.PLAYING ? (
               <PauseIcon />
             ) : (
               <PlayArrowIcon />
@@ -183,11 +70,7 @@ export default withStyles((theme) => ({
           <SkipNextIcon />
         </IconButton>
 
-        <IconButton
-          color={showVideo ? 'primary' : 'default'}
-          {...toggleVideoButtonProps}
-          onClick={toggleVideo}
-        >
+        <IconButton {...toggleVideoButtonProps}>
           <VideoLabelIcon />
         </IconButton>
       </div>
