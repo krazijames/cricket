@@ -8,6 +8,7 @@ exports.recursiveDelete = functions
   })
   .https.onCall(({ path }) => {
     return firebase_tools.firestore.delete(path, {
+      project: process.env.GCLOUD_PROJECT,
       recursive: true,
       yes: true,
     });
