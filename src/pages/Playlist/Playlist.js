@@ -20,7 +20,7 @@ import {
 import { Page } from 'components';
 import { paths } from 'data';
 
-import AddItemDialog from './AddItemDialog';
+import { useAddItemDialog } from './AddItemDialog';
 import itemMapper from './itemMapper';
 import PlaylistItem from './PlaylistItem';
 import MediaPlayer, { PlayerState } from './MediaPlayer';
@@ -102,10 +102,15 @@ export default withStyles((theme) => ({
   const [playlist, setPlaylist] = React.useState();
   const [items, setItems] = React.useState();
   const [currentItem, setCurrentItem] = React.useState();
-  const [isAddItemDialogOpen, setIsAddItemDialogOpen] = React.useState(false);
   const [keepScrollToCurrentItem, setKeepScrollToCurrentItem] = React.useState(
     false,
   );
+
+  const [
+    AddItemDialog,
+    openAddItemDalog,
+    closeAddItemDialog,
+  ] = useAddItemDialog();
 
   const scrollToCurrentItem = React.useCallback(() => {
     if (!currentItem) {
@@ -123,14 +128,6 @@ export default withStyles((theme) => ({
     scroll.scrollToBottom({
       duration: scrollDuration,
     });
-  }, []);
-
-  const openAddItemDalog = React.useCallback(() => {
-    setIsAddItemDialogOpen(true);
-  }, []);
-
-  const closeAddItemDialog = React.useCallback(() => {
-    setIsAddItemDialogOpen(false);
   }, []);
 
   const addItem = React.useCallback(
@@ -373,11 +370,7 @@ export default withStyles((theme) => ({
         <AddIcon />
       </Fab>
 
-      <AddItemDialog
-        open={isAddItemDialogOpen}
-        onOk={addItem}
-        onClose={closeAddItemDialog}
-      />
+      <AddItemDialog onOk={addItem} />
     </Page>
   );
 });

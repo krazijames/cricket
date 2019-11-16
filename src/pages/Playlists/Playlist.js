@@ -15,8 +15,8 @@ import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
-import EditPlaylistDialog from './EditPlaylistDialog';
-import DeletePlaylistDialog from './DeletePlaylistDialog';
+import { useEditPlaylistDialog } from './EditPlaylistDialog';
+import { useDeletePlaylistDialog } from './DeletePlaylistDialog';
 
 export default withStyles((theme) => ({}))(function Playlists({
   classes,
@@ -24,8 +24,11 @@ export default withStyles((theme) => ({}))(function Playlists({
   count = 0,
   ...props
 }) {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
+  const [
+    DeletePlaylistDialog,
+    openDeletePlaylistDialog,
+  ] = useDeletePlaylistDialog();
+  const [EditPlaylistDialog, openEditPlaylistDialog] = useEditPlaylistDialog();
 
   const [anchorEl, setAnchorEl] = React.useState();
 
@@ -37,31 +40,15 @@ export default withStyles((theme) => ({}))(function Playlists({
     setAnchorEl();
   }, []);
 
-  const openDeleteDialog = React.useCallback(() => {
-    setIsDeleteDialogOpen(true);
-  }, []);
-
-  const closeDeleteDialog = React.useCallback(() => {
-    setIsDeleteDialogOpen(false);
-  }, []);
-
   const handleDeleteButtonClick = React.useCallback(() => {
     closeMenu();
-    openDeleteDialog();
-  }, [closeMenu, openDeleteDialog]);
-
-  const openEditDialog = React.useCallback(() => {
-    setIsEditDialogOpen(true);
-  }, []);
-
-  const closeEditDialog = React.useCallback(() => {
-    setIsEditDialogOpen(false);
-  }, []);
+    openDeletePlaylistDialog();
+  }, [closeMenu, openDeletePlaylistDialog]);
 
   const handleEditButtonClick = React.useCallback(() => {
     closeMenu();
-    openEditDialog();
-  }, [closeMenu, openEditDialog]);
+    openEditPlaylistDialog();
+  }, [closeMenu, openEditPlaylistDialog]);
 
   return (
     <>
@@ -98,17 +85,9 @@ export default withStyles((theme) => ({}))(function Playlists({
         </MenuItem>
       </Menu>
 
-      <EditPlaylistDialog
-        open={isEditDialogOpen}
-        playlist={playlist}
-        onClose={closeEditDialog}
-      />
+      <EditPlaylistDialog playlist={playlist} />
 
-      <DeletePlaylistDialog
-        open={isDeleteDialogOpen}
-        playlist={playlist}
-        onClose={closeDeleteDialog}
-      />
+      <DeletePlaylistDialog playlist={playlist} />
     </>
   );
 });

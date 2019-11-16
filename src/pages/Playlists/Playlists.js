@@ -10,7 +10,7 @@ import { paths } from 'data';
 import { useAuth } from 'auth';
 import { Page } from 'components';
 
-import AddPlaylistDialog from './AddPlaylistDialog';
+import { useAddPlaylistDialog } from './AddPlaylistDialog';
 import Playlist from './Playlist';
 
 export default withStyles((theme) => ({
@@ -40,15 +40,8 @@ export default withStyles((theme) => ({
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
   const [playlistItemCounts, setPlaylistItemCounts] = React.useState({});
-  const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
 
-  const openAddDialog = React.useCallback(() => {
-    setIsAddDialogOpen(true);
-  }, []);
-
-  const closeAddDialog = React.useCallback(() => {
-    setIsAddDialogOpen(false);
-  }, []);
+  const [AddPlaylistDialog, openAddPlaylistDialog] = useAddPlaylistDialog();
 
   React.useEffect(() => {
     if (isPendingAuth) {
@@ -113,12 +106,12 @@ export default withStyles((theme) => ({
       <Fab
         classes={{ root: classes.addButton }}
         color="primary"
-        onClick={openAddDialog}
+        onClick={openAddPlaylistDialog}
       >
         <AddIcon />
       </Fab>
 
-      <AddPlaylistDialog open={isAddDialogOpen} onClose={closeAddDialog} />
+      <AddPlaylistDialog />
     </Page>
   );
 });

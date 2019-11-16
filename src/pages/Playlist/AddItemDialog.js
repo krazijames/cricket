@@ -21,6 +21,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { youtube as youtubeApi } from 'api';
 import { AsyncContainer } from 'components';
+import { useDialog } from 'hooks';
 
 import itemMapper from './itemMapper';
 
@@ -51,7 +52,7 @@ async function searchYouTubeVideos(query) {
   return videos;
 }
 
-export default withStyles((theme) => ({
+const AddItemDialog = withStyles((theme) => ({
   searchField: {
     display: 'flex',
     alignItems: 'center',
@@ -206,3 +207,7 @@ export default withStyles((theme) => ({
     </Dialog>
   );
 });
+
+export const useAddItemDialog = () => useDialog(AddItemDialog);
+
+export default AddItemDialog;

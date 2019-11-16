@@ -4,10 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 
 import { paths } from 'data';
-
 import { AsyncDialog } from 'components';
+import { useDialog } from 'hooks';
 
-export default withStyles((theme) => ({}))(function DeleteItemDialog({
+const DeleteItemDialog = withStyles((theme) => ({}))(function DeleteItemDialog({
   classes,
   playlistId,
   item: { id, title },
@@ -33,3 +33,7 @@ export default withStyles((theme) => ({}))(function DeleteItemDialog({
     </AsyncDialog>
   );
 });
+
+export const useDeleteItemDialog = () => useDialog(DeleteItemDialog);
+
+export default DeleteItemDialog;

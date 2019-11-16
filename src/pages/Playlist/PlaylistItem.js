@@ -10,7 +10,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 
-import DeleteItemDialog from './DeleteItemDialog';
+import { useDeleteItemDialog } from './DeleteItemDialog';
 
 export default withStyles((theme) => ({}))(function PlaylistItem({
   classes,
@@ -18,15 +18,7 @@ export default withStyles((theme) => ({}))(function PlaylistItem({
   item,
   ...props
 }) {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-
-  const openDeleteDialog = React.useCallback(() => {
-    setIsDeleteDialogOpen(true);
-  }, []);
-
-  const closeDeleteDialog = React.useCallback(() => {
-    setIsDeleteDialogOpen(false);
-  }, []);
+  const [DeleteDialog, openDeleteDialog] = useDeleteItemDialog();
 
   return (
     <>
@@ -42,12 +34,7 @@ export default withStyles((theme) => ({}))(function PlaylistItem({
         </ListItemSecondaryAction>
       </ListItem>
 
-      <DeleteItemDialog
-        open={isDeleteDialogOpen}
-        playlistId={playlistId}
-        item={item}
-        onClose={closeDeleteDialog}
-      />
+      <DeleteDialog playlistId={playlistId} item={item} />
     </>
   );
 });
