@@ -17,17 +17,23 @@ import { Link } from 'react-router-dom';
 export default withStyles((theme) => ({}))(function Playlists({
   classes,
   playlist,
+  onDelete,
   ...props
 }) {
   const [anchorEl, setAnchorEl] = React.useState();
 
-  const handleClick = React.useCallback((event) => {
+  const handleOpenMenuButtonClick = React.useCallback((event) => {
     setAnchorEl(event.currentTarget);
   }, []);
 
-  const handleClose = React.useCallback(() => {
+  const closeMenu = React.useCallback(() => {
     setAnchorEl();
   }, []);
+
+  const handleDeleteButtonClick = React.useCallback(async () => {
+    closeMenu();
+    onDelete();
+  }, [closeMenu, onDelete]);
 
   return (
     <>
@@ -45,14 +51,14 @@ export default withStyles((theme) => ({}))(function Playlists({
           )(playlist.createdAt.toDate())}
         />
         <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={handleClick}>
+          <IconButton edge="end" onClick={handleOpenMenuButtonClick}>
             <MoreVertIcon />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
 
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem dense onClick={handleClose}>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+        <MenuItem dense onClick={handleDeleteButtonClick}>
           <ListItemIcon>
             <CloseIcon />
           </ListItemIcon>

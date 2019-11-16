@@ -37,16 +37,37 @@ export default withStyles((theme) => ({
   },
 }))(function Playlists({ classes }) {
   const { isPending: isPendingAuth, user } = useAuth();
+  const [isPending, setIsPending] = React.useState(false);
   const [playlists, setPlaylists] = React.useState();
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
 
-  function openAddDialog() {
+  const openAddDialog = React.useCallback(() => {
     setIsAddDialogOpen(true);
-  }
+  }, []);
 
-  function closeAddDialog() {
+  const closeAddDialog = React.useCallback(() => {
     setIsAddDialogOpen(false);
-  }
+  }, []);
+
+  const deletePlaylist = React.useCallback(({ id }) => {
+    return async () => {
+      try {
+        setIsPending(true);
+
+        const functions = firebase.functions();
+
+        if (process.env.NODE_ENV === 'development') {
+          functions.useFunctionsEmulator('http://localhost:5000');
+        }
+
+        await functions.httpsCallable('recursiveDelete')({
+          path: `${paths.PLAYLISTS}/${id}`,
+        });
+      } finally {
+        setIsPending(false);
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     if (isPendingAuth) {
@@ -67,7 +88,11 @@ export default withStyles((theme) => ({
   }, [isPendingAuth, user]);
 
   return (
-    <Page className={classes.root} title="Playlists" loading={!playlists}>
+    <Page
+      className={classes.root}
+      title="Playlists"
+      loading={!playlists || isPending}
+    >
       {playlists &&
         (_.isEmpty(playlists) ? (
           <div className={classes.emptyMessageContainer}>
@@ -78,7 +103,11 @@ export default withStyles((theme) => ({
         ) : (
           <List>
             {_.map(playlists, (playlist) => (
-              <Playlist key={playlist.id} playlist={playlist} />
+              <Playlist
+                key={playlist.id}
+                playlist={playlist}
+                onDelete={deletePlaylist(playlist)}
+              />
             ))}
           </List>
         ))}
