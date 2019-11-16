@@ -24,10 +24,12 @@ export default withStyles((theme) => ({
   open,
   title,
   children,
+  okButtonProps,
   onOk,
   onClose,
   ...props
 }) {
+  const isMounted = React.useRef();
   const [isPending, setIsPending] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState();
 
@@ -39,11 +41,15 @@ export default withStyles((theme) => ({
         setIsPending(true);
         setErrorMessage();
         await onOk();
-        onClose();
+        if (isMounted.current) {
+          onClose();
+        }
       } catch (error) {
         setErrorMessage(error.message);
       } finally {
-        setIsPending(false);
+        if (isMounted.current) {
+          setIsPending(false);
+        }
       }
     },
     [onOk, onClose],
@@ -56,10 +62,19 @@ export default withStyles((theme) => ({
     }
   }, [open]);
 
+  React.useEffect(() => {
+    isMounted.current = true;
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   return (
     <Dialog
       open={open}
       fullWidth
+      maxWidth="xs"
       disableBackdropClick={isPending}
       disableEscapeKeyDown={isPending}
       onClose={onClose}
@@ -78,9 +93,12 @@ export default withStyles((theme) => ({
         </DialogContent>
 
         <DialogActions>
-          <AsyncButton type="submit" color="secondary" loading={isPending}>
-            OK
-          </AsyncButton>
+          <AsyncButton
+            type="submit"
+            loading={isPending}
+            children="OK"
+            {...okButtonProps}
+          />
         </DialogActions>
 
         <IconButton

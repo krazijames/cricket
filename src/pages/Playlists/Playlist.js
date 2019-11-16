@@ -14,12 +14,15 @@ import { withStyles } from '@material-ui/core/styles';
 import { formatDistanceWithOptions } from 'date-fns/fp';
 import { Link } from 'react-router-dom';
 
+import DeletePlaylistDialog from './DeletePlaylistDialog';
+
 export default withStyles((theme) => ({}))(function Playlists({
   classes,
   playlist,
-  onDelete,
   ...props
 }) {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+
   const [anchorEl, setAnchorEl] = React.useState();
 
   const handleOpenMenuButtonClick = React.useCallback((event) => {
@@ -30,10 +33,18 @@ export default withStyles((theme) => ({}))(function Playlists({
     setAnchorEl();
   }, []);
 
+  const openDeleteDialog = React.useCallback(() => {
+    setIsDeleteDialogOpen(true);
+  }, []);
+
+  const closeDeleteDialog = React.useCallback(() => {
+    setIsDeleteDialogOpen(false);
+  }, []);
+
   const handleDeleteButtonClick = React.useCallback(async () => {
     closeMenu();
-    onDelete();
-  }, [closeMenu, onDelete]);
+    openDeleteDialog();
+  }, [closeMenu, openDeleteDialog]);
 
   return (
     <>
@@ -65,6 +76,12 @@ export default withStyles((theme) => ({}))(function Playlists({
           <ListItemText>Delete</ListItemText>
         </MenuItem>
       </Menu>
+
+      <DeletePlaylistDialog
+        open={isDeleteDialogOpen}
+        playlist={playlist}
+        onClose={closeDeleteDialog}
+      />
     </>
   );
 });

@@ -8,7 +8,6 @@ export default withStyles((theme) => ({}))(function PlaylistDialog({
   classes,
   playlist: { id, name } = {},
   open,
-  title,
   onOk,
   ...props
 }) {
@@ -29,7 +28,12 @@ export default withStyles((theme) => ({}))(function PlaylistDialog({
   }, [open, name]);
 
   return (
-    <AsyncDialog open={open} title={title} onOk={handleOk} {...props}>
+    <AsyncDialog
+      open={open}
+      okButtonProps={{ color: 'secondary' }}
+      onOk={handleOk}
+      {...props}
+    >
       {({ isPending }) => (
         <TextField
           autoFocus
