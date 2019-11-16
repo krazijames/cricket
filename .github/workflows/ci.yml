@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   NODE_VERSION: 10
+  CI: true
 
 jobs:
   build:
@@ -18,17 +19,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Get Yarn Cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache Yarn
+      - name: Cache Node Modules
         uses: actions/cache@v1
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          path: node_modules
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-node-modules-
 
       - name: Install Dependencies
         run: yarn
@@ -38,8 +34,6 @@ jobs:
 
       - name: Test
         run: yarn test
-        env:
-          CI: true
 
       - name: Upload Artifact
         if: github.ref == 'refs/heads/master'
@@ -62,17 +56,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Get Yarn Cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache Yarn
+      - name: Cache Node Modules
         uses: actions/cache@v1
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          path: node_modules
+          key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
         run: yarn
