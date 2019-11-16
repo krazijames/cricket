@@ -23,7 +23,7 @@ export default withStyles((theme) => ({}))(function PlaylistItem({
       </ListItemAvatar>
       <ListItemText primary={item.title} secondary={item.author} />
       <ListItemSecondaryAction>
-        <IconButton size="small" onClick={onRemoveButtonClick}>
+        <IconButton edge="end" onClick={onRemoveButtonClick}>
           <CloseIcon />
         </IconButton>
       </ListItemSecondaryAction>

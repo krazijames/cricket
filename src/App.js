@@ -4,6 +4,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/functions';
 
 import { AuthProvider } from 'auth';
 import { AppContextProvider } from 'context';

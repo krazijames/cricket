@@ -2,10 +2,16 @@
   "name": "cricket",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
+    "start": "run-p --print-label start:react serve:functions",
+    "start:react": "react-scripts start",
+    "serve:functions": "cd functions && yarn serve",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "cd functions && yarn"
+  },
+  "engines": {
+    "node": "10"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
@@ -30,7 +36,8 @@
     "firebase-tools": "^7.7.0",
     "husky": "^3.0.9",
     "prettier": "1.19.1",
-    "pretty-quick": "^2.0.1"
+    "pretty-quick": "^2.0.1",
+    "yarn-run-all": "^3.1.1"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,9 +53,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "engines": {
-    "node": ">=12 <13"
   },
   "husky": {
     "hooks": {
