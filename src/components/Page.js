@@ -12,12 +12,14 @@ export default withStyles((theme) => ({
   progressContainer: {
     position: 'fixed',
   },
-}))(function Page({ classes, title = 'Cricket', ...props }) {
-  const [, updateContext] = useAppContext();
+}))(function Page({ classes, appBarProps, ...props }) {
+  const [, updateContext, defaultContext] = useAppContext();
 
   React.useEffect(() => {
-    updateContext({ title });
-  }, [title, updateContext]);
+    updateContext({
+      appBarProps: appBarProps ? appBarProps : defaultContext.appBarProps,
+    });
+  }, [appBarProps, updateContext, defaultContext.appBarProps]);
 
   return (
     <AsyncContainer

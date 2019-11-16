@@ -3,6 +3,7 @@ import _ from 'lodash';
 import fp from 'lodash/fp';
 import { Fab, List, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase/app';
@@ -16,6 +17,7 @@ import {
   SortableElement,
   arrayMove,
 } from 'react-sortable-hoc';
+import { Link } from 'react-router-dom';
 
 import { Page } from 'components';
 import { paths } from 'data';
@@ -309,7 +311,14 @@ export default withStyles((theme) => ({
   return (
     <Page
       className={classes.root}
-      title={playlist && playlist.name}
+      appBarProps={{
+        title: playlist ? playlist.name : 'Playlist',
+        primaryButtonProps: {
+          component: Link,
+          to: '/',
+          children: <ArrowBackIcon />,
+        },
+      }}
       loading={!playlist || !items || isPending}
     >
       {items &&

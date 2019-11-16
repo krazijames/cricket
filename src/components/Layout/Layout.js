@@ -1,6 +1,8 @@
 import React from 'react';
+import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
+import { useAppContext } from 'context';
 import { AsyncContainer } from 'components';
 
 import AppBar from './AppBar';
@@ -24,15 +26,11 @@ export default withStyles((theme) => ({
     position: 'fixed',
   },
 }))(function Layout({ classes, children, ...props }) {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [{ appBarProps, isSidebarOpen }, updateContext] = useAppContext();
 
-  function closeSideBar() {
-    setIsSidebarOpen(false);
-  }
-
-  function toggleSideBar() {
-    setIsSidebarOpen(!isSidebarOpen);
-  }
+  const closeSideBar = React.useCallback(() => {
+    updateContext({ isSidebarOpen: false });
+  }, [updateContext]);
 
   return (
     <AsyncContainer
@@ -45,7 +43,7 @@ export default withStyles((theme) => ({
       loadingContentOpacity={0}
       {...props}
     >
-      <AppBar onMenuButtonClick={toggleSideBar} />
+      <AppBar {...appBarProps} />
       <Sidebar open={isSidebarOpen} onClose={closeSideBar} />
       <div className={classes.appBarSpacer} />
       <main className={classes.main}>{children}</main>
