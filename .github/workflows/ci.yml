@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   NODE_VERSION: 10
+  CI: true
 
 jobs:
   build:
@@ -33,8 +34,6 @@ jobs:
 
       - name: Test
         run: yarn test
-        env:
-          CI: true
 
       - name: Upload Artifact
         if: github.ref == 'refs/heads/master'
