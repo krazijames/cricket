@@ -9,11 +9,13 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { withStyles } from '@material-ui/core/styles';
 import { formatDistanceWithOptions } from 'date-fns/fp';
 import { Link } from 'react-router-dom';
 
+import EditPlaylistDialog from './EditPlaylistDialog';
 import DeletePlaylistDialog from './DeletePlaylistDialog';
 
 export default withStyles((theme) => ({}))(function Playlists({
@@ -22,6 +24,7 @@ export default withStyles((theme) => ({}))(function Playlists({
   ...props
 }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState();
 
@@ -41,10 +44,23 @@ export default withStyles((theme) => ({}))(function Playlists({
     setIsDeleteDialogOpen(false);
   }, []);
 
-  const handleDeleteButtonClick = React.useCallback(async () => {
+  const handleDeleteButtonClick = React.useCallback(() => {
     closeMenu();
     openDeleteDialog();
   }, [closeMenu, openDeleteDialog]);
+
+  const openEditDialog = React.useCallback(() => {
+    setIsEditDialogOpen(true);
+  }, []);
+
+  const closeEditDialog = React.useCallback(() => {
+    setIsEditDialogOpen(false);
+  }, []);
+
+  const handleEditButtonClick = React.useCallback(() => {
+    closeMenu();
+    openEditDialog();
+  }, [closeMenu, openEditDialog]);
 
   return (
     <>
@@ -69,6 +85,13 @@ export default withStyles((theme) => ({}))(function Playlists({
       </ListItem>
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+        <MenuItem dense onClick={handleEditButtonClick}>
+          <ListItemIcon>
+            <EditIcon />
+          </ListItemIcon>
+          <ListItemText>Rename</ListItemText>
+        </MenuItem>
+
         <MenuItem dense onClick={handleDeleteButtonClick}>
           <ListItemIcon>
             <CloseIcon />
@@ -76,6 +99,12 @@ export default withStyles((theme) => ({}))(function Playlists({
           <ListItemText>Delete</ListItemText>
         </MenuItem>
       </Menu>
+
+      <EditPlaylistDialog
+        open={isEditDialogOpen}
+        playlist={playlist}
+        onClose={closeEditDialog}
+      />
 
       <DeletePlaylistDialog
         open={isDeleteDialogOpen}
