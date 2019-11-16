@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import fp from 'lodash/fp';
 import { Fab, List, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
@@ -38,6 +39,7 @@ export default withStyles((theme) => ({
 }))(function Playlists({ classes }) {
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
+  const [playlistItemCounts, setPlaylistItemCounts] = React.useState({});
   const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
 
   const openAddDialog = React.useCallback(() => {
@@ -58,13 +60,34 @@ export default withStyles((theme) => ({
       .collection(paths.PLAYLISTS)
       .where('ownerUserUids', 'array-contains', user.uid)
       .onSnapshot((querySnapshot) => {
-        const newPlaylists = [];
-        querySnapshot.forEach((doc) => {
-          newPlaylists.push({ id: doc.id, ...doc.data() });
-        });
-        setPlaylists(_.orderBy(newPlaylists, 'createdAt', 'desc'));
+        setPlaylists(
+          fp.flow(
+            fp.map((doc) => ({ id: doc.id, ...doc.data() })),
+            fp.orderBy('createdAt', 'desc'),
+          )(querySnapshot.docs),
+        );
       });
   }, [isPendingAuth, user]);
+
+  React.useEffect(() => {
+    const unsubscribers = fp.map((playlist) => {
+      return firebase
+        .firestore()
+        .collection(`${paths.PLAYLISTS}/${playlist.id}/${paths.PLAYLIST_ITEMS}`)
+        .onSnapshot((querySnapshot) => {
+          setPlaylistItemCounts((prevState) => ({
+            ...prevState,
+            [playlist.id]: querySnapshot.size,
+          }));
+        });
+    })(playlists);
+
+    return () => {
+      fp.forEach((unsubscribe) => {
+        unsubscribe();
+      })(unsubscribers);
+    };
+  }, [playlists]);
 
   return (
     <Page className={classes.root} loading={!playlists}>
@@ -78,7 +101,11 @@ export default withStyles((theme) => ({
         ) : (
           <List>
             {_.map(playlists, (playlist) => (
-              <Playlist key={playlist.id} playlist={playlist} />
+              <Playlist
+                key={playlist.id}
+                playlist={playlist}
+                count={playlistItemCounts[playlist.id]}
+              />
             ))}
           </List>
         ))}

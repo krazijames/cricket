@@ -13,7 +13,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { withStyles } from '@material-ui/core/styles';
-import { formatDistanceWithOptions } from 'date-fns/fp';
 import { Link } from 'react-router-dom';
 
 import EditPlaylistDialog from './EditPlaylistDialog';
@@ -22,6 +21,7 @@ import DeletePlaylistDialog from './DeletePlaylistDialog';
 export default withStyles((theme) => ({}))(function Playlists({
   classes,
   playlist,
+  count = 0,
   ...props
 }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
@@ -74,13 +74,7 @@ export default withStyles((theme) => ({}))(function Playlists({
         <ListItemIcon>
           <VideoLibraryIcon />
         </ListItemIcon>
-        <ListItemText
-          primary={playlist.name}
-          secondary={formatDistanceWithOptions(
-            { addSuffix: true },
-            new Date(),
-          )(playlist.createdAt.toDate())}
-        />
+        <ListItemText primary={playlist.name} secondary={`${count} Items`} />
         <ListItemSecondaryAction>
           <IconButton edge="end" onClick={handleOpenMenuButtonClick}>
             <MoreVertIcon />
