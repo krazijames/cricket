@@ -15,6 +15,8 @@ import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
+import { usePopover } from 'hooks';
+
 import { useEditPlaylistDialog } from './EditPlaylistDialog';
 import { useDeletePlaylistDialog } from './DeletePlaylistDialog';
 
@@ -29,26 +31,17 @@ export default withStyles((theme) => ({}))(function Playlists({
     openDeletePlaylistDialog,
   ] = useDeletePlaylistDialog();
   const [EditPlaylistDialog, openEditPlaylistDialog] = useEditPlaylistDialog();
-
-  const [anchorEl, setAnchorEl] = React.useState();
-
-  const handleOpenMenuButtonClick = React.useCallback((event) => {
-    setAnchorEl(event.currentTarget);
-  }, []);
-
-  const closeMenu = React.useCallback(() => {
-    setAnchorEl();
-  }, []);
+  const [PlaylistMenu, openPlaylistMenu, closePlaylistMenu] = usePopover(Menu);
 
   const handleDeleteButtonClick = React.useCallback(() => {
-    closeMenu();
+    closePlaylistMenu();
     openDeletePlaylistDialog();
-  }, [closeMenu, openDeletePlaylistDialog]);
+  }, [closePlaylistMenu, openDeletePlaylistDialog]);
 
   const handleEditButtonClick = React.useCallback(() => {
-    closeMenu();
+    closePlaylistMenu();
     openEditPlaylistDialog();
-  }, [closeMenu, openEditPlaylistDialog]);
+  }, [closePlaylistMenu, openEditPlaylistDialog]);
 
   return (
     <>
@@ -63,13 +56,13 @@ export default withStyles((theme) => ({}))(function Playlists({
         </ListItemIcon>
         <ListItemText primary={playlist.name} secondary={`${count} Items`} />
         <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={handleOpenMenuButtonClick}>
+          <IconButton edge="end" onClick={openPlaylistMenu}>
             <MoreVertIcon />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
 
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+      <PlaylistMenu>
         <MenuItem dense onClick={handleEditButtonClick}>
           <ListItemIcon>
             <EditIcon />
@@ -83,7 +76,7 @@ export default withStyles((theme) => ({}))(function Playlists({
           </ListItemIcon>
           <ListItemText>Delete</ListItemText>
         </MenuItem>
-      </Menu>
+      </PlaylistMenu>
 
       <EditPlaylistDialog playlist={playlist} />
 
