@@ -15,6 +15,7 @@ export default withStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    marginRight: theme.spacing(1),
   },
 }))(function AppBar({
   classes,
@@ -33,7 +34,7 @@ export default withStyles((theme) => ({
           {...primaryButtonProps}
         />
 
-        <Typography className={classes.title} variant="h6">
+        <Typography className={classes.title} variant="h6" noWrap>
           {title}
         </Typography>
 
