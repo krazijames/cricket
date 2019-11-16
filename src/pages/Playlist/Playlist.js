@@ -40,10 +40,10 @@ const SortablePlaylistItem = SortableElement(function SortablePlaylistItem({
 
 const SortablePlaylist = SortableContainer(function SortablePlaylist({
   index,
+  playlistId,
   items,
   currentItem,
   selectItem,
-  removeItem,
   ...props
 }) {
   return (
@@ -52,10 +52,10 @@ const SortablePlaylist = SortableContainer(function SortablePlaylist({
         <SortablePlaylistItem
           key={item.id}
           index={index}
+          playlistId={playlistId}
           item={item}
           selected={currentItem && item.id === currentItem.id}
           onClick={selectItem(item)}
-          onRemoveButtonClick={removeItem(item)}
         />
       ))}
     </List>
@@ -157,25 +157,6 @@ export default withStyles((theme) => ({
       }
     },
     [playlistId, items, closeAddItemDialog, scrollToBottom],
-  );
-
-  const removeItem = React.useCallback(
-    ({ id }) => {
-      return async () => {
-        try {
-          setIsPending(true);
-          await firebase
-            .firestore()
-            .doc(
-              `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}/${id}`,
-            )
-            .delete();
-        } finally {
-          setIsPending(false);
-        }
-      };
-    },
-    [playlistId],
   );
 
   const selectItem = React.useCallback((item) => {
@@ -339,10 +320,10 @@ export default withStyles((theme) => ({
         ) : (
           <SortablePlaylist
             className={classes.list}
+            playlistId={playlistId}
             items={items}
             currentItem={currentItem}
             selectItem={selectItem}
-            removeItem={removeItem}
             lockAxis="y"
             pressDelay={200}
             helperClass="sorting"

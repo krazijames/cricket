@@ -7,32 +7,28 @@ import { paths } from 'data';
 
 import { AsyncDialog } from 'components';
 
-export default withStyles((theme) => ({}))(function DeletePlaylistDialog({
+export default withStyles((theme) => ({}))(function DeleteItemDialog({
   classes,
-  playlist: { id, name },
+  playlistId,
+  item: { id, title },
   ...props
 }) {
   const handleOk = React.useCallback(async () => {
-    const functions = firebase.functions();
-
-    if (process.env.NODE_ENV === 'development') {
-      functions.useFunctionsEmulator('http://localhost:5000');
-    }
-
-    await functions.httpsCallable('recursiveDelete')({
-      path: `${paths.PLAYLISTS}/${id}`,
-    });
-  }, [id]);
+    await firebase
+      .firestore()
+      .doc(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}/${id}`)
+      .delete();
+  }, [playlistId, id]);
 
   return (
     <AsyncDialog
-      title="Delete Playlist"
+      title="Delete Item"
       okButtonProps={{ color: 'primary', children: 'Delete' }}
       onOk={handleOk}
       {...props}
     >
       <DialogContentText>
-        Are you sure to delete <strong>{name}</strong>?
+        Are you sure to delete <strong>{title}</strong>?
       </DialogContentText>
     </AsyncDialog>
   );
