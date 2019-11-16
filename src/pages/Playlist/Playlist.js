@@ -23,7 +23,7 @@ import { paths } from 'data';
 import { useAddItemDialog } from './AddItemDialog';
 import itemMapper from './itemMapper';
 import PlaylistItem from './PlaylistItem';
-import MediaPlayer, { PlayerState } from './MediaPlayer';
+import PlaylistToolbar, { PlayerState } from './PlaylistToolbar';
 
 const scrollDuration = 300;
 
@@ -80,22 +80,13 @@ export default withStyles((theme) => ({
   list: {
     marginBottom: '56vw',
   },
-  mediaPlayer: {
+  toolbar: {
     position: 'fixed',
     right: 0,
     bottom: 0,
     left: 0,
   },
-  mediaPlayerToolbar: {
-    paddingRight: theme.spacing(8),
-  },
-  mediaPlayerSpacer: theme.mixins.toolbar,
-  addItemButton: {
-    position: 'fixed',
-    right: theme.spacing(1),
-    bottom: theme.spacing(1),
-    zIndex: theme.zIndex.appBar,
-  },
+  playlistToolbarSpacer: theme.mixins.toolbar,
 }))(function Playlist({ classes }) {
   const { playlistId } = useParams();
   const [isPending, setIsPending] = React.useState();
@@ -329,13 +320,10 @@ export default withStyles((theme) => ({
           />
         ))}
 
-      <div className={classes.mediaPlayerSpacer} />
+      <div className={classes.playlistToolbarSpacer} />
 
-      <MediaPlayer
-        classes={{
-          root: classes.mediaPlayer,
-          toolbar: classes.mediaPlayerToolbar,
-        }}
+      <PlaylistToolbar
+        className={classes.toolbar}
         type={currentItem && currentItem.type}
         mediaId={currentItem && currentItem.mediaId}
         prevButtonProps={{
@@ -358,17 +346,11 @@ export default withStyles((theme) => ({
         scrollToBottomButtonProps={{
           onClick: scrollToBottom,
         }}
+        addItemButtonProps={{
+          onClick: openAddItemDalog,
+        }}
         onStateChange={handlePlayerStateChange}
       />
-
-      <Fab
-        classes={{ root: classes.addItemButton }}
-        size="small"
-        color="primary"
-        onClick={openAddItemDalog}
-      >
-        <AddIcon />
-      </Fab>
 
       <AddItemDialog onOk={addItem} />
     </Page>

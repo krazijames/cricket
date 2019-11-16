@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, IconButton, Toolbar } from '@material-ui/core';
+import { Card, Fab, IconButton, Paper, Toolbar } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -55,12 +56,10 @@ const youtubeOptions = {
 
 export default withStyles((theme) => ({
   root: {
-    overflow: 'visible',
-  },
-  toolbar: {
     position: 'relative',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    overflow: 'visible',
   },
   youTubeContainer: {
     position: 'absolute',
@@ -82,12 +81,13 @@ export default withStyles((theme) => ({
   controls: {
     flex: 1,
   },
-  secondaryControls: {},
-}))(function MediaPlayer({
+  secondaryControls: {
+    marginRight: theme.spacing(1),
+  },
+}))(function PlaylistToolbar({
   classes,
   type,
   mediaId,
-  fullscreen,
   toolbarProps,
   prevButtonProps,
   playPauseButtonProps,
@@ -95,6 +95,7 @@ export default withStyles((theme) => ({
   toggleVideoButtonProps,
   scrollToCurrentItemButtonProps,
   scrollToBottomButtonProps,
+  addItemButtonProps,
   onStateChange = () => {},
   ...props
 }) {
@@ -140,64 +141,70 @@ export default withStyles((theme) => ({
   }, [showVideo]);
 
   return (
-    <Card classes={{ root: classes.root }} square {...props}>
-      <Toolbar classes={{ root: classes.toolbar }} {...toolbarProps}>
-        <div
-          className={`${classes.youTubeContainer} ${showVideo &&
-            classes.youTubeContainerShow}`}
+    <Toolbar
+      component={Paper}
+      classes={{ root: classes.root }}
+      square
+      {...props}
+    >
+      <div
+        className={`${classes.youTubeContainer} ${showVideo &&
+          classes.youTubeContainerShow}`}
+      >
+        <YouTube
+          containerClassName={classes.youTube}
+          videoId={mediaId}
+          opts={youtubeOptions}
+          onReady={handleReady}
+          onStateChange={handleStateChange}
+        />
+      </div>
+
+      <div className={classes.controls}>
+        <IconButton {...prevButtonProps}>
+          <SkipPreviousIcon />
+        </IconButton>
+
+        <AsyncContainer
+          display="inline-flex"
+          loading={playerState === PlayerState.BUFFERING}
+          loadingContentOpacity={0}
         >
-          <YouTube
-            containerClassName={classes.youTube}
-            videoId={mediaId}
-            opts={youtubeOptions}
-            onReady={handleReady}
-            onStateChange={handleStateChange}
-          />
-        </div>
-
-        <div className={classes.controls}>
-          <IconButton {...prevButtonProps}>
-            <SkipPreviousIcon />
+          <IconButton {...playPauseButtonProps} onClick={togglePlay}>
+            {playerState === PlayerState.PLAYING ? (
+              <PauseIcon />
+            ) : (
+              <PlayArrowIcon />
+            )}
           </IconButton>
+        </AsyncContainer>
 
-          <AsyncContainer
-            display="inline-flex"
-            loading={playerState === PlayerState.BUFFERING}
-            loadingContentOpacity={0}
-          >
-            <IconButton {...playPauseButtonProps} onClick={togglePlay}>
-              {playerState === PlayerState.PLAYING ? (
-                <PauseIcon />
-              ) : (
-                <PlayArrowIcon />
-              )}
-            </IconButton>
-          </AsyncContainer>
+        <IconButton {...nextButtonProps}>
+          <SkipNextIcon />
+        </IconButton>
 
-          <IconButton {...nextButtonProps}>
-            <SkipNextIcon />
-          </IconButton>
+        <IconButton
+          color={showVideo ? 'primary' : 'default'}
+          {...toggleVideoButtonProps}
+          onClick={toggleVideo}
+        >
+          <VideoLabelIcon />
+        </IconButton>
+      </div>
 
-          <IconButton
-            size="small"
-            color={showVideo ? 'primary' : 'default'}
-            {...toggleVideoButtonProps}
-            onClick={toggleVideo}
-          >
-            <VideoLabelIcon />
-          </IconButton>
-        </div>
+      <div className={classes.secondaryControls}>
+        <IconButton size="small" {...scrollToCurrentItemButtonProps}>
+          <MyLocationIcon />
+        </IconButton>
 
-        <div className={classes.secondaryControls}>
-          <IconButton size="small" {...scrollToCurrentItemButtonProps}>
-            <MyLocationIcon />
-          </IconButton>
+        <IconButton size="small" {...scrollToBottomButtonProps}>
+          <VerticalAlignBottomIcon />
+        </IconButton>
+      </div>
 
-          <IconButton size="small" {...scrollToBottomButtonProps}>
-            <VerticalAlignBottomIcon />
-          </IconButton>
-        </div>
-      </Toolbar>
-    </Card>
+      <Fab size="small" color="primary" {...addItemButtonProps}>
+        <AddIcon />
+      </Fab>
+    </Toolbar>
   );
 });
