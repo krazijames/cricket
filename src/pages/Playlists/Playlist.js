@@ -11,56 +11,37 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { withStyles } from '@material-ui/core/styles';
-import { formatDistanceWithOptions } from 'date-fns/fp';
 import { Link } from 'react-router-dom';
 
-import EditPlaylistDialog from './EditPlaylistDialog';
-import DeletePlaylistDialog from './DeletePlaylistDialog';
+import { usePopover } from 'hooks';
+
+import { useEditPlaylistDialog } from './EditPlaylistDialog';
+import { useDeletePlaylistDialog } from './DeletePlaylistDialog';
 
 export default withStyles((theme) => ({}))(function Playlists({
   classes,
   playlist,
+  count = 0,
   ...props
 }) {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
-
-  const [anchorEl, setAnchorEl] = React.useState();
-
-  const handleOpenMenuButtonClick = React.useCallback((event) => {
-    setAnchorEl(event.currentTarget);
-  }, []);
-
-  const closeMenu = React.useCallback(() => {
-    setAnchorEl();
-  }, []);
-
-  const openDeleteDialog = React.useCallback(() => {
-    setIsDeleteDialogOpen(true);
-  }, []);
-
-  const closeDeleteDialog = React.useCallback(() => {
-    setIsDeleteDialogOpen(false);
-  }, []);
+  const [
+    DeletePlaylistDialog,
+    openDeletePlaylistDialog,
+  ] = useDeletePlaylistDialog();
+  const [EditPlaylistDialog, openEditPlaylistDialog] = useEditPlaylistDialog();
+  const [PlaylistMenu, openPlaylistMenu, closePlaylistMenu] = usePopover(Menu);
 
   const handleDeleteButtonClick = React.useCallback(() => {
-    closeMenu();
-    openDeleteDialog();
-  }, [closeMenu, openDeleteDialog]);
-
-  const openEditDialog = React.useCallback(() => {
-    setIsEditDialogOpen(true);
-  }, []);
-
-  const closeEditDialog = React.useCallback(() => {
-    setIsEditDialogOpen(false);
-  }, []);
+    closePlaylistMenu();
+    openDeletePlaylistDialog();
+  }, [closePlaylistMenu, openDeletePlaylistDialog]);
 
   const handleEditButtonClick = React.useCallback(() => {
-    closeMenu();
-    openEditDialog();
-  }, [closeMenu, openEditDialog]);
+    closePlaylistMenu();
+    openEditPlaylistDialog();
+  }, [closePlaylistMenu, openEditPlaylistDialog]);
 
   return (
     <>
@@ -70,21 +51,18 @@ export default withStyles((theme) => ({}))(function Playlists({
         to={`/playlist/${playlist.id}`}
         {...props}
       >
-        <ListItemText
-          primary={playlist.name}
-          secondary={formatDistanceWithOptions(
-            { addSuffix: true },
-            new Date(),
-          )(playlist.createdAt.toDate())}
-        />
+        <ListItemIcon>
+          <VideoLibraryIcon />
+        </ListItemIcon>
+        <ListItemText primary={playlist.name} secondary={`${count} Items`} />
         <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={handleOpenMenuButtonClick}>
+          <IconButton edge="end" onClick={openPlaylistMenu}>
             <MoreVertIcon />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
 
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+      <PlaylistMenu>
         <MenuItem dense onClick={handleEditButtonClick}>
           <ListItemIcon>
             <EditIcon />
@@ -98,19 +76,11 @@ export default withStyles((theme) => ({}))(function Playlists({
           </ListItemIcon>
           <ListItemText>Delete</ListItemText>
         </MenuItem>
-      </Menu>
+      </PlaylistMenu>
 
-      <EditPlaylistDialog
-        open={isEditDialogOpen}
-        playlist={playlist}
-        onClose={closeEditDialog}
-      />
+      <EditPlaylistDialog playlist={playlist} />
 
-      <DeletePlaylistDialog
-        open={isDeleteDialogOpen}
-        playlist={playlist}
-        onClose={closeDeleteDialog}
-      />
+      <DeletePlaylistDialog playlist={playlist} />
     </>
   );
 });

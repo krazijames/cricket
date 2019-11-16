@@ -36,6 +36,7 @@ export default withStyles((theme) => ({
     opacity: ({ loading }) => (loading ? 1 : 0),
     transition: `opacity ${transitionDuration}`,
   },
+  progress: {},
 }))(function AsyncContainer({
   classes,
   loading,
@@ -59,7 +60,10 @@ export default withStyles((theme) => ({
         classes={{ root: classes.progressContainer }}
         {...progressContainerProps}
       >
-        <CircularProgress {...progressProps} />
+        <CircularProgress
+          classes={{ root: classes.progress }}
+          {...progressProps}
+        />
       </Box>
     </Box>
   );

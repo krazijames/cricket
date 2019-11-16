@@ -1,14 +1,20 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 
+import { useAppContext } from 'context';
 import { AsyncContainer } from 'components';
 
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 
 export default withStyles((theme) => ({
+  '@global': {
+    'html, body, #root': {
+      height: '100%',
+    },
+  },
   root: {
-    minHeight: '100vh',
+    height: '100%',
   },
   contentContainer: {
     display: 'flex',
@@ -24,15 +30,12 @@ export default withStyles((theme) => ({
     position: 'fixed',
   },
 }))(function Layout({ classes, children, ...props }) {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const theme = useTheme();
+  const [{ appBarProps, isSidebarOpen }, updateContext] = useAppContext();
 
-  function closeSideBar() {
-    setIsSidebarOpen(false);
-  }
-
-  function toggleSideBar() {
-    setIsSidebarOpen(!isSidebarOpen);
-  }
+  const closeSideBar = React.useCallback(() => {
+    updateContext({ isSidebarOpen: false });
+  }, [updateContext]);
 
   return (
     <AsyncContainer
@@ -41,11 +44,11 @@ export default withStyles((theme) => ({
         contentContainer: classes.contentContainer,
         progressContainer: classes.progressContainer,
       }}
-      progressProps={{ size: '25vmin' }}
+      progressProps={{ size: theme.app.progressSize }}
       loadingContentOpacity={0}
       {...props}
     >
-      <AppBar onMenuButtonClick={toggleSideBar} />
+      <AppBar {...appBarProps} />
       <Sidebar open={isSidebarOpen} onClose={closeSideBar} />
       <div className={classes.appBarSpacer} />
       <main className={classes.main}>{children}</main>

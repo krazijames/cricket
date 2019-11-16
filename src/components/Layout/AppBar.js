@@ -5,35 +5,36 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
-
-import { useAppContext } from 'context';
 
 import Auth from './Auth';
 
 export default withStyles((theme) => ({
-  menuButton: {
+  primaryButton: {
     marginRight: theme.spacing(0.5),
   },
   title: {
     flexGrow: 1,
+    marginRight: theme.spacing(1),
   },
-}))(function AppBar({ classes, children, onMenuButtonClick, ...props }) {
-  const [{ title }] = useAppContext();
-
+}))(function AppBar({
+  classes,
+  title,
+  primaryButtonProps,
+  children,
+  ...props
+}) {
   return (
     <MuiAppBar position="fixed" {...props}>
       <Toolbar>
         <IconButton
-          className={classes.menuButton}
+          classes={{ root: classes.primaryButton }}
           color="inherit"
           edge="start"
-          onClick={onMenuButtonClick}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography className={classes.title} variant="h6">
+          {...primaryButtonProps}
+        />
+
+        <Typography className={classes.title} variant="h6" noWrap>
           {title}
         </Typography>
 

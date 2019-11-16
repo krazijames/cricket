@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import fp from 'lodash/fp';
 import { Fab, List, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,7 +10,7 @@ import { paths } from 'data';
 import { useAuth } from 'auth';
 import { Page } from 'components';
 
-import AddPlaylistDialog from './AddPlaylistDialog';
+import { useAddPlaylistDialog } from './AddPlaylistDialog';
 import Playlist from './Playlist';
 
 export default withStyles((theme) => ({
@@ -38,15 +39,9 @@ export default withStyles((theme) => ({
 }))(function Playlists({ classes }) {
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
-  const [isAddDialogOpen, setIsAddDialogOpen] = React.useState(false);
+  const [playlistItemCounts, setPlaylistItemCounts] = React.useState({});
 
-  const openAddDialog = React.useCallback(() => {
-    setIsAddDialogOpen(true);
-  }, []);
-
-  const closeAddDialog = React.useCallback(() => {
-    setIsAddDialogOpen(false);
-  }, []);
+  const [AddPlaylistDialog, openAddPlaylistDialog] = useAddPlaylistDialog();
 
   React.useEffect(() => {
     if (isPendingAuth) {
@@ -58,16 +53,37 @@ export default withStyles((theme) => ({
       .collection(paths.PLAYLISTS)
       .where('ownerUserUids', 'array-contains', user.uid)
       .onSnapshot((querySnapshot) => {
-        const newPlaylists = [];
-        querySnapshot.forEach((doc) => {
-          newPlaylists.push({ id: doc.id, ...doc.data() });
-        });
-        setPlaylists(_.orderBy(newPlaylists, 'createdAt', 'desc'));
+        setPlaylists(
+          fp.flow(
+            fp.map((doc) => ({ id: doc.id, ...doc.data() })),
+            fp.orderBy('createdAt', 'desc'),
+          )(querySnapshot.docs),
+        );
       });
   }, [isPendingAuth, user]);
 
+  React.useEffect(() => {
+    const unsubscribers = fp.map((playlist) => {
+      return firebase
+        .firestore()
+        .collection(`${paths.PLAYLISTS}/${playlist.id}/${paths.PLAYLIST_ITEMS}`)
+        .onSnapshot((querySnapshot) => {
+          setPlaylistItemCounts((prevState) => ({
+            ...prevState,
+            [playlist.id]: querySnapshot.size,
+          }));
+        });
+    })(playlists);
+
+    return () => {
+      fp.forEach((unsubscribe) => {
+        unsubscribe();
+      })(unsubscribers);
+    };
+  }, [playlists]);
+
   return (
-    <Page className={classes.root} title="Playlists" loading={!playlists}>
+    <Page className={classes.root} loading={!playlists}>
       {playlists &&
         (_.isEmpty(playlists) ? (
           <div className={classes.emptyMessageContainer}>
@@ -78,7 +94,11 @@ export default withStyles((theme) => ({
         ) : (
           <List>
             {_.map(playlists, (playlist) => (
-              <Playlist key={playlist.id} playlist={playlist} />
+              <Playlist
+                key={playlist.id}
+                playlist={playlist}
+                count={playlistItemCounts[playlist.id]}
+              />
             ))}
           </List>
         ))}
@@ -86,12 +106,12 @@ export default withStyles((theme) => ({
       <Fab
         classes={{ root: classes.addButton }}
         color="primary"
-        onClick={openAddDialog}
+        onClick={openAddPlaylistDialog}
       >
         <AddIcon />
       </Fab>
 
-      <AddPlaylistDialog open={isAddDialogOpen} onClose={closeAddDialog} />
+      <AddPlaylistDialog />
     </Page>
   );
 });

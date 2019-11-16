@@ -7,7 +7,6 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Popover,
   SvgIcon,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -15,6 +14,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
 
 import { useAuth } from 'auth';
+import { usePopover } from 'hooks';
 
 const UserAvatar = withStyles((theme) => ({
   root: {
@@ -37,16 +37,7 @@ const UserButton = withStyles((theme) => ({
 }))(function UserButton({ classes, ...props }) {
   const { user, signOut } = useAuth();
 
-  const [detailsAnchorEl, setDetailsAnchorEl] = React.useState(null);
-  const isDetailsOpen = Boolean(detailsAnchorEl);
-
-  function onUserButtonClick(event) {
-    setDetailsAnchorEl(event.currentTarget);
-  }
-
-  function closeDetails() {
-    setDetailsAnchorEl(null);
-  }
+  const [Details, openDetails, closeDetails] = usePopover();
 
   function onSignOutButtonClick() {
     signOut();
@@ -58,15 +49,13 @@ const UserButton = withStyles((theme) => ({
       <IconButton
         className={classes.root}
         color="inherit"
-        onClick={onUserButtonClick}
+        onClick={openDetails}
         {...props}
       >
         <UserAvatar src={user.photoUrl} />
       </IconButton>
 
-      <Popover
-        open={isDetailsOpen}
-        anchorEl={detailsAnchorEl}
+      <Details
         keepMounted
         anchorOrigin={{
           vertical: 'bottom',
@@ -76,7 +65,6 @@ const UserButton = withStyles((theme) => ({
           vertical: 'top',
           horizontal: 'center',
         }}
-        onClose={closeDetails}
       >
         <List>
           <ListItem>
@@ -100,7 +88,7 @@ const UserButton = withStyles((theme) => ({
             />
           </ListItem>
         </List>
-      </Popover>
+      </Details>
     </>
   );
 });

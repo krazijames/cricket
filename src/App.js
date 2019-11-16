@@ -10,7 +10,7 @@ import { AuthProvider } from 'auth';
 import { AppContextProvider } from 'context';
 import * as config from 'config';
 import { Layout } from 'components';
-import { Home, Playlist, Playlists, NeedSignIn, NotFound } from 'pages';
+import { Playlist, Playlists, NeedSignIn, NotFound } from 'pages';
 import theme from 'theme';
 
 export default function App() {
@@ -26,9 +26,6 @@ export default function App() {
               <Layout loading={isPending}>
                 <Switch>
                   <Route path="/" exact>
-                    <Home />
-                  </Route>
-                  <Route path="/playlist" exact>
                     {isAuthenticated ? <Playlists /> : <NeedSignIn />}
                   </Route>
                   <Route path="/playlist/:playlistId">
