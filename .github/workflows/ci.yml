@@ -36,7 +36,7 @@ jobs:
         run: yarn test
 
       - name: Upload Artifact
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: build
@@ -44,7 +44,7 @@ jobs:
 
   deploy:
     name: Deploy
-    # if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     needs: build
     runs-on: ubuntu-latest
     steps:
