@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 
 import { useAppContext } from 'context';
 import { AsyncContainer } from 'components';
@@ -13,6 +13,7 @@ export default withStyles((theme) => ({
     position: 'fixed',
   },
 }))(function Page({ classes, appBarProps, ...props }) {
+  const theme = useTheme();
   const [, updateContext, defaultContext] = useAppContext();
 
   React.useEffect(() => {
@@ -24,7 +25,7 @@ export default withStyles((theme) => ({
   return (
     <AsyncContainer
       classes={classes}
-      progressProps={{ size: '25vmin' }}
+      progressProps={{ size: theme.app.progressSize }}
       {...props}
     />
   );
