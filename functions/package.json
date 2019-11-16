@@ -1,15 +1,15 @@
 {
   "name": "functions",
-  "description": "Cloud Functions for Firebase",
+  "private": true,
   "scripts": {
     "serve": "firebase serve --only functions",
     "shell": "firebase functions:shell",
-    "start": "npm run shell",
+    "start": "yarn run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "8"
+    "node": "10"
   },
   "dependencies": {
     "firebase-admin": "^8.6.0",
@@ -17,6 +17,5 @@
   },
   "devDependencies": {
     "firebase-functions-test": "^0.1.6"
-  },
-  "private": true
+  }
 }
