@@ -8,29 +8,23 @@ import { paths } from 'data';
 import PlaylistDialog from './PlaylistDialog';
 
 export default withStyles((theme) => ({}))(function AddPlaylistDialog({
-  onClose,
   ...props
 }) {
   const { user } = useAuth();
 
-  async function onOk({ name }) {
-    const db = firebase.firestore();
-
-    await db.collection(paths.PLAYLISTS).add({
-      name,
-      ownerUserUids: [user.uid],
-      createdAt: new Date(),
-    });
-
-    onClose();
-  }
-
-  return (
-    <PlaylistDialog
-      title="New Playlist"
-      onOk={onOk}
-      onClose={onClose}
-      {...props}
-    />
+  const handleOk = React.useCallback(
+    async ({ name }) => {
+      await firebase
+        .firestore()
+        .collection(paths.PLAYLISTS)
+        .add({
+          name,
+          ownerUserUids: [user.uid],
+          createdAt: new Date(),
+        });
+    },
+    [user.uid],
   );
+
+  return <PlaylistDialog title="New Playlist" onOk={handleOk} {...props} />;
 });
