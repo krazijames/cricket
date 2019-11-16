@@ -8,7 +8,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postinstall": "if [ -z \"$CI\" ]; then cd functions && yarn; fi"
+    "postinstall": "cd functions && yarn"
   },
   "engines": {
     "node": "10"
