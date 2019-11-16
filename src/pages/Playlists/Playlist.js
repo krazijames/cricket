@@ -11,6 +11,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import { withStyles } from '@material-ui/core/styles';
 import { formatDistanceWithOptions } from 'date-fns/fp';
 import { Link } from 'react-router-dom';
@@ -70,6 +71,9 @@ export default withStyles((theme) => ({}))(function Playlists({
         to={`/playlist/${playlist.id}`}
         {...props}
       >
+        <ListItemIcon>
+          <VideoLibraryIcon />
+        </ListItemIcon>
         <ListItemText
           primary={playlist.name}
           secondary={formatDistanceWithOptions(

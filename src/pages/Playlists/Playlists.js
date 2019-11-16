@@ -67,7 +67,7 @@ export default withStyles((theme) => ({
   }, [isPendingAuth, user]);
 
   return (
-    <Page className={classes.root} title="Playlists" loading={!playlists}>
+    <Page className={classes.root} loading={!playlists}>
       {playlists &&
         (_.isEmpty(playlists) ? (
           <div className={classes.emptyMessageContainer}>

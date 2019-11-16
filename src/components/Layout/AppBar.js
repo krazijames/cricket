@@ -14,6 +14,7 @@ import Auth from './Auth';
 
 export default withStyles((theme) => ({
   menuButton: {
+    display: 'none',
     marginRight: theme.spacing(0.5),
   },
   title: {
