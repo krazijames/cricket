@@ -8,8 +8,13 @@ import AppBar from './AppBar';
 import Sidebar from './Sidebar';
 
 export default withStyles((theme) => ({
+  '@global': {
+    'html, body, #root': {
+      height: '100%',
+    },
+  },
   root: {
-    minHeight: '100vh',
+    height: '100%',
   },
   contentContainer: {
     display: 'flex',

@@ -65,22 +65,22 @@ const SortablePlaylist = SortableContainer(function SortablePlaylist({
 });
 
 export default withStyles((theme) => ({
-  root: {
-    paddingBottom: 'calc(56vw + 60px)',
+  root: {},
+  contentContainer: {
+    display: 'flex',
+    flexFlow: 'column nowrap',
   },
   emptyMessageContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-
+    flex: 1,
     display: 'flex',
     flexFlow: 'column nowrap',
     justifyContent: 'center',
 
     padding: theme.spacing(4),
     textAlign: 'center',
+  },
+  list: {
+    marginBottom: '56vw',
   },
   mediaPlayer: {
     position: 'fixed',
@@ -91,6 +91,7 @@ export default withStyles((theme) => ({
   mediaPlayerToolbar: {
     paddingRight: theme.spacing(8),
   },
+  mediaPlayerSpacer: theme.mixins.toolbar,
   addItemButton: {
     position: 'fixed',
     right: theme.spacing(1),
@@ -322,7 +323,10 @@ export default withStyles((theme) => ({
 
   return (
     <Page
-      className={classes.root}
+      classes={{
+        root: classes.root,
+        contentContainer: classes.contentContainer,
+      }}
       appBarProps={{
         title: playlist ? playlist.name : 'Playlist',
         primaryButtonProps: {
@@ -342,6 +346,7 @@ export default withStyles((theme) => ({
           </div>
         ) : (
           <SortablePlaylist
+            className={classes.list}
             items={items}
             currentItem={currentItem}
             selectItem={selectItem}
@@ -354,12 +359,13 @@ export default withStyles((theme) => ({
           />
         ))}
 
+      <div className={classes.mediaPlayerSpacer} />
+
       <MediaPlayer
         classes={{
           root: classes.mediaPlayer,
           toolbar: classes.mediaPlayerToolbar,
         }}
-        // style={{ display: currentItem ? 'block' : 'none' }}
         type={currentItem && currentItem.type}
         mediaId={currentItem && currentItem.mediaId}
         prevButtonProps={{
