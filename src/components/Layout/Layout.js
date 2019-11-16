@@ -1,5 +1,4 @@
 import React from 'react';
-import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';
 
 import { useAppContext } from 'context';

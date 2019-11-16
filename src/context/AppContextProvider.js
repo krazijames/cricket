@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import AppContext from './AppContext';
