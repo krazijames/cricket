@@ -29,14 +29,26 @@ import MediaPlayer, { PlayerState } from './MediaPlayer';
 
 const scrollDuration = 300;
 
-const SortablePlaylistItem = SortableElement(({ item, ...props }) => (
-  <ScrollElement name={item.id}>
-    <PlaylistItem ContainerComponent="div" item={item} {...props} />
-  </ScrollElement>
-));
+const SortablePlaylistItem = SortableElement(function SortablePlaylistItem({
+  item,
+  ...props
+}) {
+  return (
+    <ScrollElement name={item.id}>
+      <PlaylistItem ContainerComponent="div" item={item} {...props} />
+    </ScrollElement>
+  );
+});
 
-const SortablePlaylist = SortableContainer(
-  ({ index, items, currentItem, selectItem, removeItem, ...props }) => (
+const SortablePlaylist = SortableContainer(function SortablePlaylist({
+  index,
+  items,
+  currentItem,
+  selectItem,
+  removeItem,
+  ...props
+}) {
+  return (
     <List dense {...props}>
       {_.map(items, (item, index) => (
         <SortablePlaylistItem
@@ -49,8 +61,8 @@ const SortablePlaylist = SortableContainer(
         />
       ))}
     </List>
-  ),
-);
+  );
+});
 
 export default withStyles((theme) => ({
   root: {
