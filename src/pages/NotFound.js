@@ -15,7 +15,11 @@ export default withStyles((theme) => ({
   },
 }))(function NotFound({ classes }) {
   return (
-    <Page classes={{ contentContainer: classes.contentContainer }}>
+    <Page
+      classes={{ contentContainer: classes.contentContainer }}
+      title="Not Found"
+      showHomeButton
+    >
       <Typography variant="h3" gutterBottom>
         Sorry!
       </Typography>

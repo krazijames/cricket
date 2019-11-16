@@ -4,7 +4,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AppContext from './AppContext';
 
 export default function AppContextProvider({ children, ...props }) {
-  const [context, setContext] = React.useState({});
+  const [context, setContext] = React.useState();
 
   const updateContext = React.useCallback((newContext) => {
     setContext((prevContext) => ({
@@ -43,11 +43,12 @@ export default function AppContextProvider({ children, ...props }) {
       value={[context, updateContext, defaultContext]}
       {...props}
     >
-      {children instanceof Function ? (
-        <AppContext.Consumer>{children}</AppContext.Consumer>
-      ) : (
-        children
-      )}
+      {context &&
+        (children instanceof Function ? (
+          <AppContext.Consumer>{children}</AppContext.Consumer>
+        ) : (
+          children
+        ))}
     </AppContext.Provider>
   );
 }
