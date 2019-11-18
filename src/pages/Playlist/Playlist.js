@@ -314,18 +314,15 @@ export default withStyles((theme) => ({
       .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`)
       .orderBy('displayOrder')
       .onSnapshot((querySnapshot) => {
-        const newItems = [];
-
-        querySnapshot.forEach((doc) => {
-          newItems.push(
-            itemMapper({
+        setItems(
+          fp.flow(
+            fp.map((doc) => ({
               id: doc.id,
               ...doc.data(),
-            }),
-          );
-        });
-
-        setItems(newItems);
+            })),
+            fp.map(itemMapper),
+          )(querySnapshot.docs),
+        );
       });
   }, [playlistId]);
 

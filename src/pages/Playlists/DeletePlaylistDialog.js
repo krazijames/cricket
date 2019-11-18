@@ -11,10 +11,11 @@ import { useDialog } from 'hooks';
 const DeletePlaylistDialog = withStyles((theme) => ({}))(
   function DeletePlaylistDialog({ classes, playlist: { id, name }, ...props }) {
     const handleOk = React.useCallback(async () => {
-      await firebase
-        .firestore()
-        .doc(`${paths.PLAYLISTS}/${id}`)
-        .delete();
+      const db = firebase.firestore();
+
+      await db.runTransaction(async (transaction) => {
+        return await transaction.delete(db.doc(`${paths.PLAYLISTS}/${id}`));
+      });
     }, [id]);
 
     return (
