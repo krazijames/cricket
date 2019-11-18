@@ -27,10 +27,8 @@ export default withStyles((theme) => ({
 
   React.useEffect(() => {
     updateContext({
-      title: title
-        ? `${defaultContext.title} - ${title}`
-        : defaultContext.title,
-      description: description || defaultContext.description,
+      title,
+      description,
 
       appBarProps: {
         ...defaultContext.appBarProps,
@@ -50,8 +48,6 @@ export default withStyles((theme) => ({
     });
   }, [
     updateContext,
-    defaultContext.title,
-    defaultContext.description,
     defaultContext.appBarProps,
     title,
     description,

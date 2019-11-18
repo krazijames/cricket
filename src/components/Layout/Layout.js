@@ -35,6 +35,7 @@ export default withStyles((theme) => ({
   const [
     { title, description, appBarProps, isSidebarOpen },
     updateContext,
+    defaultContext,
   ] = useAppContext();
 
   const closeSideBar = React.useCallback(() => {
@@ -43,10 +44,29 @@ export default withStyles((theme) => ({
 
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-      </Helmet>
+      <Helmet
+        title={title}
+        titleTemplate={`${defaultContext.title} - %s`}
+        defaultTitle={defaultContext.title}
+        meta={[
+          {
+            name: 'description',
+            content: description,
+          },
+          {
+            property: 'og:title',
+            content: title,
+          },
+          {
+            property: 'og:description',
+            content: description,
+          },
+          {
+            property: 'og:type',
+            content: 'website',
+          },
+        ]}
+      />
 
       <AsyncContainer
         classes={{
