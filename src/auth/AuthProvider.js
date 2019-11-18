@@ -13,18 +13,18 @@ export default function ContextProvider({ children, ...props }) {
   const isAuthenticated = !!currentUser;
 
   React.useEffect(() => {
-    return firebase.auth().onAuthStateChanged(async (firebaseUserInfo) => {
+    return firebase.auth().onAuthStateChanged(async (user) => {
       try {
-        const user = firebaseUserInfo && {
-          uid: firebaseUserInfo.uid,
-          displayName: firebaseUserInfo.displayName,
-          email: firebaseUserInfo.email,
-          emailVerified: firebaseUserInfo.emailVerified,
-          photoUrl: firebaseUserInfo.photoURL,
-          isAnonymous: firebaseUserInfo.isAnonymous,
-        };
-
         if (user) {
+          const userInfo = _.pick(user.toJSON(), [
+            'displayName',
+            'email',
+            'emailVerified',
+            'photoURL',
+            'phoneNumber',
+            'isAnonymous',
+          ]);
+
           const userRef = await firebase
             .firestore()
             .collection(paths.USERS)
@@ -33,9 +33,9 @@ export default function ContextProvider({ children, ...props }) {
           const userSnapshot = await userRef.get();
 
           if (userSnapshot.exists) {
-            await userRef.update(_.omit(user, 'uid'));
+            await userRef.update(userInfo);
           } else {
-            await userRef.set(_.omit(user, 'uid'));
+            await userRef.set(userInfo);
           }
         }
 
