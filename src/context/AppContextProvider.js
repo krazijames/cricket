@@ -17,6 +17,8 @@ export default function AppContextProvider({ children, ...props }) {
 
   const defaultContext = React.useMemo(
     () => ({
+      title: 'Cricket',
+      description: 'Share your playlists!',
       appBarProps: {
         title: 'Cricket',
         primaryButtonProps: {

@@ -14,15 +14,27 @@ export default withStyles((theme) => ({
   progressContainer: {
     position: 'fixed',
   },
-}))(function Page({ classes, title, showHomeButton, appBarProps, ...props }) {
+}))(function Page({
+  classes,
+  title,
+  description,
+  showHomeButton,
+  appBarProps,
+  ...props
+}) {
   const theme = useTheme();
   const [, updateContext, defaultContext] = useAppContext();
 
   React.useEffect(() => {
     updateContext({
+      title,
+      description,
+
       appBarProps: {
         ...defaultContext.appBarProps,
+
         title: title || defaultContext.appBarProps.title,
+
         ...(showHomeButton && {
           primaryButtonProps: {
             component: Link,
@@ -30,6 +42,7 @@ export default withStyles((theme) => ({
             children: <ArrowBackIcon />,
           },
         }),
+
         ...appBarProps,
       },
     });
@@ -37,6 +50,7 @@ export default withStyles((theme) => ({
     updateContext,
     defaultContext.appBarProps,
     title,
+    description,
     showHomeButton,
     appBarProps,
   ]);
