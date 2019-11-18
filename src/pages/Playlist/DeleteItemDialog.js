@@ -14,10 +14,15 @@ const DeleteItemDialog = withStyles((theme) => ({}))(function DeleteItemDialog({
   ...props
 }) {
   const handleOk = React.useCallback(async () => {
-    await firebase
-      .firestore()
-      .doc(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}/${id}`)
-      .delete();
+    const db = firebase.firestore();
+
+    await db.runTransaction(async (transaction) => {
+      return await transaction.delete(
+        db.doc(
+          `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}/${id}`,
+        ),
+      );
+    });
   }, [playlistId, id]);
 
   return (
