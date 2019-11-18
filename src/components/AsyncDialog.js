@@ -45,7 +45,9 @@ export default withStyles((theme) => ({
           onClose();
         }
       } catch (error) {
-        setErrorMessage(error.message);
+        if (isMounted.current) {
+          setErrorMessage(error.message);
+        }
       } finally {
         if (isMounted.current) {
           setIsPending(false);
