@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import {
   IconButton,
   ListItem,
@@ -23,7 +24,7 @@ import { useDeletePlaylistDialog } from './DeletePlaylistDialog';
 export default withStyles((theme) => ({}))(function Playlists({
   classes,
   playlist,
-  count = 0,
+  count,
   ...props
 }) {
   const [
@@ -54,7 +55,10 @@ export default withStyles((theme) => ({}))(function Playlists({
         <ListItemIcon>
           <VideoLibraryIcon />
         </ListItemIcon>
-        <ListItemText primary={playlist.name} secondary={`${count} Items`} />
+        <ListItemText
+          primary={playlist.name}
+          secondary={_.isNumber(count) ? `${count} Items` : '-'}
+        />
         <ListItemSecondaryAction>
           <IconButton edge="end" onClick={openPlaylistMenu}>
             <MoreVertIcon />
