@@ -22,7 +22,7 @@ jobs:
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
-          path: node_modules
+          path: '**/node_modules'
           key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.OS }}-node-modules-
 
@@ -59,7 +59,7 @@ jobs:
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
-          path: node_modules
+          path: '**/node_modules'
           key: ${{ runner.OS }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
