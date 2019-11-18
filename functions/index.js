@@ -6,8 +6,9 @@ exports.recursiveDelete = functions
     timeoutSeconds: 540,
     memory: '2GB',
   })
-  .https.onCall(({ path }) => {
-    return firebase_tools.firestore.delete(path, {
+  .firestore.document('{collectionId}/{documentId}')
+  .onDelete(async (snapshot) => {
+    await firebase_tools.firestore.delete(snapshot.ref.path, {
       project: process.env.GCLOUD_PROJECT,
       recursive: true,
       yes: true,

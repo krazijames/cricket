@@ -52,7 +52,7 @@ const UserButton = withStyles((theme) => ({
         onClick={openDetails}
         {...props}
       >
-        <UserAvatar src={user.photoUrl} />
+        <UserAvatar src={user.photoURL} />
       </IconButton>
 
       <Details
@@ -69,7 +69,7 @@ const UserButton = withStyles((theme) => ({
         <List>
           <ListItem>
             <ListItemAvatar>
-              <UserAvatar src={user.photoUrl} />
+              <UserAvatar src={user.photoURL} />
             </ListItemAvatar>
             <ListItemText primary={user.displayName} secondary={user.email} />
           </ListItem>

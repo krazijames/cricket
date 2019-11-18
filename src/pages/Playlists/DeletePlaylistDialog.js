@@ -11,14 +11,10 @@ import { useDialog } from 'hooks';
 const DeletePlaylistDialog = withStyles((theme) => ({}))(
   function DeletePlaylistDialog({ classes, playlist: { id, name }, ...props }) {
     const handleOk = React.useCallback(async () => {
-      const functions = firebase.functions();
+      const db = firebase.firestore();
 
-      if (process.env.NODE_ENV === 'development') {
-        functions.useFunctionsEmulator('http://localhost:5000');
-      }
-
-      await functions.httpsCallable('recursiveDelete')({
-        path: `${paths.PLAYLISTS}/${id}`,
+      await db.runTransaction(async (transaction) => {
+        return await transaction.delete(db.doc(`${paths.PLAYLISTS}/${id}`));
       });
     }, [id]);
 
