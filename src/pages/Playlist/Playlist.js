@@ -18,6 +18,7 @@ import {
 
 import { Page } from 'components';
 import { paths } from 'data';
+import { NotFound } from 'pages';
 
 import { useAddItemDialog } from './AddItemDialog';
 import itemMapper from './itemMapper';
@@ -304,7 +305,7 @@ export default withStyles((theme) => ({
       .firestore()
       .doc(`${paths.PLAYLISTS}/${playlistId}`)
       .onSnapshot((doc) => {
-        setPlaylist({ id: doc.id, ...doc.data() });
+        setPlaylist({ id: doc.id, exists: doc.exists, ...doc.data() });
       });
   }, [playlistId]);
 
@@ -325,6 +326,10 @@ export default withStyles((theme) => ({
         );
       });
   }, [playlistId]);
+
+  if (playlist && !playlist.exists) {
+    return <NotFound />;
+  }
 
   return (
     <Page

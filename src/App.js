@@ -28,7 +28,7 @@ export default function App() {
                   <Route path="/" exact>
                     {isAuthenticated ? <Playlists /> : <NeedSignIn />}
                   </Route>
-                  <Route path="/playlist/:playlistId">
+                  <Route path="/playlist/:playlistId" exact>
                     <Playlist />
                   </Route>
                   <Route path="*">
