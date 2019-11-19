@@ -28,7 +28,6 @@ const SortablePlaylistItem = SortableElement(function SortablePlaylistItem({
 });
 
 const SortablePlaylist = SortableContainer(function SortablePlaylist({
-  index,
   playlistId,
   items,
   currentItem,
