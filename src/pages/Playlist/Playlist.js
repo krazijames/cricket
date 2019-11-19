@@ -332,6 +332,7 @@ export default withStyles((theme) => ({
       <div className={classes.mediaPlayerContainer}>
         <MediaPlayer
           containerClassName={`${classes.mediaPlayer} ${isMediaPlayerVisible &&
+            currentItem &&
             classes.mediaPlayerVisible}`}
         />
         <div className={classes.playlistToolbarSpacer} />
