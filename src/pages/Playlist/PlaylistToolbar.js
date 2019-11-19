@@ -58,10 +58,10 @@ export default withStyles((theme) => ({
           loadingContentOpacity={0}
         >
           <IconButton {...playPauseButtonProps}>
-            {mediaPlayerState === PlayerState.PLAYING ? (
-              <PauseIcon />
-            ) : (
+            {!mediaPlayerState || mediaPlayerState === PlayerState.PAUSED ? (
               <PlayArrowIcon />
+            ) : (
+              <PauseIcon />
             )}
           </IconButton>
         </AsyncContainer>
