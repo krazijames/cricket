@@ -39,7 +39,7 @@ const UserButton = withStyles((theme) => ({
 
   const [Details, openDetails, closeDetails] = usePopover();
 
-  function onSignOutButtonClick() {
+  function handleSignOutButtonClick() {
     signOut();
     closeDetails();
   }
@@ -79,7 +79,7 @@ const UserButton = withStyles((theme) => ({
                 <Button
                   variant="outlined"
                   size="small"
-                  onClick={onSignOutButtonClick}
+                  onClick={handleSignOutButtonClick}
                 >
                   Sign Out
                 </Button>
