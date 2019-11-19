@@ -1,20 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
 import fp from 'lodash/fp';
-import { List, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 import firebase from 'firebase/app';
-import {
-  Element as ScrollElement,
-  animateScroll as scroll,
-  scroller,
-} from 'react-scroll';
-import {
-  SortableContainer,
-  SortableElement,
-  arrayMove,
-} from 'react-sortable-hoc';
+import { animateScroll as scroll } from 'react-scroll';
 
 import { Page } from 'components';
 import { paths } from 'data';
@@ -22,46 +13,11 @@ import { NotFoundPage } from 'pages';
 
 import { useAddItemDialog } from './AddItemDialog';
 import itemMapper from './itemMapper';
-import PlaylistItem from './PlaylistItem';
 import PlaylistToolbar from './PlaylistToolbar';
 import useMediaPlayer from './useMediaPlayer';
+import Playlist from './Playlist';
 
 const scrollDuration = 300;
-
-const SortablePlaylistItem = SortableElement(function SortablePlaylistItem({
-  item,
-  ...props
-}) {
-  return (
-    <ScrollElement name={item.id}>
-      <PlaylistItem ContainerComponent="div" item={item} {...props} />
-    </ScrollElement>
-  );
-});
-
-const SortablePlaylist = SortableContainer(function SortablePlaylist({
-  index,
-  playlistId,
-  items,
-  currentItem,
-  selectItem,
-  ...props
-}) {
-  return (
-    <List dense {...props}>
-      {_.map(items, (item, index) => (
-        <SortablePlaylistItem
-          key={item.id}
-          index={index}
-          playlistId={playlistId}
-          item={item}
-          selected={currentItem && item.id === currentItem.id}
-          onClick={selectItem(item)}
-        />
-      ))}
-    </List>
-  );
-});
 
 export default withStyles((theme) => ({
   root: {},
@@ -133,18 +89,6 @@ export default withStyles((theme) => ({
     closeAddItemDialog,
   ] = useAddItemDialog();
 
-  const scrollToCurrentItem = React.useCallback(() => {
-    if (!currentItem) {
-      return;
-    }
-
-    scroller.scrollTo(currentItem.id, {
-      duration: scrollDuration,
-      smooth: true,
-      offset: -100,
-    });
-  }, [currentItem]);
-
   const scrollToBottom = React.useCallback(() => {
     scroll.scrollToBottom({
       duration: scrollDuration,
@@ -177,46 +121,6 @@ export default withStyles((theme) => ({
     [playlistId, items, closeAddItemDialog, scrollToBottom],
   );
 
-  const selectItem = React.useCallback(
-    (item) => {
-      return () => {
-        setCurrentItem(item);
-      };
-    },
-    [setCurrentItem],
-  );
-
-  const handleSortEnd = React.useCallback(
-    async ({ oldIndex, newIndex }) => {
-      const sortedItems = _.map(
-        arrayMove(items, oldIndex, newIndex),
-        (item, index) => ({
-          ...item,
-          displayOrder: index,
-        }),
-      );
-
-      setItems(sortedItems);
-
-      const db = firebase.firestore();
-      const batch = db.batch();
-      _.forEach(sortedItems, (item) => {
-        batch.update(
-          db
-            .collection(
-              `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`,
-            )
-            .doc(item.id),
-          {
-            displayOrder: item.displayOrder,
-          },
-        );
-      });
-      await batch.commit();
-    },
-    [playlistId, items],
-  );
-
   const toggleKeepScrollToCurrentItem = React.useCallback(() => {
     setKeepScrollToCurrentItem((prevState) => !prevState);
   }, []);
@@ -224,14 +128,6 @@ export default withStyles((theme) => ({
   const toggleMediaPlayerVisible = React.useCallback(() => {
     setIsMediaPlayerVisible((prevState) => !prevState);
   }, []);
-
-  React.useEffect(() => {
-    if (!keepScrollToCurrentItem) {
-      return;
-    }
-
-    scrollToCurrentItem();
-  }, [keepScrollToCurrentItem, scrollToCurrentItem]);
 
   React.useEffect(() => {
     return firebase
@@ -282,17 +178,14 @@ export default withStyles((theme) => ({
             </Typography>
           </div>
         ) : (
-          <SortablePlaylist
+          <Playlist
             className={classes.list}
             playlistId={playlistId}
             items={items}
             currentItem={currentItem}
-            selectItem={selectItem}
-            lockAxis="y"
-            pressDelay={200}
-            helperClass="sorting"
-            useWindowAsScrollContainer
-            onSortEnd={handleSortEnd}
+            keepScrollToCurrentItem={keepScrollToCurrentItem}
+            onItemClick={setCurrentItem}
+            onItemSorted={setItems}
           />
         ))}
 
