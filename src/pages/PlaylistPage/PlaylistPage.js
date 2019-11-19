@@ -102,9 +102,7 @@ export default withStyles((theme) => ({
         closeAddItemDialog();
         await firebase
           .firestore()
-          .collection(
-            `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`,
-          )
+          .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.ITEMS}`)
           .add({
             type,
             data,
@@ -145,7 +143,7 @@ export default withStyles((theme) => ({
     function subscribePlaylistItems() {
       return firebase
         .firestore()
-        .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`)
+        .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.ITEMS}`)
         .orderBy('displayOrder')
         .onSnapshot((querySnapshot) => {
           setItems(

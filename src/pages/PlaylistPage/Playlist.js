@@ -85,9 +85,7 @@ export default withStyles((theme) => ({}))(function Playlist({
       _.forEach(sortedItems, (item) => {
         batch.update(
           db
-            .collection(
-              `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`,
-            )
+            .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.ITEMS}`)
             .doc(item.id),
           {
             displayOrder: item.displayOrder,

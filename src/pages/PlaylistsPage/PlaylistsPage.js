@@ -70,9 +70,7 @@ export default withStyles((theme) => ({
       const unsubscribers = fp.map((playlist) => {
         return firebase
           .firestore()
-          .collection(
-            `${paths.PLAYLISTS}/${playlist.id}/${paths.PLAYLIST_ITEMS}`,
-          )
+          .collection(`${paths.PLAYLISTS}/${playlist.id}/${paths.ITEMS}`)
           .onSnapshot((querySnapshot) => {
             setPlaylistItemCounts((prevState) => ({
               ...prevState,
