@@ -93,7 +93,7 @@ const UserButton = withStyles((theme) => ({
   );
 });
 
-export default withStyles((theme) => ({}))(function Auth({
+export default withStyles((theme) => ({}))(function User({
   classes,
   children,
   onMenuButtonClick,
