@@ -4,11 +4,8 @@ import { List } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
 import { Element as ScrollElement, scroller } from 'react-scroll';
-import {
-  SortableContainer,
-  SortableElement,
-  arrayMove,
-} from 'react-sortable-hoc';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 
 import { paths } from 'data';
 
