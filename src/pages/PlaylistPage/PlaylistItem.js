@@ -26,7 +26,12 @@ export default withStyles((theme) => ({}))(function PlaylistItem({
         <ListItemAvatar>
           <Avatar src={item.thumbnailUrl} variant="rounded" />
         </ListItemAvatar>
-        <ListItemText primary={item.title} secondary={item.author} />
+        <ListItemText
+          primary={item.title}
+          secondary={item.author}
+          primaryTypographyProps={{ noWrap: true, display: 'block' }}
+          secondaryTypographyProps={{ noWrap: true, display: 'block' }}
+        />
         <ListItemSecondaryAction>
           <IconButton edge="end" onClick={openDeleteDialog}>
             <CloseIcon />
