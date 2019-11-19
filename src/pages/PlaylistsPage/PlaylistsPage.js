@@ -36,7 +36,7 @@ export default withStyles((theme) => ({
     right: theme.spacing(2),
     bottom: theme.spacing(2),
   },
-}))(function Playlists({ classes }) {
+}))(function PlaylistsPage({ classes }) {
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
   const [playlistItemCounts, setPlaylistItemCounts] = React.useState({});

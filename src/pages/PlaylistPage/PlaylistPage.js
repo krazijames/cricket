@@ -18,7 +18,7 @@ import {
 
 import { Page } from 'components';
 import { paths } from 'data';
-import { NotFound } from 'pages';
+import { NotFoundPage } from 'pages';
 
 import { useAddItemDialog } from './AddItemDialog';
 import itemMapper from './itemMapper';
@@ -105,7 +105,7 @@ export default withStyles((theme) => ({
     opacity: 1,
     pointerEvents: 'auto',
   },
-}))(function Playlist({ classes }) {
+}))(function PlaylistPage({ classes }) {
   const { playlistId } = useParams();
   const [isPending, setIsPending] = React.useState();
   const [playlist, setPlaylist] = React.useState();
@@ -261,7 +261,7 @@ export default withStyles((theme) => ({
   }, [playlistId]);
 
   if (playlist && !playlist.exists) {
-    return <NotFound />;
+    return <NotFoundPage />;
   }
 
   return (

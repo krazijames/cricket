@@ -15,7 +15,7 @@ export default withStyles((theme) => ({
     padding: theme.spacing(4),
     textAlign: 'center',
   },
-}))(function NeedSignIn({ classes }) {
+}))(function NeedSignInPage({ classes }) {
   const { signInWithGoogle } = useAuth();
 
   return (

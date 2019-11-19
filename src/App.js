@@ -10,7 +10,12 @@ import { AuthProvider } from 'auth';
 import { AppContextProvider } from 'context';
 import * as config from 'config';
 import { Layout } from 'components';
-import { Playlist, Playlists, NeedSignIn, NotFound } from 'pages';
+import {
+  PlaylistPage,
+  PlaylistsPage,
+  NeedSignInPage,
+  NotFoundPage,
+} from 'pages';
 import theme from 'theme';
 
 export default function App() {
@@ -26,13 +31,13 @@ export default function App() {
               <Layout loading={isPending}>
                 <Switch>
                   <Route path="/" exact>
-                    {isAuthenticated ? <Playlists /> : <NeedSignIn />}
+                    {isAuthenticated ? <PlaylistsPage /> : <NeedSignInPage />}
                   </Route>
                   <Route path="/playlist/:playlistId" exact>
-                    <Playlist />
+                    <PlaylistPage />
                   </Route>
                   <Route path="*">
-                    <NotFound />
+                    <NotFoundPage />
                   </Route>
                 </Switch>
               </Layout>
