@@ -15,33 +15,35 @@ export default function ContextProvider({ children, ...props }) {
   React.useEffect(function handleAuthStateChange() {
     return firebase.auth().onAuthStateChanged(async (user) => {
       try {
-        if (user) {
-          const userInfo = _.pick(user.toJSON(), [
-            'displayName',
-            'email',
-            'emailVerified',
-            'photoURL',
-            'phoneNumber',
-            'isAnonymous',
-          ]);
-
-          const userRef = await firebase
-            .firestore()
-            .collection(paths.USERS)
-            .doc(user.uid);
-
-          const userSnapshot = await userRef.get();
-
-          if (userSnapshot.exists) {
-            await userRef.update(userInfo);
-          } else {
-            await userRef.set(userInfo);
-          }
-        }
-
         await firebase.auth().getRedirectResult();
 
         setCurrentUser(user);
+
+        if (!user) {
+          return;
+        }
+
+        const userInfo = _.pick(user.toJSON(), [
+          'displayName',
+          'email',
+          'emailVerified',
+          'photoURL',
+          'phoneNumber',
+          'isAnonymous',
+        ]);
+
+        const userRef = await firebase
+          .firestore()
+          .collection(paths.USERS)
+          .doc(user.uid);
+
+        const userSnapshot = await userRef.get();
+
+        if (userSnapshot.exists) {
+          await userRef.update(userInfo);
+        } else {
+          await userRef.set(userInfo);
+        }
       } finally {
         setIsPending(false);
       }
