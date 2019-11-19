@@ -13,7 +13,7 @@ export default withStyles((theme) => ({
     padding: theme.spacing(4),
     textAlign: 'center',
   },
-}))(function NotFound({ classes }) {
+}))(function NotFoundPage({ classes }) {
   return (
     <Page
       classes={{ contentContainer: classes.contentContainer }}

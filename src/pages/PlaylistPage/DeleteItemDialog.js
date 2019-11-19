@@ -18,9 +18,7 @@ const DeleteItemDialog = withStyles((theme) => ({}))(function DeleteItemDialog({
 
     await db.runTransaction(async (transaction) => {
       return await transaction.delete(
-        db.doc(
-          `${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}/${id}`,
-        ),
+        db.doc(`${paths.PLAYLISTS}/${playlistId}/${paths.ITEMS}/${id}`),
       );
     });
   }, [playlistId, id]);

@@ -19,14 +19,14 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Cache Node Modules (node_modules)
+      - name: Cache (node_modules)
         uses: actions/cache@v1
         with:
           path: 'node_modules'
           key: ${{ runner.OS }}-node_modules-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.OS }}-node_modules-
 
-      - name: Cache Node Modules (functions/node_modules)
+      - name: Cache (functions/node_modules)
         uses: actions/cache@v1
         with:
           path: 'functions/node_modules'
@@ -63,14 +63,14 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Cache Node Modules (node_modules)
+      - name: Cache (node_modules)
         uses: actions/cache@v1
         with:
           path: 'node_modules'
           key: ${{ runner.OS }}-node_modules-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.OS }}-node_modules-
 
-      - name: Cache Node Modules (functions/node_modules)
+      - name: Cache (functions/node_modules)
         uses: actions/cache@v1
         with:
           path: 'functions/node_modules'

@@ -36,9 +36,12 @@ export default function AppContextProvider({ children, ...props }) {
     [updateContext],
   );
 
-  React.useEffect(() => {
-    setContext(defaultContext);
-  }, [defaultContext]);
+  React.useEffect(
+    function initializeContext() {
+      setContext(defaultContext);
+    },
+    [defaultContext],
+  );
 
   return (
     <AppContext.Provider

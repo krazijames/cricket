@@ -57,14 +57,17 @@ export default withStyles((theme) => ({
     [onOk, onClose],
   );
 
-  React.useEffect(() => {
-    if (open) {
-      setIsPending(false);
-      setErrorMessage();
-    }
-  }, [open]);
+  React.useEffect(
+    function reset() {
+      if (open) {
+        setIsPending(false);
+        setErrorMessage();
+      }
+    },
+    [open],
+  );
 
-  React.useEffect(() => {
+  React.useEffect(function updateIsMounted() {
     isMounted.current = true;
 
     return () => {

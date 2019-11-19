@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import Auth from './Auth';
+import User from './User';
 
 export default withStyles((theme) => ({
   primaryButton: {
@@ -38,7 +38,7 @@ export default withStyles((theme) => ({
           {title}
         </Typography>
 
-        <Auth />
+        <User />
       </Toolbar>
     </MuiAppBar>
   );

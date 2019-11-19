@@ -64,17 +64,20 @@ export default withStyles((theme) => ({}))(function MediaPlayer({
     [onStateChange],
   );
 
-  React.useEffect(() => {
-    if (!player) {
-      return;
-    }
+  React.useEffect(
+    function forcePlayState() {
+      if (!player) {
+        return;
+      }
 
-    if (play) {
-      player.playVideo();
-    } else {
-      player.pauseVideo();
-    }
-  }, [player, play]);
+      if (play) {
+        player.playVideo();
+      } else {
+        player.pauseVideo();
+      }
+    },
+    [player, play],
+  );
 
   return (
     <YouTube

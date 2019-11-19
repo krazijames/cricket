@@ -12,7 +12,7 @@ export default function ContextProvider({ children, ...props }) {
 
   const isAuthenticated = !!currentUser;
 
-  React.useEffect(() => {
+  React.useEffect(function handleAuthStateChange() {
     return firebase.auth().onAuthStateChanged(async (user) => {
       try {
         if (user) {

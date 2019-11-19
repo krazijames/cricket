@@ -36,51 +36,57 @@ export default withStyles((theme) => ({
     right: theme.spacing(2),
     bottom: theme.spacing(2),
   },
-}))(function Playlists({ classes }) {
+}))(function PlaylistsPage({ classes }) {
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
   const [playlistItemCounts, setPlaylistItemCounts] = React.useState({});
 
   const [AddPlaylistDialog, openAddPlaylistDialog] = useAddPlaylistDialog();
 
-  React.useEffect(() => {
-    if (isPendingAuth) {
-      return;
-    }
+  React.useEffect(
+    function subscribePlaylists() {
+      if (isPendingAuth) {
+        return;
+      }
 
-    return firebase
-      .firestore()
-      .collection(paths.PLAYLISTS)
-      .where('ownerUserUids', 'array-contains', user.uid)
-      .onSnapshot((querySnapshot) => {
-        setPlaylists(
-          fp.flow(
-            fp.map((doc) => ({ id: doc.id, ...doc.data() })),
-            fp.orderBy('createdAt', 'desc'),
-          )(querySnapshot.docs),
-        );
-      });
-  }, [isPendingAuth, user]);
-
-  React.useEffect(() => {
-    const unsubscribers = fp.map((playlist) => {
       return firebase
         .firestore()
-        .collection(`${paths.PLAYLISTS}/${playlist.id}/${paths.PLAYLIST_ITEMS}`)
+        .collection(paths.PLAYLISTS)
+        .where('ownerUserUids', 'array-contains', user.uid)
         .onSnapshot((querySnapshot) => {
-          setPlaylistItemCounts((prevState) => ({
-            ...prevState,
-            [playlist.id]: querySnapshot.size,
-          }));
+          setPlaylists(
+            fp.flow(
+              fp.map((doc) => ({ id: doc.id, ...doc.data() })),
+              fp.orderBy('createdAt', 'desc'),
+            )(querySnapshot.docs),
+          );
         });
-    })(playlists);
+    },
+    [isPendingAuth, user],
+  );
 
-    return () => {
-      fp.forEach((unsubscribe) => {
-        unsubscribe();
-      })(unsubscribers);
-    };
-  }, [playlists]);
+  React.useEffect(
+    function subscribePlaylistCounts() {
+      const unsubscribers = fp.map((playlist) => {
+        return firebase
+          .firestore()
+          .collection(`${paths.PLAYLISTS}/${playlist.id}/${paths.ITEMS}`)
+          .onSnapshot((querySnapshot) => {
+            setPlaylistItemCounts((prevState) => ({
+              ...prevState,
+              [playlist.id]: querySnapshot.size,
+            }));
+          });
+      })(playlists);
+
+      return () => {
+        fp.forEach((unsubscribe) => {
+          unsubscribe();
+        })(unsubscribers);
+      };
+    },
+    [playlists],
+  );
 
   return (
     <Page className={classes.root} loading={!playlists}>

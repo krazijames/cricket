@@ -21,11 +21,14 @@ export default withStyles((theme) => ({}))(function PlaylistDialog({
     await onOk({ id, name: newName });
   }, [onOk, id, newName]);
 
-  React.useEffect(() => {
-    if (open) {
-      setNewName(name || '');
-    }
-  }, [open, name]);
+  React.useEffect(
+    function reset() {
+      if (open) {
+        setNewName(name || '');
+      }
+    },
+    [open, name],
+  );
 
   return (
     <AsyncDialog

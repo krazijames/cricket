@@ -73,11 +73,11 @@ const AddItemDialog = withStyles((theme) => ({
   const [errorMessage, setErrorMessage] = React.useState();
   const inputRef = React.useRef();
 
-  function onQueryChange(event) {
+  function handleQueryChange(event) {
     setQuery(event.target.value);
   }
 
-  async function onSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     inputRef.current && inputRef.current.blur();
 
@@ -108,20 +108,23 @@ const AddItemDialog = withStyles((theme) => ({
     }
   }
 
-  function onItemClick({ type, data }) {
+  function handleItemClick({ type, data }) {
     return () => {
       onOk({ type, data });
     };
   }
 
-  React.useEffect(() => {
-    if (open) {
-      setQuery('');
-      setItems();
-      setErrorMessage();
-      setIsPending(false);
-    }
-  }, [open]);
+  React.useEffect(
+    function reset() {
+      if (open) {
+        setQuery('');
+        setItems();
+        setErrorMessage();
+        setIsPending(false);
+      }
+    },
+    [open],
+  );
 
   return (
     <Dialog
@@ -136,7 +139,7 @@ const AddItemDialog = withStyles((theme) => ({
       <DialogTitle>
         <div>Add Item</div>
 
-        <form className={classes.searchField} onSubmit={onSubmit}>
+        <form className={classes.searchField} onSubmit={handleSubmit}>
           <TextField
             className={classes.searchInput}
             inputRef={inputRef}
@@ -147,7 +150,7 @@ const AddItemDialog = withStyles((theme) => ({
             required
             disabled={isPending}
             value={query}
-            onChange={onQueryChange}
+            onChange={handleQueryChange}
           />
 
           <AsyncContainer loading={isPending} loadingContentOpacity={0}>
@@ -179,7 +182,7 @@ const AddItemDialog = withStyles((theme) => ({
                     alignItems="flex-start"
                     button
                     disabled={isPending}
-                    onClick={onItemClick(item)}
+                    onClick={handleItemClick(item)}
                   >
                     <ListItemAvatar>
                       <Avatar src={item.thumbnailUrl} variant="rounded" />

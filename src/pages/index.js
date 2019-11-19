@@ -1,4 +1,4 @@
-export { default as NeedSignIn } from './NeedSignIn';
-export { default as NotFound } from './NotFound';
-export { default as Playlist } from './Playlist';
-export { default as Playlists } from './Playlists';
+export { default as NeedSignInPage } from './NeedSignInPage';
+export { default as NotFoundPage } from './NotFoundPage';
+export { default as PlaylistPage } from './PlaylistPage';
+export { default as PlaylistsPage } from './PlaylistsPage';
