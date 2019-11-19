@@ -25,35 +25,38 @@ export default withStyles((theme) => ({
   const theme = useTheme();
   const [, updateContext, defaultContext] = useAppContext();
 
-  React.useEffect(() => {
-    updateContext({
+  React.useEffect(
+    function updateAppContext() {
+      updateContext({
+        title,
+        description,
+
+        appBarProps: {
+          ...defaultContext.appBarProps,
+
+          title: title || defaultContext.appBarProps.title,
+
+          ...(showHomeButton && {
+            primaryButtonProps: {
+              component: Link,
+              to: '/',
+              children: <ArrowBackIcon />,
+            },
+          }),
+
+          ...appBarProps,
+        },
+      });
+    },
+    [
+      updateContext,
+      defaultContext.appBarProps,
       title,
       description,
-
-      appBarProps: {
-        ...defaultContext.appBarProps,
-
-        title: title || defaultContext.appBarProps.title,
-
-        ...(showHomeButton && {
-          primaryButtonProps: {
-            component: Link,
-            to: '/',
-            children: <ArrowBackIcon />,
-          },
-        }),
-
-        ...appBarProps,
-      },
-    });
-  }, [
-    updateContext,
-    defaultContext.appBarProps,
-    title,
-    description,
-    showHomeButton,
-    appBarProps,
-  ]);
+      showHomeButton,
+      appBarProps,
+    ],
+  );
 
   return (
     <AsyncContainer

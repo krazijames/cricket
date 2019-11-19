@@ -114,14 +114,17 @@ const AddItemDialog = withStyles((theme) => ({
     };
   }
 
-  React.useEffect(() => {
-    if (open) {
-      setQuery('');
-      setItems();
-      setErrorMessage();
-      setIsPending(false);
-    }
-  }, [open]);
+  React.useEffect(
+    function reset() {
+      if (open) {
+        setQuery('');
+        setItems();
+        setErrorMessage();
+        setIsPending(false);
+      }
+    },
+    [open],
+  );
 
   return (
     <Dialog

@@ -99,25 +99,20 @@ export default withStyles((theme) => ({}))(function Playlist({
     [playlistId, items, onItemSorted],
   );
 
-  const scrollToCurrentItem = React.useCallback(() => {
-    if (!currentItem) {
-      return;
-    }
+  React.useEffect(
+    function scrollToCurrentItem() {
+      if (!keepScrollToCurrentItem || !currentItem) {
+        return;
+      }
 
-    scroller.scrollTo(currentItem.id, {
-      duration: scrollDuration,
-      smooth: true,
-      offset: -100,
-    });
-  }, [currentItem]);
-
-  React.useEffect(() => {
-    if (!keepScrollToCurrentItem) {
-      return;
-    }
-
-    scrollToCurrentItem();
-  }, [keepScrollToCurrentItem, scrollToCurrentItem]);
+      scroller.scrollTo(currentItem.id, {
+        duration: scrollDuration,
+        smooth: true,
+        offset: -100,
+      });
+    },
+    [keepScrollToCurrentItem, currentItem],
+  );
 
   return (
     <SortablePlaylist

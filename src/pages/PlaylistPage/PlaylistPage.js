@@ -129,32 +129,38 @@ export default withStyles((theme) => ({
     setIsMediaPlayerVisible((prevState) => !prevState);
   }, []);
 
-  React.useEffect(() => {
-    return firebase
-      .firestore()
-      .doc(`${paths.PLAYLISTS}/${playlistId}`)
-      .onSnapshot((doc) => {
-        setPlaylist({ id: doc.id, exists: doc.exists, ...doc.data() });
-      });
-  }, [playlistId]);
+  React.useEffect(
+    function subscribePlaylist() {
+      return firebase
+        .firestore()
+        .doc(`${paths.PLAYLISTS}/${playlistId}`)
+        .onSnapshot((doc) => {
+          setPlaylist({ id: doc.id, exists: doc.exists, ...doc.data() });
+        });
+    },
+    [playlistId],
+  );
 
-  React.useEffect(() => {
-    return firebase
-      .firestore()
-      .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`)
-      .orderBy('displayOrder')
-      .onSnapshot((querySnapshot) => {
-        setItems(
-          fp.flow(
-            fp.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            })),
-            fp.map(itemMapper),
-          )(querySnapshot.docs),
-        );
-      });
-  }, [playlistId]);
+  React.useEffect(
+    function subscribePlaylistItems() {
+      return firebase
+        .firestore()
+        .collection(`${paths.PLAYLISTS}/${playlistId}/${paths.PLAYLIST_ITEMS}`)
+        .orderBy('displayOrder')
+        .onSnapshot((querySnapshot) => {
+          setItems(
+            fp.flow(
+              fp.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              })),
+              fp.map(itemMapper),
+            )(querySnapshot.docs),
+          );
+        });
+    },
+    [playlistId],
+  );
 
   if (playlist && !playlist.exists) {
     return <NotFoundPage />;
