@@ -34,8 +34,10 @@ export default withStyles((theme) => ({
     padding: theme.spacing(4),
     textAlign: 'center',
   },
-  list: {
-    marginBottom: '56vw',
+  list: {},
+  mediaPlayerSpacer: {
+    height: '56vw',
+    maxHeight: '50vh',
   },
   playlistToolbarSpacer: theme.mixins.toolbar,
   toolbar: {
@@ -198,6 +200,7 @@ export default withStyles((theme) => ({
           />
         ))}
 
+      <div className={classes.mediaPlayerSpacer} />
       <div className={classes.playlistToolbarSpacer} />
 
       <PlaylistToolbar
