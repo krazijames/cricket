@@ -53,6 +53,7 @@ export default withStyles((theme) => ({
   },
   mediaPlayer: {
     height: '56vw',
+    maxHeight: '50vh',
 
     opacity: 0,
     transition: 'opacity .3s',
