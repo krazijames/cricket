@@ -39,7 +39,6 @@ export default withStyles((theme) => ({
 }))(function PlaylistsPage({ classes }) {
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
-  const [playlistItemCounts, setPlaylistItemCounts] = React.useState({});
 
   const [AddPlaylistDialog, openAddPlaylistDialog] = useAddPlaylistDialog();
 
@@ -65,29 +64,6 @@ export default withStyles((theme) => ({
     [isPendingAuth, user],
   );
 
-  React.useEffect(
-    function subscribePlaylistCounts() {
-      const unsubscribers = fp.map((playlist) => {
-        return firebase
-          .firestore()
-          .collection(`${paths.PLAYLISTS}/${playlist.id}/${paths.ITEMS}`)
-          .onSnapshot((querySnapshot) => {
-            setPlaylistItemCounts((prevState) => ({
-              ...prevState,
-              [playlist.id]: querySnapshot.size,
-            }));
-          });
-      })(playlists);
-
-      return () => {
-        fp.forEach((unsubscribe) => {
-          unsubscribe();
-        })(unsubscribers);
-      };
-    },
-    [playlists],
-  );
-
   return (
     <Page className={classes.root} loading={!playlists}>
       {playlists &&
@@ -100,11 +76,7 @@ export default withStyles((theme) => ({
         ) : (
           <List>
             {_.map(playlists, (playlist) => (
-              <Playlist
-                key={playlist.id}
-                playlist={playlist}
-                count={playlistItemCounts[playlist.id]}
-              />
+              <Playlist key={playlist.id} playlist={playlist} />
             ))}
           </List>
         ))}
