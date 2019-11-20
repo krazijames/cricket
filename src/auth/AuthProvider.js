@@ -9,6 +9,7 @@ import AuthContext from './AuthContext';
 export default function ContextProvider({ children, ...props }) {
   const [isPending, setIsPending] = React.useState(true);
   const [currentUser, setCurrentUser] = React.useState();
+  const [error, setError] = React.useState();
 
   const isAuthenticated = !!currentUser;
 
@@ -44,6 +45,8 @@ export default function ContextProvider({ children, ...props }) {
         } else {
           await userRef.set(userInfo);
         }
+      } catch (error) {
+        setError(error);
       } finally {
         setIsPending(false);
       }
@@ -69,6 +72,7 @@ export default function ContextProvider({ children, ...props }) {
       value={{
         isAuthenticated,
         isPending,
+        error,
         user: currentUser,
         signInWithGoogle,
         signOut,

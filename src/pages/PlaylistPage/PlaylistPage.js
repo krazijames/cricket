@@ -64,6 +64,7 @@ export default withStyles((theme) => ({
 }))(function PlaylistPage({ classes }) {
   const { playlistId } = useParams();
   const [isPending, setIsPending] = React.useState();
+  const [error, setError] = React.useState();
   const [playlist, setPlaylist] = React.useState();
   const [items, setItems] = React.useState();
   const [keepScrollToCurrentItem, setKeepScrollToCurrentItem] = React.useState(
@@ -112,6 +113,8 @@ export default withStyles((theme) => ({
             createdAt: new Date(),
           });
         scrollToBottom();
+      } catch (error) {
+        setError(error);
       } finally {
         setIsPending(false);
       }
@@ -134,7 +137,7 @@ export default withStyles((theme) => ({
         .doc(`${paths.PLAYLISTS}/${playlistId}`)
         .onSnapshot((doc) => {
           setPlaylist({ id: doc.id, exists: doc.exists, ...doc.data() });
-        });
+        }, setError);
     },
     [playlistId],
   );
@@ -155,7 +158,7 @@ export default withStyles((theme) => ({
               fp.map(itemMapper),
             )(querySnapshot.docs),
           );
-        });
+        }, setError);
     },
     [playlistId],
   );
@@ -173,6 +176,7 @@ export default withStyles((theme) => ({
       title={playlist ? playlist.name : 'Playlist'}
       showHomeButton
       loading={!playlist || !items || isPending}
+      error={error}
     >
       {items &&
         (_.isEmpty(items) ? (

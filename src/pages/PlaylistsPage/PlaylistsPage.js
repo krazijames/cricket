@@ -39,6 +39,7 @@ export default withStyles((theme) => ({
 }))(function PlaylistsPage({ classes }) {
   const { isPending: isPendingAuth, user } = useAuth();
   const [playlists, setPlaylists] = React.useState();
+  const [error, setError] = React.useState();
 
   const [AddPlaylistDialog, openAddPlaylistDialog] = useAddPlaylistDialog();
 
@@ -59,13 +60,13 @@ export default withStyles((theme) => ({
               fp.orderBy('createdAt', 'desc'),
             )(querySnapshot.docs),
           );
-        });
+        }, setError);
     },
     [isPendingAuth, user],
   );
 
   return (
-    <Page className={classes.root} loading={!playlists}>
+    <Page className={classes.root} loading={!playlists} error={error}>
       {playlists &&
         (_.isEmpty(playlists) ? (
           <div className={classes.emptyMessageContainer}>

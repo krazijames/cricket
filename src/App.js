@@ -9,7 +9,7 @@ import 'firebase/functions';
 import { AuthProvider } from 'auth';
 import { AppContextProvider } from 'context';
 import * as config from 'config';
-import { Layout } from 'components';
+import { Layout, Page } from 'components';
 import {
   PlaylistPage,
   PlaylistsPage,
@@ -24,22 +24,26 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        {({ isPending, isAuthenticated }) => (
+        {({ isPending, isAuthenticated, error }) => (
           <AppContextProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <Layout loading={isPending}>
-                <Switch>
-                  <Route path="/" exact>
-                    {isAuthenticated ? <PlaylistsPage /> : <NeedSignInPage />}
-                  </Route>
-                  <Route path="/playlist/:playlistId" exact>
-                    <PlaylistPage />
-                  </Route>
-                  <Route path="*">
-                    <NotFoundPage />
-                  </Route>
-                </Switch>
+                {error ? (
+                  <Page error={error} />
+                ) : (
+                  <Switch>
+                    <Route path="/" exact>
+                      {isAuthenticated ? <PlaylistsPage /> : <NeedSignInPage />}
+                    </Route>
+                    <Route path="/playlist/:playlistId" exact>
+                      <PlaylistPage />
+                    </Route>
+                    <Route path="*">
+                      <NotFoundPage />
+                    </Route>
+                  </Switch>
+                )}
               </Layout>
             </ThemeProvider>
           </AppContextProvider>
