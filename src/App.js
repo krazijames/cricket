@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
 import firebase from 'firebase/app';
+import 'firebase/analytics';
 import 'firebase/firestore';
 import 'firebase/functions';
 
@@ -20,6 +21,7 @@ import theme from 'theme';
 
 export default function App() {
   firebase.initializeApp(config.firebase);
+  firebase.analytics();
 
   return (
     <Router>
