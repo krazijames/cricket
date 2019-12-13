@@ -68,5 +68,10 @@
     ".js, .jsx, .ts, .tsx": {
       "style": "module"
     }
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "@cricket/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }
