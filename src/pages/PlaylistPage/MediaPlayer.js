@@ -1,5 +1,5 @@
-import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import React from 'react';
 import YouTube from 'react-youtube';
 
 export const PlayerState = {

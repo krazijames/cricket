@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Drawer,
   List,
@@ -6,8 +5,9 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import HomeIcon from '@material-ui/icons/Home';
 import { withStyles } from '@material-ui/core/styles';
+import HomeIcon from '@material-ui/icons/Home';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 function MenuItem({ ...props }) {

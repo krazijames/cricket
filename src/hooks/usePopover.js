@@ -1,5 +1,5 @@
-import React from 'react';
 import { Popover as MuiPopover } from '@material-ui/core';
+import React from 'react';
 
 export default (component = MuiPopover) => {
   const Component = component;
