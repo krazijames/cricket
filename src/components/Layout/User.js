@@ -1,4 +1,6 @@
-import React from 'react';
+import { useAuth } from '@cricket/auth';
+import { usePopover } from '@cricket/hooks';
+import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
 import {
   Avatar,
   Button,
@@ -9,12 +11,9 @@ import {
   ListItemText,
   SvgIcon,
 } from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
-import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
-
-import { useAuth } from 'auth';
-import { usePopover } from 'hooks';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import React from 'react';
 
 const UserAvatar = withStyles((theme) => ({
   root: {

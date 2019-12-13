@@ -1,10 +1,9 @@
-import React from 'react';
+import { useAuth } from '@cricket/auth';
+import { paths } from '@cricket/data';
+import { useDialog } from '@cricket/hooks';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
-
-import { useAuth } from 'auth';
-import { paths } from 'data';
-import { useDialog } from 'hooks';
+import React from 'react';
 
 import PlaylistDialog from './PlaylistDialog';
 

@@ -1,8 +1,7 @@
-import React from 'react';
-import _ from 'lodash';
+import { paths } from '@cricket/data';
 import firebase from 'firebase/app';
-
-import { paths } from 'data';
+import _ from 'lodash';
+import React from 'react';
 
 import AuthContext from './AuthContext';
 

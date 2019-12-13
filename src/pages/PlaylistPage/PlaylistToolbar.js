@@ -1,16 +1,15 @@
-import React from 'react';
+import { AsyncContainer } from '@cricket/components';
 import { Fab, IconButton, Paper, Toolbar } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
-import MyLocationIcon from '@material-ui/icons/MyLocation';
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import { withStyles } from '@material-ui/core/styles';
-
-import { AsyncContainer } from 'components';
+import AddIcon from '@material-ui/icons/Add';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+import PauseIcon from '@material-ui/icons/Pause';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
+import VideoLabelIcon from '@material-ui/icons/VideoLabel';
+import React from 'react';
 
 import { PlayerState } from './MediaPlayer';
 

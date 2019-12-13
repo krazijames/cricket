@@ -1,21 +1,20 @@
-import React from 'react';
-import _ from 'lodash';
-import fp from 'lodash/fp';
+import { Page } from '@cricket/components';
+import { paths } from '@cricket/data';
+import { NotFoundPage } from '@cricket/pages';
 import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router-dom';
 import firebase from 'firebase/app';
+import _ from 'lodash';
+import fp from 'lodash/fp';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
-
-import { Page } from 'components';
-import { paths } from 'data';
-import { NotFoundPage } from 'pages';
 
 import { useAddItemDialog } from './AddItemDialog';
 import itemMapper from './itemMapper';
+import Playlist from './Playlist';
 import PlaylistToolbar from './PlaylistToolbar';
 import useMediaPlayer from './useMediaPlayer';
-import Playlist from './Playlist';
 
 const scrollDuration = 300;
 

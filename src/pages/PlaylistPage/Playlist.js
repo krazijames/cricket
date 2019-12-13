@@ -1,16 +1,15 @@
-import React from 'react';
-import _ from 'lodash';
+import { paths } from '@cricket/data';
 import { List } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
+import _ from 'lodash';
+import React from 'react';
 import { Element as ScrollElement, scroller } from 'react-scroll';
 import {
   SortableContainer,
   SortableElement,
   arrayMove,
 } from 'react-sortable-hoc';
-
-import { paths } from 'data';
 
 import PlaylistItem from './PlaylistItem';
 
