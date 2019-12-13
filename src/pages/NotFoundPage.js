@@ -1,7 +1,6 @@
-import React from 'react';
+import { Page } from '@cricket/components';
 import { withStyles } from '@material-ui/core/styles';
-
-import { Page } from 'components';
+import React from 'react';
 
 export default withStyles((theme) => ({}))(function NotFoundPage({ classes }) {
   return (

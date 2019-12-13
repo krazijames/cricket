@@ -1,10 +1,9 @@
-import React from 'react';
+import { useAuth } from '@cricket/auth';
+import { Page } from '@cricket/components';
+import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
 import { Button, SvgIcon } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { ReactComponent as GoogleIcon } from '@fortawesome/fontawesome-free/svgs/brands/google.svg';
-
-import { useAuth } from 'auth';
-import { Page } from 'components';
+import React from 'react';
 
 export default withStyles((theme) => ({}))(function NeedSignInPage({
   classes,

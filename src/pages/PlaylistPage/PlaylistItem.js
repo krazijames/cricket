@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Avatar,
   IconButton,
@@ -7,8 +6,9 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import React from 'react';
 
 import { useDeleteItemDialog } from './DeleteItemDialog';
 

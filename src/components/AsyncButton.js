@@ -1,8 +1,7 @@
-import React from 'react';
+import { AsyncContainer } from '@cricket/components';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-
-import { AsyncContainer } from 'components';
+import React from 'react';
 
 export default withStyles((theme) => ({}))(function AsyncButton({
   loading,

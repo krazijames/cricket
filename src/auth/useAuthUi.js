@@ -1,7 +1,8 @@
-import React from 'react';
+import 'firebaseui/dist/firebaseui.css';
+
 import firebase from 'firebase/app';
 import * as firebaseui from 'firebaseui';
-import 'firebaseui/dist/firebaseui.css';
+import React from 'react';
 
 export default (authUiContainerSelector) => {
   React.useEffect(

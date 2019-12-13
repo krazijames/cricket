@@ -1,23 +1,23 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/styles';
-import { CssBaseline } from '@material-ui/core';
-import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/firestore';
 import 'firebase/functions';
 
-import { AuthProvider } from 'auth';
-import { AppContextProvider } from 'context';
-import * as config from 'config';
-import { Layout, Page } from 'components';
+import { AuthProvider } from '@cricket/auth';
+import { Layout, Page } from '@cricket/components';
+import * as config from '@cricket/config';
+import { AppContextProvider } from '@cricket/context';
 import {
-  PlaylistPage,
-  PlaylistsPage,
   NeedSignInPage,
   NotFoundPage,
-} from 'pages';
-import theme from 'theme';
+  PlaylistPage,
+  PlaylistsPage,
+} from '@cricket/pages';
+import theme from '@cricket/theme';
+import { CssBaseline } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/styles';
+import firebase from 'firebase/app';
+import React from 'react';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 export default function App() {
   firebase.initializeApp(config.firebase);

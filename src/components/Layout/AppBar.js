@@ -1,11 +1,11 @@
-import React from 'react';
 import {
-  AppBar as MuiAppBar,
   IconButton,
+  AppBar as MuiAppBar,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import React from 'react';
 
 import User from './User';
 

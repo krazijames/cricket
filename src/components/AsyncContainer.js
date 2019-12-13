@@ -1,7 +1,7 @@
-import React from 'react';
-import _ from 'lodash';
 import { Box, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
+import React from 'react';
 
 const transitionDuration = '0.25s';
 

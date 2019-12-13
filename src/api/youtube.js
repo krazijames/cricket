@@ -1,6 +1,5 @@
+import * as config from '@cricket/config';
 import { create } from 'apisauce';
-
-import * as config from 'config';
 
 const api = create({
   baseURL: 'https://www.googleapis.com/youtube/v3',

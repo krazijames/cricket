@@ -1,9 +1,8 @@
+import { AsyncContainer } from '@cricket/components';
+import { useAppContext } from '@cricket/context';
+import { useTheme, withStyles } from '@material-ui/core/styles';
 import React from 'react';
-import { withStyles, useTheme } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
-
-import { useAppContext } from 'context';
-import { AsyncContainer } from 'components';
 
 import AppBar from './AppBar';
 import Sidebar from './Sidebar';

@@ -1,11 +1,10 @@
-import React from 'react';
+import { AsyncDialog } from '@cricket/components';
+import { paths } from '@cricket/data';
+import { useDialog } from '@cricket/hooks';
 import { DialogContentText } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
-
-import { paths } from 'data';
-import { AsyncDialog } from 'components';
-import { useDialog } from 'hooks';
+import React from 'react';
 
 const DeleteItemDialog = withStyles((theme) => ({}))(function DeleteItemDialog({
   classes,

@@ -1,11 +1,10 @@
-import React from 'react';
+import { AsyncContainer } from '@cricket/components';
+import { useAppContext } from '@cricket/context';
 import { Typography } from '@material-ui/core';
+import { useTheme, withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import React from 'react';
 import { Link } from 'react-router-dom';
-
-import { useAppContext } from 'context';
-import { AsyncContainer } from 'components';
 
 export default withStyles((theme) => ({
   root: {

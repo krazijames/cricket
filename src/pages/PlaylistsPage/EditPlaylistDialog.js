@@ -1,9 +1,8 @@
-import React from 'react';
+import { paths } from '@cricket/data';
+import { useDialog } from '@cricket/hooks';
 import { withStyles } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
-
-import { paths } from 'data';
-import { useDialog } from 'hooks';
+import React from 'react';
 
 import PlaylistDialog from './PlaylistDialog';
 
