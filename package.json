@@ -29,7 +29,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "react-scroll": "^1.7.16",
-    "react-sortable-hoc": "^1.10.1",
+    "react-sortable-hoc": "^1.11.0",
     "react-youtube": "^7.9.0",
     "youtube-duration-format": "^0.2.0"
   },
