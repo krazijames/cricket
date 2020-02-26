@@ -19,7 +19,7 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/styles": "^4.9.0",
     "apisauce": "^1.1.1",
-    "date-fns": "^2.9.0",
+    "date-fns": "^2.10.0",
     "firebase": "^7.9.1",
     "firebaseui": "^4.4.0",
     "lodash": "^4.17.15",
