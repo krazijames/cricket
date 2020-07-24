@@ -22,7 +22,7 @@
     "date-fns": "^2.11.1",
     "firebase": "^7.14.1",
     "firebaseui": "^4.5.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
