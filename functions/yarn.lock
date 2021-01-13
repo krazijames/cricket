@@ -1578,10 +1578,10 @@ firebase-functions-test@^0.2.1:
     "@types/lodash" "^4.14.104"
     lodash "^4.17.5"
 
-firebase-functions@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/firebase-functions/-/firebase-functions-3.9.0.tgz#b010c0d48cb78e80bf454b6b4ac065bfd5ccb029"
-  integrity sha512-PHwEvm/c0CNWFxfilmhyZBu5pZlQ2EJk/W4G2yKUm2yHGuh2ZZcga0s4Tj52vllX2eE+NkAsDsJpGdnjljA6+Q==
+firebase-functions@^3.13.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/firebase-functions/-/firebase-functions-3.13.0.tgz#66278dbeb45f343a179814f2b1d95b383beec5e7"
+  integrity sha512-tnltJL5KlGtbeBD9scsVjoKTSTMeo6EAy1gsdOfRlrwAu6idgLRKYVdmw0YymS8N7SwJ3CXo+3fuvSSihKhXbA==
   dependencies:
     "@types/express" "4.17.3"
     cors "^2.8.5"
