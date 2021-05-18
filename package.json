@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^5.9.0",
-    "firebase-tools": "^8.6.0",
+    "firebase-tools": "^9.11.0",
     "husky": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "prettier": "2.3.0",
