@@ -34,7 +34,7 @@
     "youtube-duration-format": "^0.2.0"
   },
   "devDependencies": {
-    "@craco/craco": "^5.9.0",
+    "@craco/craco": "^6.2.0",
     "firebase-tools": "^9.14.0",
     "husky": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
