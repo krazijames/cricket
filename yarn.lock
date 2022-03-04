@@ -12456,10 +12456,10 @@ react-scripts@3.4.1:
   optionalDependencies:
     fsevents "2.1.2"
 
-react-scroll@^1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.8.3.tgz#0aff41567808f548b1b4d893ce6bd551ba1b16ef"
-  integrity sha512-BpEMPUIkLuu3BGZYeaCxDA4tk4Hd25f7da9qGb3a2FY8gURtaVaA62q/Vk2/DChP/4GETp5WMbvkRLaMLzVgwg==
+react-scroll@^1.8.6:
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.8.6.tgz#134a7adc61c0fa0f71b1cfcaa82e6736b6c52549"
+  integrity sha512-VbbvjzLXvCjr2kiiG/lpLFim6mHpkXMdvOXQqwoSnUKyQPNmAo72r46x9C5PTLPSJq/dBd0gwrlZnnxqj5Yz1Q==
   dependencies:
     lodash.throttle "^4.1.1"
     prop-types "^15.7.2"
